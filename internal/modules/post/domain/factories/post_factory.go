@@ -2,7 +2,7 @@ package factories
 
 import (
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
-	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value-objects"
+	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
 	"github.com/racibaz/go-arch/pkg/uuid"
 )
 
