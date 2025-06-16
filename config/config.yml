@@ -1,0 +1,13 @@
+app:
+  name: "Hexagonal Architecture, Domain Driven Design(DDD), TDD in Golang"
+
+server:
+  host: "localhost"
+  port: "8080"
+
+db:
+  username: "root"
+  password: "secret"
+  host: "127.0.0.1"
+  port: "3306"
+  name: "go-arch"
