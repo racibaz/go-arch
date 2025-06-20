@@ -11,8 +11,10 @@ type App struct {
 }
 
 type Server struct {
-	Host string
-	Port string
+	HttpHost string
+	HttpPort string
+	GrpcHost string
+	GrpcPort string
 }
 
 type DB struct {

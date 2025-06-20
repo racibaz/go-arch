@@ -1,9 +1,11 @@
 app:
-  name: "Hexagonal Architecture, Domain Driven Design(DDD), TDD in Golang"
+  name: "Hexagonal Architecture, DDD, TDD and Gin in Golang"
 
 server:
-  host: "localhost"
-  port: "8080"
+  httphost: "localhost"
+  httpport: "8080"
+  grpchost: "0.0.0.0"
+  grpcport: "9090"
 
 db:
   username: "root"
