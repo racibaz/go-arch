@@ -19,6 +19,7 @@ func (pf *PostFactory) New() *domain.Post {
 		ID:          uuid.NewUuid().ToString(),
 		Title:       "Default Title",
 		Description: "Default Description",
+		Content:     "Default Content",
 		Status:      postValueObject.PostStatusDraft,
 	}
 }

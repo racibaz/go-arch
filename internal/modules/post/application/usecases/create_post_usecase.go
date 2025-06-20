@@ -22,6 +22,7 @@ func (postService CreatePostUseCase) CreatePost(postInput useCaseInputs.CreatePo
 		ID:          postInput.ID,
 		Title:       postInput.Title,
 		Description: postInput.Description,
+		Content:     postInput.Content,
 		Status:      postInput.Status,
 		CreatedAt:   postInput.CreatedAt,
 		UpdatedAt:   postInput.UpdatedAt,

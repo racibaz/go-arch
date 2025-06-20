@@ -9,6 +9,7 @@ type CreatePostInput struct {
 	ID          string // Unique identifier for the post
 	Title       string
 	Description string
+	Content     string
 	Status      postValueObject.PostStatus
 	CreatedAt   time.Time
 	UpdatedAt   time.Time // ISO 8601 format
