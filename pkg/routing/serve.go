@@ -3,7 +3,6 @@ package routing
 import (
 	"fmt"
 	"github.com/racibaz/go-arch/pkg/config"
-	"log"
 )
 
 func Serve() {
@@ -11,10 +10,10 @@ func Serve() {
 
 	configs := config.Get()
 
-	err := r.Run(fmt.Sprintf("%s:%s", configs.Server.Host, configs.Server.Port)) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
-
-	if err != nil {
-		log.Fatal("Error in routing")
-		return
-	}
+	go func() {
+		err := r.Run(fmt.Sprintf("%s:%s", configs.Server.HttpHost, configs.Server.HttpPort))
+		if err != nil {
+			panic(fmt.Sprintf("Failed to start HTTP server: %v", err))
+		}
+	}()
 }

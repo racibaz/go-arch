@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"github.com/racibaz/go-arch/pkg/config"
+	"github.com/racibaz/go-arch/pkg/grpc"
 	"github.com/racibaz/go-arch/pkg/routing"
 )
 
@@ -15,4 +16,6 @@ func Serve() {
 	routing.RegisterRoutes()
 
 	routing.Serve()
+
+	grpc.Serve()
 }
