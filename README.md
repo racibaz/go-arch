@@ -4,7 +4,9 @@
 ## Overview
 You can start this project with this command.
 
-`go run main.go serve`
+`go run main.go serve` \
+or \
+`make run`
 
  
 
@@ -13,6 +15,9 @@ You can start this project with this command.
 - cli: `github.com/spf13/cobra`
 - config: `github.com/spf13/viper`
 - framework: `github.com/gin-gonic/gin`
+- protobuf: `github.com/golang/protobuf`
+- grpc: `google.golang.org/grpc`
+- grpc-gen: `google.golang.org/genproto/googleapis/rpc`
 
 
 ## Test
