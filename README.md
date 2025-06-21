@@ -4,6 +4,13 @@
 ## Overview
 You can start this project with this command.
 
+### Migrate the Application
+`go run main.go migrate` 
+
+### Seed the Application
+`go run main.go seed`
+
+### Serve the Application
 `go run main.go serve` \
 or \
 `make run`
