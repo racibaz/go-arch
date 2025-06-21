@@ -18,7 +18,7 @@ func NewCreatetPostUseCase(postRepository ports.PostRepository) *CreatePostUseCa
 }
 
 func (postService CreatePostUseCase) CreatePost(postInput useCaseInputs.CreatePostInput) error {
-	err := postService.PostRepository.Create(&domain.Post{
+	err := postService.PostRepository.Save(&domain.Post{
 		ID:          postInput.ID,
 		Title:       postInput.Title,
 		Description: postInput.Description,

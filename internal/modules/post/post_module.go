@@ -4,7 +4,7 @@ import (
 	postService "github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/application/usecases"
 	postRepository "github.com/racibaz/go-arch/internal/modules/post/domain/ports"
-	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/in_memory"
+	gromPostRepo "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/repositories"
 )
 
 type PostModule struct {
@@ -13,7 +13,8 @@ type PostModule struct {
 }
 
 func NewPostModule() *PostModule {
-	repo := in_memory.NewInMemoryPostRepository()
+	//repo := in_memory.New()
+	repo := gromPostRepo.New() // Use GORM repository for persistence
 	service := usecases.NewCreatetPostUseCase(repo)
 
 	return &PostModule{

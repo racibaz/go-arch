@@ -18,7 +18,7 @@ import (
 func Test_post_CreatePostIntegration(t *testing.T) {
 
 	//Arrange
-	repo := inMemoryRepository.NewInMemoryPostRepository()
+	repo := inMemoryRepository.New()
 	uc := usecases.NewCreatetPostUseCase(repo)
 
 	// Set Gin to test mode

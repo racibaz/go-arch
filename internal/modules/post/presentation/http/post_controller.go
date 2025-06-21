@@ -6,6 +6,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
 	requestDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/request_dtos"
 	"github.com/racibaz/go-arch/pkg/uuid"
+	"time"
 
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
 	"net/http"
@@ -36,7 +37,10 @@ func (postController PostController) Store(c *gin.Context) {
 		ID:          newUuid,
 		Title:       createPostRequestDto.Title,
 		Description: createPostRequestDto.Description,
+		Content:     createPostRequestDto.Content,
 		Status:      postValueObject.PostStatusDraft,
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 	})
 
 	if err != nil {

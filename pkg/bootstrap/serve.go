@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"github.com/racibaz/go-arch/pkg/config"
+	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/grpc"
 	"github.com/racibaz/go-arch/pkg/routing"
 )
@@ -9,7 +10,7 @@ import (
 func Serve() {
 	config.Set()
 
-	//database.Connect()
+	database.Connect()
 
 	routing.Init()
 

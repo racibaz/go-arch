@@ -11,8 +11,8 @@ func init() {
 
 var seedCmd = &cobra.Command{
 	Use:   "seed",
-	Short: "Database seeder",
-	Long:  "Database seeder",
+	Short: "Database seeders",
+	Long:  "Database seeders",
 	Run: func(cmd *cobra.Command, args []string) {
 		seed()
 	},

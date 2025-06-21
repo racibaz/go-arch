@@ -62,9 +62,9 @@ func (p PostStatus) IsArchived() bool {
 	return p == PostStatusArchived
 }
 
-func PostStatusFromString(status string) (PostStatus, error) {
-	if val, ok := stringToPostStatus[status]; ok {
+func (p PostStatus) ToInt() (PostStatus, error) {
+	if val, ok := stringToPostStatus[p.String()]; ok {
 		return val, nil
 	}
-	return -1, fmt.Errorf("invalid post status: %s", status)
+	return -1, fmt.Errorf("invalid post status: %s", p.String())
 }

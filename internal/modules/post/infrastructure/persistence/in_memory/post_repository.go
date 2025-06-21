@@ -13,14 +13,14 @@ type InMemoryPostRepository struct {
 	sync.Mutex
 }
 
-func NewInMemoryPostRepository() *InMemoryPostRepository {
+func New() *InMemoryPostRepository {
 	return &InMemoryPostRepository{
 		posts: make(map[uuid.Uuid]*domain.Post),
 	}
 }
 
-// Create TODO it should return mapper or aggregate root
-func (pr *InMemoryPostRepository) Create(post *domain.Post) error {
+// TODO it should return mapper or aggregate root
+func (pr *InMemoryPostRepository) Save(post *domain.Post) error {
 	pr.Mutex.Lock()
 	defer pr.Mutex.Unlock()
 
