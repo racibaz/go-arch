@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  postgresql_db:
+    image: postgres:14
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=go-arch
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  app:
+    container_name: api
+    build: .
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      - postgresql_db
+    links:
+      - postgresql_db
