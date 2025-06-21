@@ -37,4 +37,5 @@ go.work.sum
 
 #db data dictory
 .data/
+data/
 
