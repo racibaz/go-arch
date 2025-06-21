@@ -18,7 +18,7 @@ or \
 - protobuf: `github.com/golang/protobuf`
 - grpc: `google.golang.org/grpc`
 - grpc-gen: `google.golang.org/genproto/googleapis/rpc`
-
+- orm: `gorm.io/gorm`
 
 ## Test
 `go test`

@@ -28,9 +28,13 @@ go.work.sum
 .env
 
 # Editor/IDE
- .idea/
- .vscode/
+.idea/
+.vscode/
 .idea/.gitignore
 .idea/go-arch.iml
 .idea/modules.xml
 .idea/vcs.xml
+
+#db data dictory
+.data/
+
