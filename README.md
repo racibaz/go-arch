@@ -1,5 +1,5 @@
 # Go-Arch
- Hexagonal Architecture, DDD, TDD and Gin in Golang
+  Hexagonal Architecture, DDD, TDD, (RESTful, gRPC), Gorm and Gin in Golang
 
 ## Overview
 You can start this project with this command.
