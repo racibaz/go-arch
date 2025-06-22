@@ -3,7 +3,7 @@ package factories
 import (
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
-	"github.com/racibaz/go-arch/pkg/uuid"
+	"time"
 )
 
 // PostFactory is a factory for creating Post instances.
@@ -11,15 +11,24 @@ type PostFactory struct {
 }
 
 // New initializes a new PostFactory and returns a Post with default values.
-func (pf *PostFactory) New() *domain.Post {
+func New(id, title, description, content string, status postValueObject.PostStatus, createdAt, updatedAt time.Time) (*domain.Post, error) {
 
-	// This function initializes a new PostFactory.
-	// This factory method creates a new Post with default values.
-	return &domain.Post{
-		ID:          uuid.NewUuid().ToString(),
-		Title:       "Default Title",
-		Description: "Default Description",
-		Content:     "Default Content",
-		Status:      postValueObject.PostStatusDraft,
+	// This factory method creates a new Post with default values if you want.
+	post := domain.Post{
+		ID:          id,
+		Title:       title,
+		Description: description,
+		Content:     content,
+		Status:      status,
+		CreatedAt:   createdAt,
+		UpdatedAt:   updatedAt,
 	}
+
+	//validate the post before returning it
+	err := post.Validate()
+	if err != nil {
+		return nil, nil
+	}
+
+	return &post, nil
 }

@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+var (
+	ErrPostNotFound      = errors.New("the post was not found")
+	ErrPostAlreadyExists = errors.New("the post already exists")
+)
+
 type Post struct {
 	ID          string
 	Title       string
@@ -17,43 +22,37 @@ type Post struct {
 	UpdatedAt   time.Time
 }
 
-// todo it needs to be refactored to use a factory
 // todo it needs test
-func NewPost(id, title, description, content string, status postValueObject.PostStatus) (*Post, error) {
+func (post *Post) Validate() error {
 
 	// Trim whitespace from the input parameters
-	id = strings.TrimSpace(id)
-	title = strings.TrimSpace(title)
-	description = strings.TrimSpace(description)
+	id := strings.TrimSpace(post.ID)
+	title := strings.TrimSpace(post.Title)
+	description := strings.TrimSpace(post.Description)
+	content := strings.TrimSpace(post.Content)
 
 	// Validate the input parameters
 	if id == "" {
-		return nil, errors.New("id cannot be empty")
+		return errors.New("id cannot be empty")
 	}
 
 	if len(title) < 3 {
-		return nil, errors.New("title must be at least 3 characters long")
+		return errors.New("title must be at least 3 characters long")
 	}
 
 	if len(description) < 10 {
-		return nil, errors.New("description must be at least 10 characters long")
+		return errors.New("description must be at least 10 characters long")
 	}
 
 	if len(content) < 10 {
-		return nil, errors.New("content must be at least 10 characters long")
+		return errors.New("content must be at least 10 characters long")
 	}
 
-	if !postValueObject.IsValidPostStatus(status) {
-		return nil, errors.New("status is not valid")
+	if !postValueObject.IsValidPostStatus(post.Status) {
+		return errors.New("status is not valid")
 	}
 
-	return &Post{
-		ID:          id,
-		Title:       title,
-		Description: description,
-		Content:     content,
-		Status:      status,
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
-	}, nil
+	// and more validations can be added here
+
+	return nil
 }

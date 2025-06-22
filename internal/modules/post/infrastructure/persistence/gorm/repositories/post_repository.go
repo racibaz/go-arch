@@ -59,3 +59,16 @@ func (repo *GormPostRepository) List() ([]*domain.Post, error) {
 	//TODO implement me
 	panic("implement me")
 }
+
+func (repo *GormPostRepository) IsExists(title, description string) (bool, error) {
+
+	var post domain.Post
+
+	repo.DB.Where("title = ?", title).Where("description = ?", description).First(&post)
+
+	if post.ID != "" {
+		return true, nil
+	}
+
+	return false, nil
+}

@@ -6,6 +6,6 @@ import (
 )
 
 type PostService interface {
-	CreatePost(postDto usecaseInputs.CreatePostInput) error //TODO it should get dto
+	CreatePost(postDto usecaseInputs.CreatePostInput) error //TODO it should get dto and name can be changed to Create
 	GetById(id string) (*domain.Post, error)
 }

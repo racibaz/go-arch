@@ -1,13 +1,7 @@
 package ports
 
 import (
-	"errors"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
-)
-
-var (
-	ErrPostNotFound     = errors.New("the post was not found")
-	ErrPostAlreadyExist = errors.New("the post already exists")
 )
 
 type PostRepository interface {
@@ -16,4 +10,5 @@ type PostRepository interface {
 	Update(post *domain.Post) error
 	Delete(id string) error
 	List() ([]*domain.Post, error)
+	IsExists(title, description string) (bool, error)
 }

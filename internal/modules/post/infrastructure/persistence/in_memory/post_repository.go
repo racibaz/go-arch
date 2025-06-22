@@ -80,3 +80,9 @@ func (pr *InMemoryPostRepository) List() ([]*domain.Post, error) {
 	//TODO implement me
 	panic("implement me")
 }
+
+func (repo *InMemoryPostRepository) IsExists(title, description string) (bool, error) {
+
+	//TODO implement me
+	return false, nil
+}
