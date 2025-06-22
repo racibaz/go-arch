@@ -26,6 +26,8 @@ or \
 - grpc-gen: `google.golang.org/genproto/googleapis/rpc`
 - orm: `gorm.io/gorm`
 - live reload: `github.com/air-verse/air`
+- open api: `github.com/swaggo/swag`
+- open api gin: `github.com/swaggo/gin-swagger`
 
 
 ## Test
