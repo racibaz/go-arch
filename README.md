@@ -25,6 +25,8 @@ or \
 - grpc: `google.golang.org/grpc`
 - grpc-gen: `google.golang.org/genproto/googleapis/rpc`
 - orm: `gorm.io/gorm`
+- live reload: `github.com/air-verse/air`
+
 
 ## Test
 `go test`
