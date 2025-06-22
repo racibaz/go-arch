@@ -27,7 +27,7 @@ func New(id, title, description, content string, status postValueObject.PostStat
 	//validate the post before returning it
 	err := post.Validate()
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
 
 	return &post, nil

@@ -22,7 +22,7 @@ type Post struct {
 	UpdatedAt   time.Time
 }
 
-// todo it needs test
+// Validate checks if the Post fields are valid.
 func (post *Post) Validate() error {
 
 	// Trim whitespace from the input parameters
@@ -36,7 +36,7 @@ func (post *Post) Validate() error {
 		return errors.New("id cannot be empty")
 	}
 
-	if len(title) < 3 {
+	if len(title) < 10 {
 		return errors.New("title must be at least 3 characters long")
 	}
 
