@@ -1,5 +1,5 @@
 app:
-  name: "Hexagonal Architecture, DDD, TDD and Gin in Golang"
+  name: "Hexagonal Architecture, DDD, TDD, Gorm and Gin in Golang"
 
 server:
   httphost: "localhost"
@@ -13,3 +13,8 @@ db:
   username: "postgres"
   password: "postgres"
   name: "go-arch"
+
+swagger:
+  host: "localhost"
+  port: "8081"
+  path: "/swagger/doc.json"

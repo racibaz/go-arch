@@ -1,9 +1,10 @@
 package config
 
 type Config struct {
-	App    App
-	Server Server
-	DB     DB
+	App     App
+	Server  Server
+	DB      DB
+	Swagger Swagger
 }
 
 type App struct {
@@ -23,4 +24,10 @@ type DB struct {
 	Host     string
 	Port     string
 	Name     string
+}
+
+type Swagger struct {
+	Path string
+	Host string
+	Port string
 }

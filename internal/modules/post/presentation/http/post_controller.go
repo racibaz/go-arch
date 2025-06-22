@@ -9,6 +9,8 @@ import (
 	"time"
 
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
+	_ "github.com/swaggo/files"
+	_ "github.com/swaggo/gin-swagger"
 	"net/http"
 )
 
@@ -22,6 +24,18 @@ func NewPostController(service ports.PostService) *PostController {
 	}
 }
 
+// @BasePath /api/v1
+
+// Store PostStore Store is a method to create a new post
+// @Summary post store
+// @Schemes
+// @Description It is a method to create a new post
+// @Tags posts
+// @Accept json
+// @Produce json
+// @Param post body requestDto.CreatePostRequestDto true "Create Post Request DTO"
+// @Success      201  {object}  domain.Post "Post created successfully"
+// @Router /posts [post]
 func (postController PostController) Store(c *gin.Context) {
 
 	var createPostRequestDto requestDto.CreatePostRequestDto
@@ -60,6 +74,16 @@ func (postController PostController) Store(c *gin.Context) {
 	})
 }
 
+// Show PostGetById Show is a method to retrieve a post by its ID
+// @Summary Get post by id
+// @Schemes
+// @Description It is a method to retrieve a post by its ID
+// @Tags posts
+// @Accept json
+// @Produce json
+// @Param id path string true "Post ID"
+// @Success      200  {object}  domain.Post "Post retrieved successfully"
+// @Router /posts/{id} [get]
 func (postController PostController) Show(c *gin.Context) {
 
 	postID := c.Param("id")

@@ -7,8 +7,11 @@ import (
 type PostStatus int
 
 const (
+	// PostStatusDraft @Description PostStatusDraft represents the status of a post in the system.
 	PostStatusDraft PostStatus = iota
+	// PostStatusPublished @Description PostStatusPublished represents the status of a post in the system.
 	PostStatusPublished
+	// PostStatusArchived @Description PostStatusArchived represents the status of a post in the system.
 	PostStatusArchived
 )
 

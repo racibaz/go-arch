@@ -12,11 +12,16 @@ func Routes(router *gin.Engine) {
 
 	//todo it should be singleton
 	postModule := postModule.NewPostModule()
-
 	newPostController := postController.NewPostController(postModule.GetService())
-	router.GET("/posts/:id", newPostController.Show)
-	router.POST("/posts", newPostController.Store)
 
+	v1 := router.Group("/api/v1")
+	{
+		eg := v1.Group("/posts")
+		{
+			eg.GET("/:id", newPostController.Show)
+			eg.POST("/", newPostController.Store)
+		}
+	}
 }
 
 func GrpcRoutes(grpcServer *googleGrpc.Server) {
