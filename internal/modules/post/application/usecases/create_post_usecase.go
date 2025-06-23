@@ -42,7 +42,7 @@ func (postService CreatePostUseCase) CreatePost(postInput useCaseInputs.CreatePo
 
 	// If the post already exists, return an error
 	if isExists {
-		return domain.ErrPostAlreadyExists
+		return domain.ErrAlreadyExists
 	}
 
 	savingErr := postService.PostRepository.Save(post)

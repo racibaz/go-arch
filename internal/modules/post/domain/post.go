@@ -2,6 +2,7 @@ package domain
 
 import (
 	"errors"
+	"fmt"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
 	"strings"
 	"time"
@@ -14,8 +15,13 @@ var (
 )
 
 var (
-	ErrPostNotFound      = errors.New("the post was not found")
-	ErrPostAlreadyExists = errors.New("the post already exists")
+	ErrNotFound             = errors.New("the post was not found")
+	ErrAlreadyExists        = errors.New("the post already exists")
+	ErrEmptyId              = errors.New("id cannot be empty")
+	ErrMinTitleLength       = errors.New(fmt.Sprintf("title must be at least %d characters long", TitleMinLength))
+	ErrMinDescriptionLength = errors.New(fmt.Sprintf("description must be at least %d characters long", DescriptionMinLength))
+	ErrMinContentLength     = errors.New(fmt.Sprintf("content must be at least %d characters long", ContentMinLength))
+	ErrInvalidStatus        = errors.New("status is not valid")
 )
 
 type Post struct {
@@ -45,23 +51,23 @@ func (post *Post) Validate() error {
 
 	// Validate the input parameters
 	if post.ID == "" {
-		return errors.New("id cannot be empty")
+		return ErrEmptyId
 	}
 
 	if len(post.Title) < TitleMinLength {
-		return errors.New("title must be at least 3 characters long")
+		return ErrMinTitleLength
 	}
 
 	if len(post.Description) < DescriptionMinLength {
-		return errors.New("description must be at least 10 characters long")
+		return ErrMinDescriptionLength
 	}
 
 	if len(post.Content) < ContentMinLength {
-		return errors.New("content must be at least 10 characters long")
+		return ErrMinContentLength
 	}
 
 	if !postValueObject.IsValidPostStatus(post.Status) {
-		return errors.New("status is not valid")
+		return ErrInvalidStatus
 	}
 
 	// and more validations can be added here

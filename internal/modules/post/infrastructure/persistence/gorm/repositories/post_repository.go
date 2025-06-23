@@ -24,7 +24,7 @@ func New() *GormPostRepository {
 func (repo *GormPostRepository) Save(post *domain.Post) error {
 	var newPost entities.Post
 
-	persistenceModel := postMapper.PostMapper{}.ToPersistence(*post)
+	persistenceModel := postMapper.ToPersistence(*post)
 
 	err := repo.DB.Create(&persistenceModel).Scan(&newPost).Error
 	if err != nil {

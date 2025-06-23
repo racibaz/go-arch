@@ -6,10 +6,7 @@ import (
 	entity "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/entities"
 )
 
-type PostMapper struct {
-}
-
-func (mapper PostMapper) ToDomain(postEntity entity.Post) domain.Post {
+func ToDomain(postEntity entity.Post) domain.Post {
 
 	status := valueObject.PostStatus(postEntity.Status)
 
@@ -19,11 +16,13 @@ func (mapper PostMapper) ToDomain(postEntity entity.Post) domain.Post {
 		Description: postEntity.Description,
 		Content:     postEntity.Content,
 		Status:      status,
+		CreatedAt:   postEntity.CreatedAt,
+		UpdatedAt:   postEntity.UpdatedAt,
 	}
 
 }
 
-func (mapper PostMapper) ToPersistence(post domain.Post) entity.Post {
+func ToPersistence(post domain.Post) entity.Post {
 
 	return entity.Post{
 		ID:          post.ID,
