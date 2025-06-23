@@ -7,6 +7,7 @@ import (
 	config "github.com/racibaz/go-arch/pkg/config"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"log"
 )
 
 func main() {
@@ -28,6 +29,9 @@ func main() {
 		ginSwagger.DefaultModelsExpandDepth(-1))
 
 	err := r.Run(fmt.Sprintf(":%s", configs.Swagger.Port))
+
+	log.Default().Println("Swagger is running at", url)
+	fmt.Println("Swagger is running at", url)
 	if err != nil {
 		return
 	} // Run on port 8081
