@@ -4,6 +4,7 @@ type Config struct {
 	App     App
 	Server  Server
 	DB      DB
+	Grpc    Grpc
 	Swagger Swagger
 }
 
@@ -11,11 +12,10 @@ type App struct {
 	Name string
 }
 
+// todo move to grpc server config
 type Server struct {
 	HttpHost string
 	HttpPort string
-	GrpcHost string
-	GrpcPort string
 }
 
 type DB struct {
@@ -28,6 +28,11 @@ type DB struct {
 
 type Swagger struct {
 	Path string
+	Host string
+	Port string
+}
+
+type Grpc struct {
 	Host string
 	Port string
 }

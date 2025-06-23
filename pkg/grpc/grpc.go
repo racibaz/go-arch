@@ -40,6 +40,6 @@ func Serve() {
 	// Initialize the gRPC server with the address from the configuration
 	configs := config.Get()
 
-	grpcServer := NewGRPCServer(fmt.Sprintf("%s:%s", configs.Server.GrpcHost, configs.Server.GrpcPort))
+	grpcServer := NewGRPCServer(fmt.Sprintf("%s:%s", configs.Grpc.Host, configs.Grpc.Port))
 	grpcServer.Run()
 }

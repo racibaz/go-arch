@@ -4,8 +4,6 @@ app:
 server:
   httphost: "localhost"
   httpport: "8080"
-  grpchost: "0.0.0.0"
-  grpcport: "9090"
 
 db:
   host: "localhost"
@@ -17,4 +15,9 @@ db:
 swagger:
   host: "localhost"
   port: "8081"
-  path: "/swagger/doc.json"
+  path: "swagger/doc.json"
+
+
+grpc:
+  host: "0.0.0.0"
+  port: "9090"

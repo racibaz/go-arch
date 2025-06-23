@@ -12,7 +12,7 @@ import (
 var addr string = "0.0.0.0:9090"
 
 func main() {
-
+	
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
