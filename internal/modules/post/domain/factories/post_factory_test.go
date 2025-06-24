@@ -2,13 +2,12 @@ package factories
 
 import (
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
-	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
 )
 
-func TestPostFactory(t *testing.T) {
+func TestPostFactory_New(t *testing.T) {
 
 	testCases := []struct {
 		name string
@@ -22,11 +21,24 @@ func TestPostFactory(t *testing.T) {
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
-				Status:      postValueObject.PostStatusPublished,
+				Status:      domain.PostStatusPublished,
 				CreatedAt:   time.Now(),
 				UpdatedAt:   time.Now(),
 			},
 			err: nil,
+		},
+		{
+			name: "id can not be empty",
+			post: domain.Post{
+				ID:          "",
+				Title:       "ti",
+				Description: "Description",
+				Content:     "content content content",
+				Status:      domain.PostStatusPublished,
+				CreatedAt:   time.Now(),
+				UpdatedAt:   time.Now(),
+			},
+			err: domain.ErrEmptyId,
 		},
 		{
 			name: "title min length",
@@ -35,7 +47,7 @@ func TestPostFactory(t *testing.T) {
 				Title:       "ti",
 				Description: "Description",
 				Content:     "content content content",
-				Status:      postValueObject.PostStatusPublished,
+				Status:      domain.PostStatusPublished,
 				CreatedAt:   time.Now(),
 				UpdatedAt:   time.Now(),
 			},
@@ -48,7 +60,7 @@ func TestPostFactory(t *testing.T) {
 				Title:       "title with more than 10 characters",
 				Description: "Desc",
 				Content:     "content content content",
-				Status:      postValueObject.PostStatusPublished,
+				Status:      domain.PostStatusPublished,
 				CreatedAt:   time.Now(),
 				UpdatedAt:   time.Now(),
 			},
@@ -61,7 +73,7 @@ func TestPostFactory(t *testing.T) {
 				Title:       "title with more than 10 characters",
 				Description: "Description with more than 10 characters",
 				Content:     "cont",
-				Status:      postValueObject.PostStatusPublished,
+				Status:      domain.PostStatusPublished,
 				CreatedAt:   time.Now(),
 				UpdatedAt:   time.Now(),
 			},

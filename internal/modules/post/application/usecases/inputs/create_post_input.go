@@ -1,7 +1,7 @@
 package inputs
 
 import (
-	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
+	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	"time"
 )
 

@@ -1,8 +1,8 @@
 package seeder
 
 import (
+	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	postFactory "github.com/racibaz/go-arch/internal/modules/post/domain/factories"
-	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
 	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	"log"

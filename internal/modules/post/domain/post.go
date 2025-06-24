@@ -3,7 +3,6 @@ package domain
 import (
 	"errors"
 	"fmt"
-	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
 	"strings"
 	"time"
 )
@@ -29,7 +28,7 @@ type Post struct {
 	Title       string
 	Description string
 	Content     string
-	Status      postValueObject.PostStatus
+	Status      PostStatus
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
@@ -66,7 +65,7 @@ func (post *Post) Validate() error {
 		return ErrMinContentLength
 	}
 
-	if !postValueObject.IsValidPostStatus(post.Status) {
+	if !IsValidPostStatus(post.Status) {
 		return ErrInvalidStatus
 	}
 

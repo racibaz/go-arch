@@ -2,7 +2,6 @@ package factories
 
 import (
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
-	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
 	"time"
 )
 
@@ -11,7 +10,7 @@ type PostFactory struct {
 }
 
 // New initializes a new PostFactory and returns a Post with default values.
-func New(id, title, description, content string, status postValueObject.PostStatus, createdAt, updatedAt time.Time) (*domain.Post, error) {
+func New(id, title, description, content string, status domain.PostStatus, createdAt, updatedAt time.Time) (*domain.Post, error) {
 
 	// This factory method creates a new Post with default values if you want.
 	post := domain.Post{

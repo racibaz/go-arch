@@ -4,11 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
+	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	requestDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/request_dtos"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	"time"
 
-	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain/value_objects"
 	_ "github.com/swaggo/files"
 	_ "github.com/swaggo/gin-swagger"
 	"net/http"
@@ -47,7 +47,7 @@ func (postController PostController) Store(c *gin.Context) {
 
 	newUuid := uuid.NewUuid().ToString()
 
-	err := postController.Service.CreatePost(inputs.CreatePostInput{
+	err := postController.Service.Create(inputs.CreatePostInput{
 		ID:          newUuid,
 		Title:       createPostRequestDto.Title,
 		Description: createPostRequestDto.Description,
