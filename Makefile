@@ -7,3 +7,6 @@ migrate:
 
 seed:
 	@go run main.go seed
+
+mock:
+	mockery

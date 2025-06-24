@@ -28,6 +28,8 @@ or \
 - live reload: `github.com/air-verse/air`
 - open api: `github.com/swaggo/swag`
 - open api gin: `github.com/swaggo/gin-swagger`
+- testing: `github.com/stretchr/testify`
+- mocking: `github.com/vektra/mockery`
 
 
 ## Test
