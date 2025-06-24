@@ -47,7 +47,7 @@ func (postController PostController) Store(c *gin.Context) {
 
 	newUuid := uuid.NewUuid().ToString()
 
-	err := postController.Service.Create(inputs.CreatePostInput{
+	err := postController.Service.CreatePost(inputs.CreatePostInput{
 		ID:          newUuid,
 		Title:       createPostRequestDto.Title,
 		Description: createPostRequestDto.Description,
