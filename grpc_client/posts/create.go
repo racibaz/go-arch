@@ -9,9 +9,9 @@ import (
 func CreatePost(c pb.PostServiceClient) string {
 
 	post := &pb.Post{
-		Title:       "test title",
-		Description: "test description",
-		Content:     "test content",
+		Title:       "test title grpc",
+		Description: "test description grpc",
+		Content:     "test content grpc",
 	}
 
 	res, err := c.CreatePost(context.Background(), post)
