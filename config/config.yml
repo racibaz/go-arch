@@ -1,9 +1,9 @@
 app:
-  name: "Hexagonal Architecture, DDD, TDD, Gorm and Gin in Golang"
+  name: "Hexagonal Architecture, DDD, TDD, RESTful, gRPC, Swagger, Gorm and Gin in Golang"
 
 server:
-  httphost: "localhost"
-  httpport: "8080"
+  host: "localhost"
+  port: "8080"
 
 db:
   host: "localhost"

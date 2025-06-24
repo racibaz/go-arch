@@ -11,7 +11,7 @@ func Serve() {
 	configs := config.Get()
 
 	go func() {
-		err := r.Run(fmt.Sprintf("%s:%s", configs.Server.HttpHost, configs.Server.HttpPort))
+		err := r.Run(fmt.Sprintf("%s:%s", configs.Server.Host, configs.Server.Port))
 		if err != nil {
 			panic(fmt.Sprintf("Failed to start HTTP server: %v", err))
 		}

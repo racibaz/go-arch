@@ -12,10 +12,9 @@ type App struct {
 	Name string
 }
 
-// todo move to grpc server config
 type Server struct {
-	HttpHost string
-	HttpPort string
+	Host string
+	Port string
 }
 
 type DB struct {
