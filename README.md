@@ -3,18 +3,10 @@
 
 ## Overview
 Go-Arch is a sample application that demonstrates the principles of Hexagonal Architecture, Domain-Driven Design (DDD), and Test-Driven Development (TDD) using Golang. It includes both RESTful and gRPC APIs, utilizing Gorm for ORM and Gin as the web framework.
-### Migrate the Application
-`go run main.go migrate` 
-
-### Seed the Application
-`go run main.go seed`
 
 ### Serve the Application
-`go run main.go serve` \
-or \
-`make run`
+`docker compose up --build`
 
- 
 
 ## Dependencies
 - uuid: `github.com/google/uuid`
