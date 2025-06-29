@@ -2,11 +2,11 @@ app:
   name: "Hexagonal Architecture, DDD, TDD, RESTful, gRPC, Swagger, Gorm and Gin in Golang"
 
 server:
-  host: "localhost"
+  host: "0.0.0.0"
   port: "8080"
 
 db:
-  host: "localhost"
+  host: "postgres"
   port: "5432"
   username: "postgres"
   password: "postgres"

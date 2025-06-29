@@ -1,24 +1,35 @@
 version: '3.7'
 services:
-  postgresql_db:
-    image: postgres:14
-    restart: always
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=go-arch
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-
   app:
-    container_name: api
     build: .
+    container_name: ${APP_NAME:-go-arch}-app
+    volumes:
+      - .:/app
     ports:
       - "8080:8080"
-    restart: on-failure
-    depends_on:
-      - postgresql_db
-    links:
-      - postgresql_db
+    networks:
+      - app-network
+
+  postgres:
+    hostname: postgres
+    image: postgres:latest
+    container_name: ${APP_NAME:-go-arch}-db
+    restart: always
+    volumes:
+      - ./docker/postgresql/tmp:/var/lib/postgresql/data
+      - app-data:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+        - app-network
+
+volumes:
+  app-data:
+
+networks:
+  app-network:
+    driver: bridge
