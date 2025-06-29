@@ -5,6 +5,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/application/usecases"
 	postRepository "github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	gromPostRepo "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/repositories"
+	"github.com/racibaz/go-arch/pkg/logger"
 )
 
 type PostModule struct {
@@ -14,8 +15,9 @@ type PostModule struct {
 
 func NewPostModule() *PostModule {
 	//repo := in_memory.New()
-	repo := gromPostRepo.New() // Use GORM repository for persistence
-	service := usecases.NewCreatetPostUseCase(repo)
+	repo := gromPostRepo.New()         // Use GORM repository for persistence
+	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
+	service := usecases.NewCreatetPostUseCase(repo, logger)
 
 	return &PostModule{
 		repository: repo,

@@ -11,12 +11,14 @@ import (
 
 type CreatePostUseCase struct {
 	PostRepository ports.PostRepository
+	logger         logger.Logger
 }
 
 // NewCreatetPostUseCase initializes a new CreatePostUseCase with the provided PostRepository.
-func NewCreatetPostUseCase(postRepository ports.PostRepository) *CreatePostUseCase {
+func NewCreatetPostUseCase(postRepository ports.PostRepository, logger logger.Logger) *CreatePostUseCase {
 	return &CreatePostUseCase{
 		PostRepository: postRepository,
+		logger:         logger,
 	}
 }
 
@@ -42,18 +44,18 @@ func (postService CreatePostUseCase) CreatePost(postInput useCaseInputs.CreatePo
 
 	// If the post already exists, return an error
 	if isExists {
-		logger.Info("Post already exists")
+		postService.logger.Info("Post already exists with title: %s and description: %s", post.Title, post.Description)
 		return domain.ErrAlreadyExists
 	}
 
 	savingErr := postService.PostRepository.Save(post)
 
 	if savingErr != nil {
-		logger.Error("Error saving post")
+		postService.logger.Error("Error saving post: %v", savingErr)
 		return savingErr
 	}
 
-	logger.Info("Post created successfully")
+	postService.logger.Info("Post created successfully with ID: %s", post.ID)
 
 	return nil
 }
