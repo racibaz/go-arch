@@ -22,6 +22,7 @@ Go-Arch is a sample application that demonstrates the principles of Hexagonal Ar
 - open api gin: `github.com/swaggo/gin-swagger`
 - testing: `github.com/stretchr/testify`
 - mocking: `github.com/vektra/mockery`
+- logger: `github.com/uber-go/zap`
 
 
 ## Test
