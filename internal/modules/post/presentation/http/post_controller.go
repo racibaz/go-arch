@@ -2,12 +2,13 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	requestDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/request_dtos"
+	errors "github.com/racibaz/go-arch/pkg/error"
 	"github.com/racibaz/go-arch/pkg/uuid"
+	validator "github.com/racibaz/go-arch/pkg/validator"
 	"time"
 
 	_ "github.com/swaggo/files"
@@ -42,7 +43,26 @@ func (postController PostController) Store(c *gin.Context) {
 
 	// Bind the JSON request body to the CreatePostRequestDto struct
 	if err := c.ShouldBindJSON(&createPostRequestDto); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(
+			http.StatusBadRequest,
+			errors.NewInValidError(
+				"Invalid request body",
+				err.Error(),
+			))
+
+		return
+	}
+
+	// Validate the request body
+	if err := validator.Get().Struct(&createPostRequestDto); err != nil {
+		// If validation fails, extract the validation errors
+		c.JSON(
+			http.StatusBadRequest,
+			validator.NewValidationError(
+				"post validation request body does not validate",
+				validator.ShowRegularValidationErrors(err).Errors,
+			),
+		)
 		return
 	}
 
@@ -59,7 +79,14 @@ func (postController PostController) Store(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"title": "Post did not created..", "message": err.Error()})
+
+		c.JSON(
+			http.StatusInternalServerError,
+			errors.NewInValidError(
+				"post create failed",
+				err.Error(),
+			))
+
 		return
 	}
 
@@ -92,7 +119,10 @@ func (postController PostController) Show(c *gin.Context) {
 	result, err := postController.Service.GetById(postID)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"title": "Page not found", "message": err.Error()})
+		c.JSON(
+			http.StatusInternalServerError,
+			errors.NewNotFoundError("Page not found"),
+		)
 		return
 	}
 	// This method would typically retrieve a post by its ID and return it.
