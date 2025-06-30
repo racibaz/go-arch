@@ -27,5 +27,14 @@ Go-Arch is a sample application that demonstrates the principles of Hexagonal Ar
 - logger: `github.com/uber-go/zap`
 
 
+## TODO
+- Add more unit tests
+- Add more integration tests
+- Add more end-to-end tests
+- Add more documentation
+- GraphQL API
+- Add more gRPC services
+
+
 ## Test
 `go test -v ./...`
