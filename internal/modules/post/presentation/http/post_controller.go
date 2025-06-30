@@ -2,6 +2,7 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
+
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
@@ -37,15 +38,15 @@ func NewPostController(service ports.PostService) *PostController {
 // @Success      201  {object}  domain.Post "Post created successfully"
 // @Router /posts [post]
 func (postController PostController) Store(c *gin.Context) {
-
 	var createPostRequestDto requestDto.CreatePostRequestDto
 
+	// Bind the JSON request body to the CreatePostRequestDto struct
 	if err := c.ShouldBindJSON(&createPostRequestDto); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	newUuid := uuid.NewUuid().ToString()
+	newUuid := uuid.NewID()
 
 	err := postController.Service.CreatePost(inputs.CreatePostInput{
 		ID:          newUuid,

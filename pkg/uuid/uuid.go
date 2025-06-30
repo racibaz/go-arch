@@ -32,3 +32,7 @@ func Parse(input string) (Uuid, error) {
 		Uuid: &parsedUuid,
 	}, nil
 }
+
+func NewID() string {
+	return NewUuid().ToString()
+}

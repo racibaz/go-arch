@@ -15,7 +15,7 @@ func Seed() {
 	log.Println("Seeding database...")
 
 	post, err := postFactory.New(
-		uuid.NewUuid().ToString(),
+		uuid.NewID(),
 		"test title 1",
 		"test description 1",
 		"test content content 3",

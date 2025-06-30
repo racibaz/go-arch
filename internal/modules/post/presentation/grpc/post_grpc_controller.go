@@ -27,7 +27,7 @@ func NewPostGrpcController(grpc *grpc.Server, postService ports.PostService) {
 
 func (controller *PostGrpcController) CreatePost(ctx context.Context, in *proto.Post) (*proto.CreatePostResponse, error) {
 
-	postId := uuid.NewUuid().ToString()
+	postId := uuid.NewID()
 
 	input := inputs.CreatePostInput{
 		ID:          postId, //todo value object olmalı
