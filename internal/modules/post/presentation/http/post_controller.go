@@ -26,18 +26,20 @@ func NewPostController(service ports.PostService) *PostController {
 	}
 }
 
-// @BasePath /api/v1
+//	@BasePath	/api/v1
 
 // Store PostStore Store is a method to create a new post
-// @Summary post store
-// @Schemes
-// @Description It is a method to create a new post
-// @Tags posts
-// @Accept json
-// @Produce json
-// @Param post body requestDto.CreatePostRequestDto true "Create Post Request DTO"
-// @Success      201  {object}  domain.Post "Post created successfully"
-// @Router /posts [post]
+//
+//	@Summary	post store
+//	@Schemes
+//	@Description	It is a method to create a new post
+//	@Tags			posts
+//	@Accept			json
+//	@Produce		json
+//	@Param			post	body		requestDto.CreatePostRequestDto	true	"Create Post Request DTO"
+//	@Success		201		{object}	domain.Post						"Post created successfully"
+//	@Failure		400		{object}	errors.AppError					"Invalid request body"
+//	@Router			/posts [post]
 func (postController PostController) Store(c *gin.Context) {
 	var createPostRequestDto requestDto.CreatePostRequestDto
 
@@ -103,15 +105,17 @@ func (postController PostController) Store(c *gin.Context) {
 }
 
 // Show PostGetById Show is a method to retrieve a post by its ID
-// @Summary Get post by id
-// @Schemes
-// @Description It is a method to retrieve a post by its ID
-// @Tags posts
-// @Accept json
-// @Produce json
-// @Param id path string true "Post ID"
-// @Success      200  {object}  domain.Post "Post retrieved successfully"
-// @Router /posts/{id} [get]
+//
+//	@Summary	Get post by id
+//	@Schemes
+//	@Description	It is a method to retrieve a post by its ID
+//	@Tags			posts
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		string		true	"Post ID"
+//	@Success		200	{object}	domain.Post	"Post retrieved successfully"
+//	@Failure		404	{object}	errors.AppError		"Page not found"
+//	@Router			/posts/{id} [get]
 func (postController PostController) Show(c *gin.Context) {
 
 	postID := c.Param("id")

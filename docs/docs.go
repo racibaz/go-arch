@@ -45,6 +45,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/domain.Post"
                         }
+                    },
+                    "400": {
+                        "description": "Invalid request body",
+                        "schema": {
+                            "$ref": "#/definitions/errors.AppError"
+                        }
                     }
                 }
             }
@@ -77,6 +83,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/domain.Post"
                         }
+                    },
+                    "404": {
+                        "description": "Page not found",
+                        "schema": {
+                            "$ref": "#/definitions/errors.AppError"
+                        }
                     }
                 }
             }
@@ -99,7 +111,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/value_objects.PostStatus"
+                    "$ref": "#/definitions/domain.PostStatus"
                 },
                 "title": {
                     "type": "string"
@@ -109,25 +121,7 @@ const docTemplate = `{
                 }
             }
         },
-        "request_dtos.CreatePostRequestDto": {
-            "description": "CreatePostRequestDto is a data transfer object for creating a post",
-            "type": "object",
-            "properties": {
-                "content": {
-                    "description": "@Description Content is the content of the post",
-                    "type": "string"
-                },
-                "description": {
-                    "description": "@Description Description is the description of the post",
-                    "type": "string"
-                },
-                "title": {
-                    "description": "@Description Title is the title of the post",
-                    "type": "string"
-                }
-            }
-        },
-        "value_objects.PostStatus": {
+        "domain.PostStatus": {
             "type": "integer",
             "enum": [
                 0,
@@ -139,6 +133,46 @@ const docTemplate = `{
                 "PostStatusPublished",
                 "PostStatusArchived"
             ]
+        },
+        "errors.AppError": {
+            "type": "object",
+            "properties": {
+                "cause": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "request_dtos.CreatePostRequestDto": {
+            "description": "CreatePostRequestDto is a data transfer object for creating a post",
+            "type": "object",
+            "required": [
+                "content",
+                "description",
+                "title"
+            ],
+            "properties": {
+                "content": {
+                    "description": "@Description Content is the content of the post",
+                    "type": "string",
+                    "minLength": 10
+                },
+                "description": {
+                    "description": "@Description Description is the description of the post",
+                    "type": "string",
+                    "minLength": 10
+                },
+                "title": {
+                    "description": "@Description Title is the title of the post",
+                    "type": "string",
+                    "minLength": 10
+                }
+            }
         }
     }
 }`

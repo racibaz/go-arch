@@ -1,20 +1,23 @@
 app:
-  name: "Hexagonal Architecture, DDD, TDD, RESTful, gRPC, Swagger, Gorm and Gin in Golang"
+  name: "Hexagonal Architecture, DDD, TDD, RESTful, gRPC, Swagger, Gorm(PostgreSQL) and Gin in Golang"
 
 server:
   host: "0.0.0.0"
   port: "8080"
 
 db:
-  host: "postgres"
+  host: "postgres" #for docker development
+  #host: "localhost" #for local development
   port: "5432"
   username: "postgres"
   password: "postgres"
   name: "go-arch"
 
+#It is separated from server configs maybe you want to use different host and port for swagger
+#in different directory such as cmd/swagger
 swagger:
-  host: "localhost"
-  port: "8081"
+  host: "0.0.0.0"
+  port: "8080"
   path: "swagger/doc.json"
 
 

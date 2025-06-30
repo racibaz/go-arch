@@ -1,38 +1,25 @@
-package main
+package routes
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	docs "github.com/racibaz/go-arch/docs"
-	config "github.com/racibaz/go-arch/pkg/config"
+	"github.com/racibaz/go-arch/pkg/config"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"log"
 )
 
-func main() {
-
-	// Initialize the configuration
-	config.Set()
+func Routes(router *gin.Engine) {
 
 	configs := config.Get()
 
-	r := gin.New()
 	docs.SwaggerInfo.BasePath = "/api/v1"
 
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	url := fmt.Sprintf("http://%s:%s/%s", configs.Swagger.Host, configs.Swagger.Port, configs.Swagger.Path)
 
 	ginSwagger.WrapHandler(swaggerfiles.Handler,
 		ginSwagger.URL(url), // The url pointing to API definition
 		ginSwagger.DefaultModelsExpandDepth(-1))
-
-	err := r.Run(fmt.Sprintf(":%s", configs.Swagger.Port))
-
-	log.Default().Println("Swagger is running at", url)
-	fmt.Println("Swagger is running at", url)
-	if err != nil {
-		return
-	} // Run on port 8081
 }
