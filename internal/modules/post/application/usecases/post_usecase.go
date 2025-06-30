@@ -9,20 +9,20 @@ import (
 	"time"
 )
 
-type CreatePostUseCase struct {
+type PostUseCase struct {
 	PostRepository ports.PostRepository
 	logger         logger.Logger
 }
 
-// NewCreatetPostUseCase initializes a new CreatePostUseCase with the provided PostRepository.
-func NewCreatetPostUseCase(postRepository ports.PostRepository, logger logger.Logger) *CreatePostUseCase {
-	return &CreatePostUseCase{
+// NewPostUseCase initializes a new PostUseCase with the provided PostRepository.
+func NewPostUseCase(postRepository ports.PostRepository, logger logger.Logger) *PostUseCase {
+	return &PostUseCase{
 		PostRepository: postRepository,
 		logger:         logger,
 	}
 }
 
-func (postService CreatePostUseCase) CreatePost(postInput useCaseInputs.CreatePostInput) error {
+func (postService PostUseCase) CreatePost(postInput useCaseInputs.CreatePostInput) error {
 
 	// Create a new post using the factory
 	post, _ := postFactory.New(
@@ -60,7 +60,7 @@ func (postService CreatePostUseCase) CreatePost(postInput useCaseInputs.CreatePo
 	return nil
 }
 
-func (postService CreatePostUseCase) GetById(id string) (*domain.Post, error) {
+func (postService PostUseCase) GetById(id string) (*domain.Post, error) {
 
 	return postService.PostRepository.GetByID(id)
 }

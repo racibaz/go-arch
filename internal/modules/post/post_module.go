@@ -17,7 +17,7 @@ func NewPostModule() *PostModule {
 	//repo := in_memory.New()
 	repo := gromPostRepo.New()         // Use GORM repository for persistence
 	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
-	service := usecases.NewCreatetPostUseCase(repo, logger)
+	service := usecases.NewPostUseCase(repo, logger)
 
 	return &PostModule{
 		repository: repo,

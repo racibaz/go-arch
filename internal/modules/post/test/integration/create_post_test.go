@@ -19,7 +19,7 @@ func TestCreatePostIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewCreatetPostUseCase(repo)
+	uc := usecases.NewPostUseCase(repo)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -60,7 +60,7 @@ func TestCreatePostWithoutTitleIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewCreatetPostUseCase(repo)
+	uc := usecases.NewPostUseCase(repo)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -97,7 +97,7 @@ func TestCreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewCreatetPostUseCase(repo)
+	uc := usecases.NewPostUseCase(repo)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -135,7 +135,7 @@ func TestCreatePostWithTDescriptionLessTenLettersIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewCreatetPostUseCase(repo)
+	uc := usecases.NewPostUseCase(repo)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -173,7 +173,7 @@ func TestCreatePostWithTContentLessTenLettersIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewCreatetPostUseCase(repo)
+	uc := usecases.NewPostUseCase(repo)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
