@@ -1,5 +1,5 @@
 # Go-Arch
-  Hexagonal Architecture, DDD, TDD, (RESTful, gRPC), Gorm and Gin in Golang
+Hexagonal Architecture, DDD, TDD, RESTful, gRPC, Swagger, Gorm(PostgreSQL) and Gin in Golang
 
 ## Overview
 Go-Arch is a sample application that demonstrates the principles of Hexagonal Architecture, Domain-Driven Design (DDD), and Test-Driven Development (TDD) using Golang. It includes both RESTful and gRPC APIs, utilizing Gorm for ORM and Gin as the web framework.
