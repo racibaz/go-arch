@@ -37,4 +37,6 @@ EXPOSE 8080
 EXPOSE 9090
 
 # Run the executable
-CMD air
+CMD make migrate && \
+    make seed && \
+    air
