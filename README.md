@@ -26,4 +26,4 @@ Go-Arch is a sample application that demonstrates the principles of Hexagonal Ar
 
 
 ## Test
-`go test`
+`go test -v ./...`
