@@ -7,6 +7,8 @@ Go-Arch is a sample application that demonstrates the principles of Hexagonal Ar
 ### Serve the Application
 `docker compose up --build`
 
+### Swagger Documentation UI
+`http://127.0.0.1:8080/swagger/index.html#`
 
 ## Dependencies
 - uuid: `github.com/google/uuid`
