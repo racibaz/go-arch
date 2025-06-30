@@ -43,7 +43,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Post created successfully",
                         "schema": {
-                            "$ref": "#/definitions/domain.Post"
+                            "$ref": "#/definitions/request_dtos.CreatePostResponseDto"
                         }
                     },
                     "400": {
@@ -171,6 +171,28 @@ const docTemplate = `{
                     "description": "@Description Title is the title of the post",
                     "type": "string",
                     "minLength": 10
+                }
+            }
+        },
+        "request_dtos.CreatePostResponseDto": {
+            "description": "CreatePostResponseDto is a data transfer object for reporting the details of a created post",
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "@Description Content is the content of the post",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "@Description Description is the description of the post",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "@Description Status is the status of the post",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "@Description Title is the title of the post",
+                    "type": "string"
                 }
             }
         }

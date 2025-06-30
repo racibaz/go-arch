@@ -5,6 +5,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
+	responseDtos "github.com/racibaz/go-arch/internal/modules/post/presentation/http/reponse_dtos"
 	requestDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/request_dtos"
 	errors "github.com/racibaz/go-arch/pkg/error"
 	"github.com/racibaz/go-arch/pkg/uuid"
@@ -37,7 +38,7 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Accept			json
 //	@Produce		json
 //	@Param			post	body		requestDto.CreatePostRequestDto	true	"Create Post Request DTO"
-//	@Success		201		{object}	domain.Post						"Post created successfully"
+//	@Success		201		{object}	responseDtos.CreatePostResponseDto	"Post created successfully"
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/posts [post]
 func (postController PostController) Store(c *gin.Context) {
@@ -92,15 +93,17 @@ func (postController PostController) Store(c *gin.Context) {
 		return
 	}
 
+	responseData := responseDtos.CreatePostResponseDto{
+		Title:       createPostRequestDto.Title,
+		Description: createPostRequestDto.Description,
+		Content:     createPostRequestDto.Content,
+		Status:      postValueObject.PostStatusDraft.String(),
+	}
+
 	// This method would typically create a new post and return it.
 	c.JSON(http.StatusCreated, gin.H{
 		"message": "Post created successfully",
-		"data": gin.H{
-			"id":          newUuid,
-			"title":       createPostRequestDto.Title,
-			"description": createPostRequestDto.Description,
-			"status":      postValueObject.PostStatusDraft,
-		},
+		"data":    responseData,
 	})
 }
 
@@ -113,7 +116,7 @@ func (postController PostController) Store(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		string		true	"Post ID"
-//	@Success		200	{object}	domain.Post	"Post retrieved successfully"
+//	@Success		200	{object}	responseDtos.GetPostResponseDto	"Post retrieved successfully"
 //	@Failure		404	{object}	errors.AppError		"Page not found"
 //	@Router			/posts/{id} [get]
 func (postController PostController) Show(c *gin.Context) {
@@ -129,10 +132,18 @@ func (postController PostController) Show(c *gin.Context) {
 		)
 		return
 	}
+
+	response := responseDtos.GetPostResponseDto{
+		Title:       result.Title,
+		Description: result.Description,
+		Content:     result.Content,
+		Status:      result.Status.String(),
+	}
+
 	// This method would typically retrieve a post by its ID and return it.
 	// For now, we will just return a placeholder response.
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Show post",
-		"data":    result,
+		"data":    response,
 	})
 }
