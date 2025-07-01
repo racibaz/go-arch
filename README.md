@@ -34,6 +34,10 @@ Go-Arch is a sample application that demonstrates the principles of Hexagonal Ar
 - Add more documentation
 - GraphQL API
 - Add more gRPC services
+- MongoDB integration
+- Grafana, Prometheus integration
+- Opentelemetry, Jaeger integration
+
 
 
 ## Test
