@@ -4,6 +4,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 )
 
+// PostRepository Secondary port: PostRepository interface
 type PostRepository interface {
 	Save(post *domain.Post) error
 	GetByID(id string) (*domain.Post, error)

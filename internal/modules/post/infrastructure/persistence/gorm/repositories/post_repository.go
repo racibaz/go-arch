@@ -10,6 +10,7 @@ import (
 	"sync"
 )
 
+// GormPostRepository Secondary adapter: PostgreSQL implementation
 type GormPostRepository struct {
 	DB *gorm.DB
 	sync.Mutex

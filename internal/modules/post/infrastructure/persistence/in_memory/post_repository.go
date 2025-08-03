@@ -8,6 +8,7 @@ import (
 	"sync"
 )
 
+// InMemoryPostRepository Secondary adapter: InMemory implementation
 type InMemoryPostRepository struct {
 	posts map[uuid.Uuid]*domain.Post
 	sync.Mutex
