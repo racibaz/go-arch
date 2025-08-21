@@ -1,12 +1,16 @@
 package grpc
 
 import (
+	"context"
 	"fmt"
 	"github.com/racibaz/go-arch/internal/providers/routes"
 	"github.com/racibaz/go-arch/pkg/config"
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 type gRPCServer struct {
@@ -18,6 +22,17 @@ func NewGRPCServer(addr string) *gRPCServer {
 }
 
 func (s *gRPCServer) Run() {
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	go func() {
+		sigCh := make(chan os.Signal, 1)
+		signal.Notify(sigCh, os.Interrupt, syscall.SIGTERM)
+		<-sigCh
+		cancel()
+	}()
+
 	lis, err := net.Listen("tcp", s.addr)
 
 	if err != nil {
@@ -30,9 +45,17 @@ func (s *gRPCServer) Run() {
 
 	routes.RegisterGrpcRoutes(grpcServer)
 
-	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("Failed to serve: %v\n", err)
-	}
+	go func() {
+		if err := grpcServer.Serve(lis); err != nil {
+			log.Printf("failed to serve: %v", err)
+			cancel()
+		}
+	}()
+
+	// wait for the shutdown signal
+	<-ctx.Done()
+	log.Println("Shutting down the server...")
+	grpcServer.GracefulStop()
 
 }
 
