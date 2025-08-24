@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
+	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	"sync"
 )
@@ -13,6 +14,8 @@ type InMemoryPostRepository struct {
 	posts map[uuid.Uuid]*domain.Post
 	sync.Mutex
 }
+
+var _ ports.PostRepository = (*InMemoryPostRepository)(nil)
 
 func New() *InMemoryPostRepository {
 	return &InMemoryPostRepository{

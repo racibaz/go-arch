@@ -3,6 +3,7 @@ package repositories
 import (
 	"fmt"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
+	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/entities"
 	postMapper "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/mappers"
 	"github.com/racibaz/go-arch/pkg/database"
@@ -15,6 +16,8 @@ type GormPostRepository struct {
 	DB *gorm.DB
 	sync.Mutex
 }
+
+var _ ports.PostRepository = (*GormPostRepository)(nil)
 
 func New() *GormPostRepository {
 	return &GormPostRepository{

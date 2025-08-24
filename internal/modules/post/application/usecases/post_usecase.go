@@ -1,6 +1,7 @@
 package usecases
 
 import (
+	applicationPorts "github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	useCaseInputs "github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	postFactory "github.com/racibaz/go-arch/internal/modules/post/domain/factories"
@@ -13,6 +14,8 @@ type PostUseCase struct {
 	PostRepository ports.PostRepository
 	logger         logger.Logger
 }
+
+var _ applicationPorts.PostService = (*PostUseCase)(nil)
 
 // NewPostUseCase initializes a new PostUseCase with the provided PostRepository.
 func NewPostUseCase(postRepository ports.PostRepository, logger logger.Logger) *PostUseCase {
