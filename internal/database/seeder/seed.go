@@ -1,8 +1,7 @@
 package seeder
 
 import (
-	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
-	postFactory "github.com/racibaz/go-arch/internal/modules/post/domain/factories"
+	postDomain "github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	"log"
@@ -14,12 +13,12 @@ func Seed() {
 
 	log.Println("Seeding database...")
 
-	post, err := postFactory.New(
+	post, err := postDomain.Create(
 		uuid.NewID(),
 		"test title 1",
 		"test description 1",
 		"test content content 3",
-		postValueObject.PostStatusDraft,
+		postDomain.PostStatusDraft,
 		time.Now(),
 		time.Now())
 

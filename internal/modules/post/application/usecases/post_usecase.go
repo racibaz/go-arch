@@ -4,7 +4,6 @@ import (
 	applicationPorts "github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	useCaseInputs "github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
-	postFactory "github.com/racibaz/go-arch/internal/modules/post/domain/factories"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
 	"time"
@@ -28,7 +27,7 @@ func NewPostUseCase(postRepository ports.PostRepository, logger logger.Logger) *
 func (postService PostUseCase) CreatePost(postInput useCaseInputs.CreatePostInput) error {
 
 	// Create a new post using the factory
-	post, _ := postFactory.New(
+	post, _ := domain.Create(
 		postInput.ID,
 		postInput.Title,
 		postInput.Description,
