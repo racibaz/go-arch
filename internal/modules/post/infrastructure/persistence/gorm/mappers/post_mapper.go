@@ -3,6 +3,7 @@ package mappers
 import (
 	domain "github.com/racibaz/go-arch/internal/modules/post/domain"
 	entity "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/entities"
+	"github.com/racibaz/go-arch/pkg/ddd"
 )
 
 func ToDomain(postEntity entity.Post) domain.Post {
@@ -10,7 +11,10 @@ func ToDomain(postEntity entity.Post) domain.Post {
 	status := domain.PostStatus(postEntity.Status)
 
 	return domain.Post{
-		ID:          postEntity.ID,
+		AggregateBase: ddd.AggregateBase{
+			ID: postEntity.ID,
+		},
+		UserID:      postEntity.UserID,
 		Title:       postEntity.Title,
 		Description: postEntity.Description,
 		Content:     postEntity.Content,
@@ -25,6 +29,7 @@ func ToPersistence(post domain.Post) entity.Post {
 
 	return entity.Post{
 		ID:          post.ID,
+		UserID:      post.ID,
 		Title:       post.Title,
 		Description: post.Description,
 		Content:     post.Content,

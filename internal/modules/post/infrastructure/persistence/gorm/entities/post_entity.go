@@ -1,9 +1,12 @@
 package entities
 
-import "time"
+import (
+	"time"
+)
 
 type Post struct {
 	ID          string    `gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
+	UserID      string    `gorm:"type:varchar(255);not null"`
 	Title       string    `gorm:"type:varchar(255);not null"`
 	Description string    `gorm:"type:varchar(255);not null"`
 	Content     string    `gorm:"type:text;not null"`

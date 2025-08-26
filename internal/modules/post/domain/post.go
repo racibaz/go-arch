@@ -3,6 +3,7 @@ package domain
 import (
 	"errors"
 	"fmt"
+	"github.com/racibaz/go-arch/pkg/ddd"
 	"strings"
 	"time"
 )
@@ -24,13 +25,46 @@ var (
 )
 
 type Post struct {
-	ID          string
+	ddd.AggregateBase
+	UserID      string
 	Title       string
 	Description string
 	Content     string
 	Status      PostStatus
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+}
+
+func Create(id, title, description, content string, status PostStatus, createdAt, updatedAt time.Time) (*Post, error) {
+
+	// This factory method creates a new Post with default values if you want.
+	post := &Post{
+		AggregateBase: ddd.AggregateBase{
+			ID: id,
+		},
+		Title:       title,
+		Description: description,
+		Content:     content,
+		Status:      status,
+		CreatedAt:   createdAt,
+		UpdatedAt:   updatedAt,
+	}
+
+	//validate the post before returning it
+	err := post.Validate()
+	if err != nil {
+		return nil, err
+	}
+
+	post.AddEvent(&PostCreated{
+		Post: post,
+	})
+
+	return post, nil
+}
+
+func (post *Post) Delete() {
+	//todo implement me
 }
 
 func (post *Post) Sanitize() {
