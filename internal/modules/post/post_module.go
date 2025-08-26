@@ -16,7 +16,7 @@ type PostModule struct {
 	repository postPorts.PostRepository
 	service    postService.PostService
 	logger     logger.Logger
-	notifier   postPorts.NotificationRepository
+	notifier   postPorts.NotificationAdapter
 }
 
 func NewPostModule() *PostModule {
@@ -27,7 +27,7 @@ func NewPostModule() *PostModule {
 	repo := gromPostRepo.New()         // Use GORM repository for persistence
 	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
 	service := usecases.NewPostUseCase(repo, logger)
-	notificationRepository := sms.NewTwilloSmsNotificationRepository()
+	notificationRepository := sms.NewTwilioSmsNotificationAdapter()
 
 	notificationHandlers := logging.LogDomainEventHandlerAccess(
 		handlers.NewNotificationHandlers(notificationRepository),
@@ -52,7 +52,7 @@ func (m PostModule) GetService() postService.PostService {
 	return m.service
 }
 
-func (m PostModule) GetNotifier() postPorts.NotificationRepository {
+func (m PostModule) GetNotifier() postPorts.NotificationAdapter {
 	return m.notifier
 }
 
