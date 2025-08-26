@@ -7,6 +7,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/application/usecases"
 	inMemoryRepository "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/in_memory"
 	postController "github.com/racibaz/go-arch/internal/modules/post/presentation/http"
+	"github.com/racibaz/go-arch/pkg/logger"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
@@ -19,7 +20,8 @@ func TestCreatePostIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewPostUseCase(repo)
+	logger, _ := logger.NewZapLogger()
+	uc := usecases.NewPostUseCase(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -60,7 +62,8 @@ func TestCreatePostWithoutTitleIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewPostUseCase(repo)
+	logger, _ := logger.NewZapLogger()
+	uc := usecases.NewPostUseCase(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -97,7 +100,8 @@ func TestCreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewPostUseCase(repo)
+	logger, _ := logger.NewZapLogger()
+	uc := usecases.NewPostUseCase(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -135,7 +139,8 @@ func TestCreatePostWithTDescriptionLessTenLettersIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewPostUseCase(repo)
+	logger, _ := logger.NewZapLogger()
+	uc := usecases.NewPostUseCase(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -173,7 +178,8 @@ func TestCreatePostWithTContentLessTenLettersIntegration(t *testing.T) {
 
 	//Arrange
 	repo := inMemoryRepository.New()
-	uc := usecases.NewPostUseCase(repo)
+	logger, _ := logger.NewZapLogger()
+	uc := usecases.NewPostUseCase(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
