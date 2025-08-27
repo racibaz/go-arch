@@ -2,11 +2,9 @@ package serdes
 
 import (
 	"fmt"
-	"reflect"
-
+	"github.com/racibaz/go-arch/pkg/registry"
 	"google.golang.org/protobuf/proto"
-
-	"eda-in-golang/internal/registry"
+	"reflect"
 )
 
 type ProtoSerde struct {

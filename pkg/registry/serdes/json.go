@@ -3,7 +3,7 @@ package serdes
 import (
 	"encoding/json"
 
-	"eda-in-golang/internal/registry"
+	"github.com/racibaz/go-arch/pkg/registry"
 )
 
 type JsonSerde struct {

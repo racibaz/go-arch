@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"github.com/racibaz/go-arch/pkg/es"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -17,7 +18,8 @@ func TestPostStatus_EqualTo(t *testing.T) {
 		{
 			name: "valid",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -26,7 +28,8 @@ func TestPostStatus_EqualTo(t *testing.T) {
 				UpdatedAt:   time.Now(),
 			},
 			otherPost: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -40,7 +43,8 @@ func TestPostStatus_EqualTo(t *testing.T) {
 		{
 			name: "it can be false",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -49,7 +53,8 @@ func TestPostStatus_EqualTo(t *testing.T) {
 				UpdatedAt:   time.Now(),
 			},
 			otherPost: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -87,7 +92,8 @@ func TestPostStatus_ToInt(t *testing.T) {
 		{
 			name: "valid",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -101,7 +107,8 @@ func TestPostStatus_ToInt(t *testing.T) {
 		{
 			name: "it can be true",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -115,7 +122,8 @@ func TestPostStatus_ToInt(t *testing.T) {
 		{
 			name: "it can be true",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -129,7 +137,8 @@ func TestPostStatus_ToInt(t *testing.T) {
 		{
 			name: "it can be false",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -143,7 +152,8 @@ func TestPostStatus_ToInt(t *testing.T) {
 		{
 			name: "it can be false",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -186,7 +196,8 @@ func TestPostStatus_String(t *testing.T) {
 		{
 			name: "published valid text",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -200,7 +211,8 @@ func TestPostStatus_String(t *testing.T) {
 		{
 			name: "draft valid text",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -214,7 +226,8 @@ func TestPostStatus_String(t *testing.T) {
 		{
 			name: "archived valid text",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -228,7 +241,8 @@ func TestPostStatus_String(t *testing.T) {
 		{
 			name: "archived invalid text",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -265,7 +279,8 @@ func TestPostStatus(t *testing.T) {
 		{
 			name: "is published",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -279,7 +294,8 @@ func TestPostStatus(t *testing.T) {
 		{
 			name: "is draft",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -293,7 +309,8 @@ func TestPostStatus(t *testing.T) {
 		{
 			name: "is archived",
 			post: Post{
-				ID:          "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",

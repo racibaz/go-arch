@@ -30,11 +30,11 @@ func (pr *InMemoryPostRepository) Save(post *domain.Post) error {
 
 	fmt.Printf("Creating post with ID %s\n", post)
 	// Validate the post ID
-	if post.ID == "" {
+	if post.ID() == "" {
 		return errors.New("post ID cannot be empty")
 	}
 
-	parsedUUID, err := uuid.Parse(post.ID)
+	parsedUUID, err := uuid.Parse(post.ID())
 
 	if _, exists := pr.posts[parsedUUID]; exists {
 		return errors.New("post ID cannot be empty")

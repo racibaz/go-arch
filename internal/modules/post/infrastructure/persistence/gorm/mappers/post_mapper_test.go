@@ -2,7 +2,7 @@ package mappers
 
 import (
 	domain "github.com/racibaz/go-arch/internal/modules/post/domain"
-	"github.com/racibaz/go-arch/pkg/ddd"
+	"github.com/racibaz/go-arch/pkg/es"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
@@ -18,10 +18,8 @@ func TestPostMapper_ToDomain(t *testing.T) {
 		{
 			name: "valid",
 			post: domain.Post{
-				AggregateBase: ddd.AggregateBase{
-					ID: "acb863d4-07b4-4644-b598-7f5cc2494613",
-				},
-				UserID:      "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", domain.PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -72,10 +70,8 @@ func TestPostMapper_ToPersistence(t *testing.T) {
 		{
 			name: "valid",
 			post: domain.Post{
-				AggregateBase: ddd.AggregateBase{
-					ID: "acb863d4-07b4-4644-b598-7f5cc2494613",
-				},
-				UserID:      "acb863d4-07b4-4644-b598-7f5cc2494613",
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", domain.PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
