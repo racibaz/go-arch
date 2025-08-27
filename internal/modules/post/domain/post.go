@@ -43,9 +43,9 @@ type Post struct {
 	UpdatedAt   time.Time
 }
 
+// Create This factory method creates a new Post with default values if you want.
 func Create(id, userID, title, description, content string, status PostStatus, createdAt, updatedAt time.Time) (*Post, error) {
 
-	// This factory method creates a new Post with default values if you want.
 	post := &Post{
 		Aggregate:   es.NewAggregate(id, PostAggregate),
 		UserID:      userID,
@@ -77,6 +77,7 @@ func (p *Post) Delete() {
 func (p *Post) Sanitize() {
 
 	// Trim whitespace from the input parameters
+	p.UserID = strings.TrimSpace(p.UserID)
 	p.Title = strings.TrimSpace(p.Title)
 	p.Description = strings.TrimSpace(p.Description)
 	p.Content = strings.TrimSpace(p.Content)
@@ -90,6 +91,10 @@ func (p *Post) Validate() error {
 
 	// Validate the input parameters
 	if p.Aggregate.ID() == "" {
+		return ErrEmptyId
+	}
+
+	if p.UserID == "" {
 		return ErrEmptyId
 	}
 
@@ -144,11 +149,11 @@ func (p *Post) ApplySnapshot(snapshot es.Snapshot) error {
 }
 
 // ToSnapshot implements es.Snapshotter
-func (s Post) ToSnapshot() es.Snapshot {
+func (p Post) ToSnapshot() es.Snapshot {
 	return PostV1{
-		UserID:  s.UserID,
-		Title:   s.Title,
-		Content: s.Content,
-		Status:  s.Status,
+		UserID:  p.UserID,
+		Title:   p.Title,
+		Content: p.Content,
+		Status:  p.Status,
 	}
 }
