@@ -4,9 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
+	"github.com/racibaz/go-arch/pkg/notification/sms"
 	"github.com/twilio/twilio-go"
-	openapi "github.com/twilio/twilio-go/rest/api/v2010"
-	"os"
 )
 
 type TwilioSmsNotificationAdapter struct {
@@ -24,9 +23,7 @@ func NewTwilioSmsNotificationAdapter() TwilioSmsNotificationAdapter {
 
 func (t TwilioSmsNotificationAdapter) NotifyPostCreated(ctx context.Context, postID, UserID string) error {
 
-	params := &openapi.CreateMessageParams{}
-	params.SetTo(os.Getenv("TO_PHONE_NUMBER"))
-	params.SetFrom(os.Getenv("TWILIO_PHONE_NUMBER"))
+	params := sms.TwilioInit()
 	params.SetBody("Hello from Golang!")
 	_, err := t.client.Api.CreateMessage(params)
 	if err != nil {
