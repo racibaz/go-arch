@@ -29,6 +29,7 @@ func (postService PostUseCase) CreatePost(postInput useCaseInputs.CreatePostInpu
 	// Create a new post using the factory
 	post, _ := domain.Create(
 		postInput.ID,
+		postInput.UserID,
 		postInput.Title,
 		postInput.Description,
 		postInput.Content,

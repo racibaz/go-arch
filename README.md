@@ -7,8 +7,16 @@ Go-Arch is a sample application that demonstrates the principles of Hexagonal Ar
 ### Serve the Application
 `docker compose up --build`
 
+### Makefile Commands
+#### `make run`
+#### `make migrate`
+#### `make seed`
+#### `make mock`
+
 ### Swagger Documentation UI
 `http://127.0.0.1:8080/swagger/index.html#`
+
+
 
 ## Dependencies
 - uuid: `github.com/google/uuid`
@@ -38,6 +46,30 @@ Go-Arch is a sample application that demonstrates the principles of Hexagonal Ar
 - MongoDB integration
 - Grafana, Prometheus integration
 - Opentelemetry, Jaeger integration
+
+
+
+## Validation Error Example
+When sending a POST request to create a post with invalid data, you might receive a validation error response like this:
+```
+{
+    "type": "validation error",
+    "message": "post validation request body does not validate",
+    "cause": {
+        "Content": [
+            "min"
+        ],
+        "Description": [
+            "min"
+        ],
+        "Title": [
+            "min"
+        ]
+    }
+}
+
+```
+
 
 ## Directory Structure
 ```

@@ -7,6 +7,7 @@ import (
 
 type CreatePostInput struct {
 	ID          string // Unique identifier for the post
+	UserID      string
 	Title       string
 	Description string
 	Content     string

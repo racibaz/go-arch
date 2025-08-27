@@ -1,5 +1,9 @@
 package domain
 
+const (
+	PostCreatedEvent = "posts.PostCreated"
+)
+
 type PostCreated struct {
 	Post *Post
 }

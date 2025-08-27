@@ -21,17 +21,17 @@ type PostModule struct {
 
 func NewPostModule() *PostModule {
 
-	domainDispatcher := ddd.NewEventDispatcher()
+	domainDispatcher := ddd.NewEventDispatcher[ddd.AggregateEvent]()
 
 	//repo := in_memory.New()
 	repo := gromPostRepo.New()         // Use GORM repository for persistence
 	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
 	service := usecases.NewPostUseCase(repo, logger)
-	notificationRepository := sms.NewTwilioSmsNotificationAdapter()
+	notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
 
-	notificationHandlers := logging.LogDomainEventHandlerAccess(
-		handlers.NewNotificationHandlers(notificationRepository),
-		logger,
+	notificationHandlers := logging.LogEventHandlerAccess[ddd.AggregateEvent](
+		handlers.NewNotificationHandlers(notificationAdapter),
+		"Notification", logger,
 	)
 
 	handlers.RegisterNotificationHandlers(notificationHandlers, domainDispatcher)
@@ -40,7 +40,7 @@ func NewPostModule() *PostModule {
 		repository: repo,
 		service:    service,
 		logger:     logger,
-		notifier:   notificationRepository,
+		notifier:   notificationAdapter,
 	}
 }
 

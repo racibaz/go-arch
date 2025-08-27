@@ -27,7 +27,7 @@ func (t TwilioSmsNotificationAdapter) NotifyPostCreated(ctx context.Context, pos
 	params.SetBody("Hello from Golang!")
 	_, err := t.client.Api.CreateMessage(params)
 	if err != nil {
-		return err.Error()
+		return err
 	} else {
 		fmt.Println("SMS sent successfully!")
 		return nil

@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"fmt"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/entities"
@@ -32,7 +31,7 @@ func (repo *GormPostRepository) Save(post *domain.Post) error {
 
 	err := repo.DB.Create(&persistenceModel).Scan(&newPost).Error
 	if err != nil {
-		fmt.Printf("Error saving post: %v\n", err)
+		return err
 	}
 
 	return nil
@@ -70,7 +69,7 @@ func (repo *GormPostRepository) IsExists(title, description string) (bool, error
 
 	repo.DB.Where("title = ?", title).Where("description = ?", description).First(&post)
 
-	if post.ID != "" {
+	if post.ID() != "" {
 		return true, nil
 	}
 

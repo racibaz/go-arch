@@ -1,0 +1,10 @@
+package domain
+
+type PostV1 struct {
+	UserID  string
+	Title   string
+	Content string
+	Status  PostStatus
+}
+
+func (PostV1) SnapshotName() string { return "posts.PostV1" }

@@ -4,9 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/racibaz/go-arch/pkg/ddd"
+	"github.com/racibaz/go-arch/pkg/es"
 	"strings"
 	"time"
 )
+
+const PostAggregate = "posts.Post"
 
 var (
 	TitleMinLength       = 10
@@ -24,8 +27,13 @@ var (
 	ErrInvalidStatus        = errors.New("status is not valid")
 )
 
+var _ interface {
+	es.EventApplier
+	es.Snapshotter
+} = (*Post)(nil)
+
 type Post struct {
-	ddd.AggregateBase
+	es.Aggregate
 	UserID      string
 	Title       string
 	Description string
@@ -35,13 +43,12 @@ type Post struct {
 	UpdatedAt   time.Time
 }
 
-func Create(id, title, description, content string, status PostStatus, createdAt, updatedAt time.Time) (*Post, error) {
+func Create(id, userID, title, description, content string, status PostStatus, createdAt, updatedAt time.Time) (*Post, error) {
 
 	// This factory method creates a new Post with default values if you want.
 	post := &Post{
-		AggregateBase: ddd.AggregateBase{
-			ID: id,
-		},
+		Aggregate:   es.NewAggregate(id, PostAggregate),
+		UserID:      userID,
 		Title:       title,
 		Description: description,
 		Content:     content,
@@ -56,54 +63,92 @@ func Create(id, title, description, content string, status PostStatus, createdAt
 		return nil, err
 	}
 
-	post.AddEvent(&PostCreated{
+	post.AddEvent(PostCreatedEvent, &PostCreated{
 		Post: post,
 	})
 
 	return post, nil
 }
 
-func (post *Post) Delete() {
+func (p *Post) Delete() {
 	//todo implement me
 }
 
-func (post *Post) Sanitize() {
+func (p *Post) Sanitize() {
 
 	// Trim whitespace from the input parameters
-	post.ID = strings.TrimSpace(post.ID)
-	post.Title = strings.TrimSpace(post.Title)
-	post.Description = strings.TrimSpace(post.Description)
-	post.Content = strings.TrimSpace(post.Content)
+	p.Title = strings.TrimSpace(p.Title)
+	p.Description = strings.TrimSpace(p.Description)
+	p.Content = strings.TrimSpace(p.Content)
 }
 
 // Validate checks if the Post fields are valid.
-func (post *Post) Validate() error {
+func (p *Post) Validate() error {
 
 	// Sanitize the input parameters
-	post.Sanitize()
+	p.Sanitize()
 
 	// Validate the input parameters
-	if post.ID == "" {
+	if p.Aggregate.ID() == "" {
 		return ErrEmptyId
 	}
 
-	if len(post.Title) < TitleMinLength {
+	if len(p.Title) < TitleMinLength {
 		return ErrMinTitleLength
 	}
 
-	if len(post.Description) < DescriptionMinLength {
+	if len(p.Description) < DescriptionMinLength {
 		return ErrMinDescriptionLength
 	}
 
-	if len(post.Content) < ContentMinLength {
+	if len(p.Content) < ContentMinLength {
 		return ErrMinContentLength
 	}
 
-	if !IsValidPostStatus(post.Status) {
+	if !IsValidPostStatus(p.Status) {
 		return ErrInvalidStatus
 	}
 
 	// and more validations can be added here
 
 	return nil
+}
+
+// ApplyEvent implements es.EventApplier
+func (p *Post) ApplyEvent(event ddd.Event) error {
+	switch payload := event.Payload().(type) {
+	case *PostCreated:
+		p.UserID = payload.Post.UserID
+		p.Status = payload.Post.Status
+	default:
+		return errors.New(fmt.Sprintf("%T received the event %s with unexpected payload %T", p, event.EventName(), payload))
+	}
+
+	return nil
+}
+
+// ApplySnapshot implements es.Snapshotter
+func (p *Post) ApplySnapshot(snapshot es.Snapshot) error {
+	switch ss := snapshot.(type) {
+	case *PostV1:
+		p.UserID = ss.UserID
+		p.Title = ss.Title
+		p.Content = ss.Content
+		p.Status = ss.Status
+
+	default:
+		return errors.New(fmt.Sprintf("%T received the unexpected snapshot %T", p, snapshot))
+	}
+
+	return nil
+}
+
+// ToSnapshot implements es.Snapshotter
+func (s Post) ToSnapshot() es.Snapshot {
+	return PostV1{
+		UserID:  s.UserID,
+		Title:   s.Title,
+		Content: s.Content,
+		Status:  s.Status,
+	}
 }

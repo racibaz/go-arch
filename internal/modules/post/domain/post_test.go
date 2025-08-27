@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"github.com/racibaz/go-arch/pkg/ddd"
+	"github.com/racibaz/go-arch/pkg/es"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
@@ -17,9 +17,8 @@ func TestPost_Create(t *testing.T) {
 		{
 			name: "valid",
 			post: Post{
-				AggregateBase: ddd.AggregateBase{
-					ID: "acb863d4-07b4-4644-b598-7f5cc2494613",
-				},
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "aa5cbf57-cc15-490f-bf3b-1e1c627097a8",
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -32,9 +31,8 @@ func TestPost_Create(t *testing.T) {
 		{
 			name: "id can not be empty",
 			post: Post{
-				AggregateBase: ddd.AggregateBase{
-					ID: "",
-				},
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "aa5cbf57-cc15-490f-bf3b-1e1c627097a8",
 				Title:       "ti",
 				Description: "Description",
 				Content:     "content content content",
@@ -47,9 +45,8 @@ func TestPost_Create(t *testing.T) {
 		{
 			name: "title min length",
 			post: Post{
-				AggregateBase: ddd.AggregateBase{
-					ID: "acb863d4-07b4-4644-b598-7f5cc2494613",
-				},
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "aa5cbf57-cc15-490f-bf3b-1e1c627097a8",
 				Title:       "ti",
 				Description: "Description",
 				Content:     "content content content",
@@ -62,9 +59,8 @@ func TestPost_Create(t *testing.T) {
 		{
 			name: "description min length",
 			post: Post{
-				AggregateBase: ddd.AggregateBase{
-					ID: "acb863d4-07b4-4644-b598-7f5cc2494613",
-				},
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "aa5cbf57-cc15-490f-bf3b-1e1c627097a8",
 				Title:       "title with more than 10 characters",
 				Description: "Desc",
 				Content:     "content content content",
@@ -77,9 +73,8 @@ func TestPost_Create(t *testing.T) {
 		{
 			name: "content min length",
 			post: Post{
-				AggregateBase: ddd.AggregateBase{
-					ID: "acb863d4-07b4-4644-b598-7f5cc2494613",
-				},
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "aa5cbf57-cc15-490f-bf3b-1e1c627097a8",
 				Title:       "title with more than 10 characters",
 				Description: "Description with more than 10 characters",
 				Content:     "cont",
@@ -92,9 +87,8 @@ func TestPost_Create(t *testing.T) {
 		{
 			name: "invalid status",
 			post: Post{
-				AggregateBase: ddd.AggregateBase{
-					ID: "acb863d4-07b4-4644-b598-7f5cc2494613",
-				},
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "aa5cbf57-cc15-490f-bf3b-1e1c627097a8",
 				Title:       "title with more than 10 characters",
 				Description: "Description with more than 10 characters",
 				Content:     "content content content",
@@ -109,7 +103,8 @@ func TestPost_Create(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 
 			_, err := Create(
-				tc.post.ID,
+				tc.post.ID(),
+				tc.post.UserID,
 				tc.post.Title,
 				tc.post.Description,
 				tc.post.Content,
