@@ -1,11 +1,12 @@
 package ports
 
 import (
-	usecaseInputs "github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
+	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 )
 
 type PostService interface {
-	CreatePost(postDto usecaseInputs.CreatePostInput) error //TODO it should get dto and name can be changed to Create
+	CreatePost(postDto commands.CreatePostInput) error
 	GetById(id string) (*domain.Post, error)
+	//Remove(postID string, userID string) (*domain.Post, error)
 }

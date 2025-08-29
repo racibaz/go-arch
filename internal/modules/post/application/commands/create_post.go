@@ -1,30 +1,40 @@
-package usecases
+package commands
 
 import (
 	applicationPorts "github.com/racibaz/go-arch/internal/modules/post/application/ports"
-	useCaseInputs "github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
 	"time"
 )
 
-type PostUseCase struct {
+type CreatePostInput struct {
+	ID          string // Unique identifier for the post
+	UserID      string
+	Title       string
+	Description string
+	Content     string
+	Status      domain.PostStatus
+	CreatedAt   time.Time
+	UpdatedAt   time.Time // ISO 8601 format
+}
+
+type CreatePostService struct {
 	PostRepository ports.PostRepository
 	logger         logger.Logger
 }
 
-var _ applicationPorts.PostService = (*PostUseCase)(nil)
+var _ applicationPorts.PostService = (*CreatePostService)(nil)
 
-// NewPostUseCase initializes a new PostUseCase with the provided PostRepository.
-func NewPostUseCase(postRepository ports.PostRepository, logger logger.Logger) *PostUseCase {
-	return &PostUseCase{
+// NewCreatePostService initializes a new CreatePostService with the provided PostRepository.
+func NewCreatePostService(postRepository ports.PostRepository, logger logger.Logger) *CreatePostService {
+	return &CreatePostService{
 		PostRepository: postRepository,
 		logger:         logger,
 	}
 }
 
-func (postService PostUseCase) CreatePost(postInput useCaseInputs.CreatePostInput) error {
+func (postService CreatePostService) CreatePost(postInput CreatePostInput) error {
 
 	// Create a new post using the factory
 	post, _ := domain.Create(
@@ -63,7 +73,7 @@ func (postService PostUseCase) CreatePost(postInput useCaseInputs.CreatePostInpu
 	return nil
 }
 
-func (postService PostUseCase) GetById(id string) (*domain.Post, error) {
+func (postService CreatePostService) GetById(id string) (*domain.Post, error) {
 
 	return postService.PostRepository.GetByID(id)
 }

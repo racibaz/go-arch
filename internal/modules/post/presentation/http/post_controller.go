@@ -2,8 +2,8 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
-	"github.com/racibaz/go-arch/internal/modules/post/application/usecases/inputs"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	responseDtos "github.com/racibaz/go-arch/internal/modules/post/presentation/http/reponse_dtos"
 	requestDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/request_dtos"
@@ -71,7 +71,7 @@ func (postController PostController) Store(c *gin.Context) {
 
 	newUuid := uuid.NewID()
 
-	err := postController.Service.CreatePost(inputs.CreatePostInput{
+	err := postController.Service.CreatePost(commands.CreatePostInput{
 		ID:          newUuid,
 		Title:       createPostRequestDto.Title,
 		Description: createPostRequestDto.Description,
