@@ -4,6 +4,7 @@ import (
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/grpc"
+	"github.com/racibaz/go-arch/pkg/rabbitmq"
 	"github.com/racibaz/go-arch/pkg/routing"
 )
 
@@ -11,6 +12,8 @@ func Serve() {
 	config.Set()
 
 	database.Connect()
+
+	rabbitmq.Connect()
 
 	routing.Init()
 

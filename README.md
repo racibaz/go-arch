@@ -1,8 +1,8 @@
 # Go-Arch
-Hexagonal Architecture, DDD, TDD, RESTful, gRPC, Swagger, Gorm(PostgreSQL) and Gin in Golang
+Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ and Gin in Golang
 
 ## Overview
-Go-Arch is a sample application that demonstrates the principles of Hexagonal Architecture, Domain-Driven Design (DDD), and Test-Driven Development (TDD) using Golang. It includes both RESTful and gRPC APIs, utilizing Gorm for ORM and Gin as the web framework.
+This project is a sample application built using Go that demonstrates the principles of Hexagonal Architecture, Domain Driven Design (DDD), and Test Driven Design (TDD). It provides both RESTful and gRPC APIs for managing posts, along with Swagger documentation for easy API exploration. The application uses Gorm as the ORM for PostgreSQL, Twilio for notifications, and RabbitMQ for messaging.
 
 ### Serve the Application
 `docker compose up --build`
@@ -34,6 +34,7 @@ Go-Arch is a sample application that demonstrates the principles of Hexagonal Ar
 - mocking: `github.com/vektra/mockery`
 - logger: `github.com/uber-go/zap`
 - twilio: `github.com/twilio/twilio-go`
+- rabbitmq: `github.com/rabbitmq/amqp091-go`
 
 
 ## TODO
