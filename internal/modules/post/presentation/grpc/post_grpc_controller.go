@@ -2,7 +2,7 @@ package grpc
 
 import (
 	"context"
-	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
+	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	proto "github.com/racibaz/go-arch/internal/modules/post/presentation/grpc/proto"
@@ -29,7 +29,7 @@ func (controller *PostGrpcController) CreatePost(ctx context.Context, in *proto.
 
 	postId := uuid.NewID()
 
-	input := commands.CreatePostInput{
+	input := dto.CreatePostInput{
 		ID:          postId, //todo value object olmalı
 		Title:       in.Title,
 		Description: in.Description,

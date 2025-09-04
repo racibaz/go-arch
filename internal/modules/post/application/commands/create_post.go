@@ -1,23 +1,13 @@
 package commands
 
 import (
+	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	applicationPorts "github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
 	"time"
 )
-
-type CreatePostInput struct {
-	ID          string // Unique identifier for the post
-	UserID      string
-	Title       string
-	Description string
-	Content     string
-	Status      domain.PostStatus
-	CreatedAt   time.Time
-	UpdatedAt   time.Time // ISO 8601 format
-}
 
 type CreatePostService struct {
 	PostRepository ports.PostRepository
@@ -34,7 +24,7 @@ func NewCreatePostService(postRepository ports.PostRepository, logger logger.Log
 	}
 }
 
-func (postService CreatePostService) CreatePost(postInput CreatePostInput) error {
+func (postService CreatePostService) CreatePost(postInput dto.CreatePostInput) error {
 
 	// Create a new post using the factory
 	post, _ := domain.Create(

@@ -5,7 +5,7 @@
 package ports
 
 import (
-	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
+	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	mock "github.com/stretchr/testify/mock"
 )
@@ -38,7 +38,7 @@ func (_m *MockPostService) EXPECT() *MockPostService_Expecter {
 }
 
 // Create provides a mock function for the type MockPostService
-func (_mock *MockPostService) Create(postDto commands.CreatePostInput) error {
+func (_mock *MockPostService) Create(postDto dto.CreatePostInput) error {
 	ret := _mock.Called(postDto)
 
 	if len(ret) == 0 {
@@ -46,7 +46,7 @@ func (_mock *MockPostService) Create(postDto commands.CreatePostInput) error {
 	}
 
 	var r0 error
-	if returnFunc, ok := ret.Get(0).(func(commands.CreatePostInput) error); ok {
+	if returnFunc, ok := ret.Get(0).(func(dto.CreatePostInput) error); ok {
 		r0 = returnFunc(postDto)
 	} else {
 		r0 = ret.Error(0)
@@ -65,11 +65,11 @@ func (_e *MockPostService_Expecter) Create(postDto interface{}) *MockPostService
 	return &MockPostService_Create_Call{Call: _e.mock.On("Create", postDto)}
 }
 
-func (_c *MockPostService_Create_Call) Run(run func(postDto commands.CreatePostInput)) *MockPostService_Create_Call {
+func (_c *MockPostService_Create_Call) Run(run func(postDto dto.CreatePostInput)) *MockPostService_Create_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 commands.CreatePostInput
+		var arg0 dto.CreatePostInput
 		if args[0] != nil {
-			arg0 = args[0].(commands.CreatePostInput)
+			arg0 = args[0].(dto.CreatePostInput)
 		}
 		run(
 			arg0,
@@ -83,7 +83,7 @@ func (_c *MockPostService_Create_Call) Return(err error) *MockPostService_Create
 	return _c
 }
 
-func (_c *MockPostService_Create_Call) RunAndReturn(run func(postDto commands.CreatePostInput) error) *MockPostService_Create_Call {
+func (_c *MockPostService_Create_Call) RunAndReturn(run func(postDto dto.CreatePostInput) error) *MockPostService_Create_Call {
 	_c.Call.Return(run)
 	return _c
 }
