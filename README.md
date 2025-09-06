@@ -1,21 +1,49 @@
 # Go-Arch
 Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ and Gin in Golang
 
-## Overview
-This project is a sample application built using Go that demonstrates the principles of Hexagonal Architecture, Domain Driven Design (DDD), and Test Driven Design (TDD). It provides both RESTful and gRPC APIs for managing posts, along with Swagger documentation for easy API exploration. The application uses Gorm as the ORM for PostgreSQL, Twilio for notifications, and RabbitMQ for messaging.
+## 📖 Overview
+This project demonstrates clean architectural principles in Go, including:
 
-### Serve the Application
-`docker compose up --build`
+- **Hexagonal Architecture** for separation of concerns
+- **DDD** for domain modeling
+- **TDD** for reliable, testable code
+- **RESTful** and **gRPC APIs**
+- **Swagger UI** for API exploration
+- **PostgreSQL with Gorm ORM**
+- **RabbitMQ** for messaging
+- **Twilio** for notifications
+
+### Run with Docker
+```bash
+docker compose up --build
+```
 
 ### Makefile Commands
-#### `make run`
-#### `make migrate`
-#### `make seed`
-#### `make mock`
+```bash
+make run
+```
+```bash
+make migrate
+```
+```bash
+make seed
+```
+```bash
+make mock
+```
 
 ### Swagger Documentation UI
 `http://127.0.0.1:8080/swagger/index.html#`
 
+#### Generate Swagger Documentation
+```bash
+  swag init -o api/openapi-spec
+```
+
+#### Generate gRPC Code
+```bash
+make proto
+```
 
 
 ## Dependencies
@@ -37,16 +65,17 @@ This project is a sample application built using Go that demonstrates the princi
 - rabbitmq: `github.com/rabbitmq/amqp091-go`
 
 
-## TODO
-- Add more unit tests
-- Add more integration tests
-- Add more end-to-end tests
-- Add more documentation
-- GraphQL API
-- Add more gRPC services
-- MongoDB integration
-- Grafana, Prometheus integration
-- Opentelemetry, Jaeger integration
+## 🛠 Roadmap / TODO
+
+- [x] Add more unit tests
+- [x] Add more integration tests
+- [x] Add more end-to-end tests
+- [ ] Extend documentation
+- [ ] Add GraphQL API
+- [ ] Add more gRPC services
+- [ ] MongoDB integration
+- [ ] Grafana & Prometheus integration
+- [ ] OpenTelemetry & Jaeger integration
 
 
 
@@ -73,4 +102,10 @@ When sending a POST request to create a post with invalid data, you might receiv
 
 
 ## Test
-`go test -v ./...`
+
+```bash
+go test -v ./...
+```
+```bash
+go test -v -cover ./...
+```
