@@ -70,7 +70,7 @@
                     "200": {
                         "description": "Post retrieved successfully",
                         "schema": {
-                            "$ref": "#/definitions/domain.Post"
+                            "$ref": "#/definitions/request_dtos.GetPostResponseDto"
                         }
                     },
                     "404": {
@@ -84,45 +84,6 @@
         }
     },
     "definitions": {
-        "domain.Post": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "status": {
-                    "$ref": "#/definitions/domain.PostStatus"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "domain.PostStatus": {
-            "type": "integer",
-            "enum": [
-                0,
-                1,
-                2
-            ],
-            "x-enum-varnames": [
-                "PostStatusDraft",
-                "PostStatusPublished",
-                "PostStatusArchived"
-            ]
-        },
         "errors.AppError": {
             "type": "object",
             "properties": {
@@ -165,6 +126,28 @@
         },
         "request_dtos.CreatePostResponseDto": {
             "description": "CreatePostResponseDto is a data transfer object for reporting the details of a created post",
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "@Description Content is the content of the post",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "@Description Description is the description of the post",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "@Description Status is the status of the post",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "@Description Title is the title of the post",
+                    "type": "string"
+                }
+            }
+        },
+        "request_dtos.GetPostResponseDto": {
+            "description": "GetPostResponseDto is a data transfer object for reporting the details of a post",
             "type": "object",
             "properties": {
                 "content": {

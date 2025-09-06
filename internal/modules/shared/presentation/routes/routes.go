@@ -3,7 +3,7 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	docs "github.com/racibaz/go-arch/docs"
+	openapiSpec "github.com/racibaz/go-arch/api/openapi-spec"
 	"github.com/racibaz/go-arch/pkg/config"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -12,8 +12,8 @@ import (
 func Routes(router *gin.Engine) {
 
 	configs := config.Get()
-
-	docs.SwaggerInfo.BasePath = "/api/v1"
+	openapiSpec.SwaggerInfo.Title = configs.App.Name
+	openapiSpec.SwaggerInfo.BasePath = "/api/v1"
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 

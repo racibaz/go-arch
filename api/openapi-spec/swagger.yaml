@@ -1,31 +1,4 @@
 definitions:
-  domain.Post:
-    properties:
-      content:
-        type: string
-      createdAt:
-        type: string
-      description:
-        type: string
-      id:
-        type: string
-      status:
-        $ref: '#/definitions/domain.PostStatus'
-      title:
-        type: string
-      updatedAt:
-        type: string
-    type: object
-  domain.PostStatus:
-    enum:
-    - 0
-    - 1
-    - 2
-    type: integer
-    x-enum-varnames:
-    - PostStatusDraft
-    - PostStatusPublished
-    - PostStatusArchived
   errors.AppError:
     properties:
       cause:
@@ -58,6 +31,23 @@ definitions:
   request_dtos.CreatePostResponseDto:
     description: CreatePostResponseDto is a data transfer object for reporting the
       details of a created post
+    properties:
+      content:
+        description: '@Description Content is the content of the post'
+        type: string
+      description:
+        description: '@Description Description is the description of the post'
+        type: string
+      status:
+        description: '@Description Status is the status of the post'
+        type: string
+      title:
+        description: '@Description Title is the title of the post'
+        type: string
+    type: object
+  request_dtos.GetPostResponseDto:
+    description: GetPostResponseDto is a data transfer object for reporting the details
+      of a post
     properties:
       content:
         description: '@Description Content is the content of the post'
@@ -118,7 +108,7 @@ paths:
         "200":
           description: Post retrieved successfully
           schema:
-            $ref: '#/definitions/domain.Post'
+            $ref: '#/definitions/request_dtos.GetPostResponseDto'
         "404":
           description: Page not found
           schema:
