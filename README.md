@@ -67,9 +67,9 @@ make proto
 
 ## 🛠 Roadmap / TODO
 
-- [x] Add more unit tests
-- [x] Add more integration tests
-- [x] Add more end-to-end tests
+- [ ] Add more unit tests
+- [ ] Add more integration tests
+- [ ] Add more end-to-end tests
 - [ ] Extend documentation
 - [ ] Add GraphQL API
 - [ ] Add more gRPC services
@@ -100,6 +100,11 @@ When sending a POST request to create a post with invalid data, you might receiv
 
 ```
 
+
+## Linters
+```bash
+go vet ./...
+```
 
 ## Test
 
