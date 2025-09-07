@@ -1,3 +1,5 @@
+// Package post contains the domain logic for managing blog posts.
+
 package domain
 
 import (
@@ -9,7 +11,9 @@ import (
 	"time"
 )
 
-const PostAggregate = "posts.Post"
+const (
+	PostAggregate = "posts.Post"
+)
 
 var (
 	TitleMinLength       = 10

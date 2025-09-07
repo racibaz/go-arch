@@ -1,3 +1,5 @@
+// Package domain defines the domain models and logic for the post module.
+
 package domain
 
 import (
