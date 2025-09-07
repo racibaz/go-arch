@@ -1,15 +1,17 @@
-package post_module
+package module
 
 import (
 	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/post/application/handlers"
 	postService "github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	postPorts "github.com/racibaz/go-arch/internal/modules/post/domain/ports"
+	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/messaging/rabittmq"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/notification/sms"
 	gromPostRepo "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/repositories"
 	"github.com/racibaz/go-arch/internal/modules/post/logging"
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/logger"
+	"github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
 )
 
 type PostModule struct {
@@ -26,7 +28,8 @@ func NewPostModule() *PostModule {
 	//repo := in_memory.New()
 	repo := gromPostRepo.New()         // Use GORM repository for persistence
 	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
-	createPostService := commands.NewCreatePostService(repo, logger)
+	publisher := rabittmq.NewPostCreatedPublisher(rabbitmq.Connection())
+	createPostService := commands.NewCreatePostService(repo, logger, publisher)
 	notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
 
 	notificationHandlers := logging.LogEventHandlerAccess[ddd.AggregateEvent](
@@ -44,18 +47,18 @@ func NewPostModule() *PostModule {
 	}
 }
 
-func (m PostModule) GetRepository() postPorts.PostRepository {
+func (m PostModule) Repository() postPorts.PostRepository {
 	return m.repository
 }
 
-func (m PostModule) GetService() postService.PostService {
+func (m PostModule) Service() postService.PostService {
 	return m.service
 }
 
-func (m PostModule) GetNotifier() postPorts.NotificationAdapter {
+func (m PostModule) Notifier() postPorts.NotificationAdapter {
 	return m.notifier
 }
 
-func (m PostModule) GetLogger() logger.Logger {
+func (m PostModule) Logger() logger.Logger {
 	return m.logger
 }
