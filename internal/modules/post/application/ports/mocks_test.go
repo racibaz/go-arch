@@ -37,12 +37,12 @@ func (_m *MockPostService) EXPECT() *MockPostService_Expecter {
 	return &MockPostService_Expecter{mock: &_m.Mock}
 }
 
-// Create provides a mock function for the type MockPostService
-func (_mock *MockPostService) Create(postDto dto.CreatePostInput) error {
+// CreatePost provides a mock function for the type MockPostService
+func (_mock *MockPostService) CreatePost(postDto dto.CreatePostInput) error {
 	ret := _mock.Called(postDto)
 
 	if len(ret) == 0 {
-		panic("no return value specified for Create")
+		panic("no return value specified for CreatePost")
 	}
 
 	var r0 error
@@ -54,18 +54,18 @@ func (_mock *MockPostService) Create(postDto dto.CreatePostInput) error {
 	return r0
 }
 
-// MockPostService_Create_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Create'
-type MockPostService_Create_Call struct {
+// MockPostService_CreatePost_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreatePost'
+type MockPostService_CreatePost_Call struct {
 	*mock.Call
 }
 
-// Create is a helper method to define mock.On call
-//   - postDto inputs.CreatePostInput
-func (_e *MockPostService_Expecter) Create(postDto interface{}) *MockPostService_Create_Call {
-	return &MockPostService_Create_Call{Call: _e.mock.On("Create", postDto)}
+// CreatePost is a helper method to define mock.On call
+//   - postDto dto.CreatePostInput
+func (_e *MockPostService_Expecter) CreatePost(postDto interface{}) *MockPostService_CreatePost_Call {
+	return &MockPostService_CreatePost_Call{Call: _e.mock.On("CreatePost", postDto)}
 }
 
-func (_c *MockPostService_Create_Call) Run(run func(postDto dto.CreatePostInput)) *MockPostService_Create_Call {
+func (_c *MockPostService_CreatePost_Call) Run(run func(postDto dto.CreatePostInput)) *MockPostService_CreatePost_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 dto.CreatePostInput
 		if args[0] != nil {
@@ -78,12 +78,12 @@ func (_c *MockPostService_Create_Call) Run(run func(postDto dto.CreatePostInput)
 	return _c
 }
 
-func (_c *MockPostService_Create_Call) Return(err error) *MockPostService_Create_Call {
+func (_c *MockPostService_CreatePost_Call) Return(err error) *MockPostService_CreatePost_Call {
 	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *MockPostService_Create_Call) RunAndReturn(run func(postDto dto.CreatePostInput) error) *MockPostService_Create_Call {
+func (_c *MockPostService_CreatePost_Call) RunAndReturn(run func(postDto dto.CreatePostInput) error) *MockPostService_CreatePost_Call {
 	_c.Call.Return(run)
 	return _c
 }
