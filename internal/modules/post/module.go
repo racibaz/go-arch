@@ -5,13 +5,11 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/application/handlers"
 	postService "github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	postPorts "github.com/racibaz/go-arch/internal/modules/post/domain/ports"
-	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/messaging/rabittmq"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/notification/sms"
 	gromPostRepo "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/repositories"
 	"github.com/racibaz/go-arch/internal/modules/post/logging"
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/logger"
-	"github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
 )
 
 type PostModule struct {
@@ -28,8 +26,8 @@ func NewPostModule() *PostModule {
 	//repo := in_memory.New()
 	repo := gromPostRepo.New()         // Use GORM repository for persistence
 	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
-	publisher := rabittmq.NewPostCreatedPublisher(rabbitmq.Connection())
-	createPostService := commands.NewCreatePostService(repo, logger, publisher)
+	//publisher := rabbitmq.NewPostCreatedPublisher(rabbitmqConn.Connection())
+	createPostService := commands.NewCreatePostService(repo, logger)
 	notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
 
 	notificationHandlers := logging.LogEventHandlerAccess[ddd.AggregateEvent](
