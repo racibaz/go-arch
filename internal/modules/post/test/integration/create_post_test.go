@@ -5,11 +5,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
-	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/messaging/rabittmq"
 	inMemoryRepository "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/in_memory"
 	postController "github.com/racibaz/go-arch/internal/modules/post/presentation/http"
 	"github.com/racibaz/go-arch/pkg/logger"
-	"github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
@@ -23,8 +21,8 @@ func TestCreatePostIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	publisher := rabittmq.NewPostCreatedPublisher(rabbitmq.Connection())
-	uc := commands.NewCreatePostService(repo, logger, publisher)
+	//publisher := rabbitmq.NewPostCreatedPublisher(rabbitmqConn.Connection())
+	uc := commands.NewCreatePostService(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -66,8 +64,8 @@ func TestCreatePostWithoutTitleIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	publisher := rabittmq.NewPostCreatedPublisher(rabbitmq.Connection())
-	uc := commands.NewCreatePostService(repo, logger, publisher)
+	//publisher := rabbitmq.NewPostCreatedPublisher(rabbitmqConn.Connection())
+	uc := commands.NewCreatePostService(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -105,8 +103,8 @@ func TestCreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	publisher := rabittmq.NewPostCreatedPublisher(rabbitmq.Connection())
-	uc := commands.NewCreatePostService(repo, logger, publisher)
+	//publisher := rabbitmq.NewPostCreatedPublisher(rabbitmqConn.Connection())
+	uc := commands.NewCreatePostService(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -145,8 +143,8 @@ func TestCreatePostWithTDescriptionLessTenLettersIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	publisher := rabittmq.NewPostCreatedPublisher(rabbitmq.Connection())
-	uc := commands.NewCreatePostService(repo, logger, publisher)
+	//publisher := rabbitmq.NewPostCreatedPublisher(rabbitmqConn.Connection())
+	uc := commands.NewCreatePostService(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
@@ -185,8 +183,8 @@ func TestCreatePostWithTContentLessTenLettersIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	publisher := rabittmq.NewPostCreatedPublisher(rabbitmq.Connection())
-	uc := commands.NewCreatePostService(repo, logger, publisher)
+	//publisher := rabbitmq.NewPostCreatedPublisher(rabbitmqConn.Connection())
+	uc := commands.NewCreatePostService(repo, logger)
 
 	// Set Gin to test mode
 	gin.SetMode(gin.TestMode)
