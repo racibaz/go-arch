@@ -115,7 +115,8 @@ const docTemplate = `{
             "required": [
                 "content",
                 "description",
-                "title"
+                "title",
+                "user_id"
             ],
             "properties": {
                 "content": {
@@ -132,6 +133,10 @@ const docTemplate = `{
                     "description": "@Description Title is the title of the post",
                     "type": "string",
                     "minLength": 10
+                },
+                "user_id": {
+                    "description": "@Description UserId is the ID of the user creating the post",
+                    "type": "string"
                 }
             }
         },

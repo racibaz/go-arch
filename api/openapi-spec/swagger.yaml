@@ -23,10 +23,14 @@ definitions:
         description: '@Description Title is the title of the post'
         minLength: 10
         type: string
+      user_id:
+        description: '@Description UserId is the ID of the user creating the post'
+        type: string
     required:
     - content
     - description
     - title
+    - user_id
     type: object
   request_dtos.CreatePostResponseDto:
     description: CreatePostResponseDto is a data transfer object for reporting the

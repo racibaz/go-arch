@@ -73,6 +73,7 @@ func (postController PostController) Store(c *gin.Context) {
 
 	err := postController.Service.CreatePost(dto.CreatePostInput{
 		ID:          newUuid,
+		UserID:      createPostRequestDto.UserId,
 		Title:       createPostRequestDto.Title,
 		Description: createPostRequestDto.Description,
 		Content:     createPostRequestDto.Content,
