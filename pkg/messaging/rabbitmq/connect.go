@@ -2,12 +2,14 @@ package rabbitmq
 
 import (
 	amqp "github.com/rabbitmq/amqp091-go"
+	"github.com/racibaz/go-arch/pkg/config"
 	"log"
 )
 
 func Connect() {
+	conf := config.Get()
 
-	conn, err := amqp.Dial("amqp://guest:guest@rabbitmq:5672/")
+	conn, err := amqp.Dial(conf.RabbitMQ.Url)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 

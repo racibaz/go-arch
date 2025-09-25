@@ -6,8 +6,8 @@ server:
   port: "8080"
 
 db:
-  host: "postgres" #for docker development
-  #host: "localhost" #for local development
+  #host: "postgres" #for docker development
+  host: "localhost" #for local development
   port: "5432"
   username: "postgres"
   password: "postgres"
@@ -24,3 +24,8 @@ swagger:
 grpc:
   host: "0.0.0.0"
   port: "9090"
+
+
+rabbitmq:
+  #url: "amqp://guest:guest@rabbitmq:5672/" # for docker development
+  url: "amqp://guest:guest@localhost:5672/" # for docker development

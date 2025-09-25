@@ -1,11 +1,12 @@
 package config
 
 type Config struct {
-	App     App
-	Server  Server
-	DB      DB
-	Grpc    Grpc
-	Swagger Swagger
+	App      App
+	Server   Server
+	DB       DB
+	Grpc     Grpc
+	Swagger  Swagger
+	RabbitMQ RabbitMQ
 }
 
 type App struct {
@@ -34,4 +35,8 @@ type Swagger struct {
 type Grpc struct {
 	Host string
 	Port string
+}
+
+type RabbitMQ struct {
+	Url string
 }
