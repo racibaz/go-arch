@@ -38,7 +38,7 @@ make mock
 
 #### Generate Swagger Documentation
 ```bash
-  swag init -o api/openapi-spec
+  make generate-swagger
 ```
 
 #### Generate gRPC Code

@@ -18,3 +18,6 @@ generate-proto:
 		--go_opt=module=github.com/racibaz/go-arch \
 		--go-grpc_out=.  \
 		--go-grpc_opt=module=github.com/racibaz/go-arch  internal/modules/post/presentation/grpc/proto/*.proto
+
+generate-swagger:
+	swag init -o api/openapi-spec
