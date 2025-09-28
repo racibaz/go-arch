@@ -43,7 +43,7 @@ make mock
 
 #### Generate gRPC Code
 ```bash
-make proto
+make generate-proto
 ```
 
 
