@@ -12,6 +12,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **PostgreSQL with Gorm ORM**
 - **RabbitMQ** for messaging
 - **Twilio** for notifications
+- Graceful Shutdown
 
 ### Run with Docker
 ```bash
