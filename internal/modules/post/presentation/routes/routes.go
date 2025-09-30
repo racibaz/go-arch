@@ -8,9 +8,10 @@ import (
 	googleGrpc "google.golang.org/grpc"
 )
 
-var module = postModule.NewPostModule()
-
 func Routes(router *gin.Engine) {
+
+	//todo it should be singleton
+	module := postModule.NewPostModule()
 	newPostController := postController.NewPostController(module.Service())
 
 	v1 := router.Group("/api/v1")
@@ -24,5 +25,9 @@ func Routes(router *gin.Engine) {
 }
 
 func GrpcRoutes(grpcServer *googleGrpc.Server) {
+
+	//todo it should be singleton
+	module := postModule.NewPostModule()
+
 	postGrpcController.NewPostGrpcController(grpcServer, module.Service())
 }

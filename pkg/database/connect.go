@@ -26,6 +26,11 @@ func Connect() {
 		return
 	}
 
+	if db == nil {
+		log.Fatal("db object is nil")
+		return
+	}
+
 	fmt.Println("Connecting to database...")
 
 	DB = db
