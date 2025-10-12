@@ -10,12 +10,14 @@ RUN apk update && apk upgrade && \
 RUN apk add make # install make
 RUN apk add curl # install curl for testing
 
-
 # Add Maintainer Info
 LABEL maintainer="Recai Cansız <r.c67@hotmail.com>"
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
+
+# Install migrate tool for database migrations
+RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
 # Install Air for live reloading
 RUN go install github.com/air-verse/air@latest
@@ -36,7 +38,8 @@ RUN go build -o main .
 EXPOSE 8080
 EXPOSE 9090
 
-# Run the executable
-CMD make migrate && \
-    make seed && \
-    air
+# Entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]

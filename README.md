@@ -27,6 +27,33 @@ make run
 make migrate
 ```
 ```bash
+If you need to change the migration starting point, you can change it in the Dockerfile.
+
+CMD make db_migrate_drop && \
+    version=1 make db_migrate_force && \
+    make db_migrate_up && \
+    make seed && \
+    air
+
+
+name=init_schema make db_create_migration
+```
+```bash
+make db_migrate_up
+```
+```bash
+make db_migrate_down
+```
+```bash
+make db_migrate_force
+```
+```bash
+make db_migrate_drop
+```
+```bash
+make db_migrate_version
+```
+```bash
 make seed
 ```
 ```bash
@@ -38,12 +65,12 @@ make mock
 
 #### Generate Swagger Documentation
 ```bash
-  make generate-swagger
+  make generate_swagger
 ```
 
 #### Generate gRPC Code
 ```bash
-make generate-proto
+make generate_proto
 ```
 
 
@@ -64,6 +91,7 @@ make generate-proto
 - logger: `github.com/uber-go/zap`
 - twilio: `github.com/twilio/twilio-go`
 - rabbitmq: `github.com/rabbitmq/amqp091-go`
+- migrations: `github.com/golang-migrate/migrate/v4`
 
 
 ## 🛠 Roadmap / TODO
