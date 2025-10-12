@@ -5,7 +5,7 @@ echo "Running database migrations..."
 make db_migrate_up
 
 #echo "Seeding database..."
-#make seed
+make seed
 
 #echo "Starting server with Air..."
-#air
+air

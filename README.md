@@ -27,15 +27,6 @@ make run
 make migrate
 ```
 ```bash
-If you need to change the migration starting point, you can change it in the Dockerfile.
-
-CMD make db_migrate_drop && \
-    version=1 make db_migrate_force && \
-    make db_migrate_up && \
-    make seed && \
-    air
-
-
 name=init_schema make db_create_migration
 ```
 ```bash
