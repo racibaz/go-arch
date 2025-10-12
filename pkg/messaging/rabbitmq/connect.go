@@ -1,6 +1,7 @@
 package rabbitmq
 
 import (
+	"fmt"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/racibaz/go-arch/pkg/config"
 	"log"
@@ -13,7 +14,8 @@ func Connect() {
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
-	log.Println("Connected to RabbitMQ")
+	fmt.Println("Connected to RabbitMQ")
+
 	RabbitMQ = conn
 }
 
