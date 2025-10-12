@@ -1,5 +1,7 @@
 package config
 
+import "fmt"
+
 type Config struct {
 	App      App
 	Server   Server
@@ -39,4 +41,14 @@ type Grpc struct {
 
 type RabbitMQ struct {
 	Url string
+}
+
+func (config *Config) DatabaseUrl() string {
+	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
+		config.DB.Host,
+		config.DB.Username,
+		config.DB.Password,
+		config.DB.Name,
+		config.DB.Port,
+	)
 }
