@@ -14,6 +14,21 @@ services:
       postgres:
         condition: service_healthy
 
+
+  postgres_test:
+    hostname: postgres
+    image: postgres:latest
+    container_name: ${APP_NAME:-go-arch}-db-test
+    restart: always
+    ports:
+      - ${DB_PORT_TEST}:5433
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - app-network
+
   postgres:
     hostname: postgres
     image: postgres:latest
