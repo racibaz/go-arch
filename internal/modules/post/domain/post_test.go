@@ -31,11 +31,10 @@ func TestPost_Create(t *testing.T) {
 		{
 			name: "id can not be empty",
 			post: Post{
-				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
 				UserID:      "aa5cbf57-cc15-490f-bf3b-1e1c627097a8",
-				Title:       "ti",
-				Description: "Description",
-				Content:     "content content content",
+				Title:       "title with more than 10 characters",
+				Description: "Description with more than 10 characters",
+				Content:     "content content content content",
 				Status:      PostStatusPublished,
 				CreatedAt:   time.Now(),
 				UpdatedAt:   time.Now(),
