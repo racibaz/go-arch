@@ -43,13 +43,13 @@ func TestPostMapper_ToDomain(t *testing.T) {
 
 			postModel := ToDomain(postEntity)
 
-			require.NotEmpty(t, postModel.ID)
+			require.NotEmpty(t, postModel.ID())
 			require.NotEmpty(t, postModel.Title)
 			require.NotEmpty(t, postModel.Description)
 			require.NotEmpty(t, postModel.Content)
 			require.NotEmpty(t, postModel.Status)
 
-			require.Equal(t, tc.post.ID, postModel.ID)
+			require.Equal(t, tc.post.ID(), postModel.ID())
 			require.Equal(t, tc.post.Title, postModel.Title)
 			require.Equal(t, tc.post.Description, postModel.Description)
 			require.Equal(t, tc.post.Content, postModel.Content)
@@ -95,13 +95,13 @@ func TestPostMapper_ToPersistence(t *testing.T) {
 
 			postModel := ToDomain(postEntity)
 
-			require.NotEmpty(t, postModel.ID)
+			require.NotEmpty(t, postModel.ID())
 			require.NotEmpty(t, postModel.Title)
 			require.NotEmpty(t, postModel.Description)
 			require.NotEmpty(t, postModel.Content)
 			require.NotEmpty(t, postModel.Status)
 
-			require.Equal(t, tc.post.ID, postModel.ID)
+			require.Equal(t, tc.post.ID(), postModel.ID())
 			require.Equal(t, tc.post.Title, postModel.Title)
 			require.Equal(t, tc.post.Description, postModel.Description)
 			require.Equal(t, tc.post.Content, postModel.Content)

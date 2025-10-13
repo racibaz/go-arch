@@ -28,7 +28,7 @@ func (pr *InMemoryPostRepository) Save(post *domain.Post) error {
 	pr.Mutex.Lock()
 	defer pr.Mutex.Unlock()
 
-	fmt.Printf("Creating post with ID %s\n", post)
+	fmt.Printf("Creating post with ID %s\n", post.ID())
 	// Validate the post ID
 	if post.ID() == "" {
 		return errors.New("post ID cannot be empty")
@@ -44,7 +44,7 @@ func (pr *InMemoryPostRepository) Save(post *domain.Post) error {
 		return errors.New("invalid Post ID format")
 	}
 
-	fmt.Printf("Post with ID %s created successfully\n", post.ID)
+	fmt.Printf("Post with ID %s created successfully\n", post.ID())
 
 	return nil
 }

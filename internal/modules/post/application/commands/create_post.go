@@ -58,7 +58,7 @@ func (postService CreatePostService) CreatePost(postInput dto.CreatePostInput) e
 		return savingErr
 	}
 
-	postService.logger.Info("Post created successfully with ID: %s", post.ID)
+	postService.logger.Info("Post created successfully with ID: %s", post.ID())
 
 	return nil
 }

@@ -32,6 +32,7 @@ func TestCreatePostIntegration(t *testing.T) {
 	defer server.Close()
 
 	reqBody := map[string]interface{}{
+		"user_id":     "7b3a4d03-bcb9-47ce-b721-a156edd406f0",
 		"title":       "post title",
 		"description": "post description",
 		"content":     "post content",
@@ -75,6 +76,7 @@ func TestCreatePostWithoutTitleIntegration(t *testing.T) {
 	defer server.Close()
 
 	reqBody := map[string]interface{}{
+		"user_id":     "7b3a4d03-bcb9-47ce-b721-a156edd406f0",
 		"description": "post description",
 		"content":     "post content",
 	}
@@ -95,7 +97,7 @@ func TestCreatePostWithoutTitleIntegration(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	// Assert
-	assert.Equal(t, http.StatusInternalServerError, w.Code)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 func TestCreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
@@ -114,6 +116,7 @@ func TestCreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
 	defer server.Close()
 
 	reqBody := map[string]interface{}{
+		"user_id":     "7b3a4d03-bcb9-47ce-b721-a156edd406f0",
 		"title":       "title",
 		"description": "post description",
 		"content":     "post content",
@@ -135,7 +138,7 @@ func TestCreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	// Assert
-	assert.Equal(t, http.StatusInternalServerError, w.Code)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 func TestCreatePostWithTDescriptionLessTenLettersIntegration(t *testing.T) {
@@ -175,7 +178,7 @@ func TestCreatePostWithTDescriptionLessTenLettersIntegration(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	// Assert
-	assert.Equal(t, http.StatusInternalServerError, w.Code)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 func TestCreatePostWithTContentLessTenLettersIntegration(t *testing.T) {
@@ -215,5 +218,5 @@ func TestCreatePostWithTContentLessTenLettersIntegration(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	// Assert
-	assert.Equal(t, http.StatusInternalServerError, w.Code)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
