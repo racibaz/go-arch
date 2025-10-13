@@ -1,5 +1,9 @@
 app:
   name: "Hexagonal Architecture, DDD, TDD, RESTful, gRPC, Swagger, Gorm(PostgreSQL) and Gin in Golang"
+  debug: "true"
+  env: "local" # local, dev, prod, test
+  loglevel: "debug"
+  version: "1.0.0"
 
 server:
   host: "0.0.0.0"
@@ -9,6 +13,7 @@ db:
   #host: "postgres" #for docker development
   host: "localhost" #for local development
   port: "5432"
+  testPort: "5433"
   username: "postgres"
   password: "postgres"
   name: "go-arch"
