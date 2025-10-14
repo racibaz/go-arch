@@ -4,8 +4,8 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "./tmp/main"
-  cmd = "go run main.go serve"
+  bin = "main"
+  cmd = "go build -o main ."
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata", "data"]
   exclude_file = []
@@ -16,7 +16,7 @@ tmp_dir = "tmp"
   include_dir = []
   include_ext = ["go", "tpl", "tmpl", "html"]
   include_file = []
-  kill_delay = "0s"
+  kill_delay = "500ms"
   log = "build-errors.log"
   poll = false
   poll_interval = 0
@@ -38,6 +38,7 @@ tmp_dir = "tmp"
   main_only = false
   silent = false
   time = false
+  level = "warn"
 
 [misc]
   clean_on_exit = false

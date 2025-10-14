@@ -1,7 +1,7 @@
 app:
   name: "Hexagonal Architecture, DDD, TDD, RESTful, gRPC, Swagger, Gorm(PostgreSQL) and Gin in Golang"
   debug: "true"
-  env: "local" # local, dev, prod, test
+  env: "dev" # local, dev, prod, test
   loglevel: "debug"
   version: "1.0.0"
 
@@ -10,8 +10,8 @@ server:
   port: "8080"
 
 db:
-  #host: "postgres" #for docker development
-  host: "localhost" #for local development
+  host: "postgres" #for docker development
+  #host: "localhost" #for local development
   port: "5432"
   testPort: "5433"
   username: "postgres"
@@ -32,5 +32,5 @@ grpc:
 
 
 rabbitmq:
-  #url: "amqp://guest:guest@rabbitmq:5672/" # for docker development
-  url: "amqp://guest:guest@localhost:5672/" # for local development
+  url: "amqp://guest:guest@rabbitmq:5672/" # for docker development
+  #url: "amqp://guest:guest@localhost:5672/" # for local development
