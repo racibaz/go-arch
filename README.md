@@ -21,7 +21,6 @@ This project demonstrates clean architectural principles in Go, including:
 - **Mocking** with Mockery
 - Comprehensive Documentation
 - **Makefile** for common tasks
-- 
 
 ### Run with Docker (air for live reload)
 ```bash
