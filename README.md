@@ -14,7 +14,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **Twilio** for notifications
 - Graceful Shutdown
 
-### Run with Docker
+### Run with Docker (air for live reload)
 ```bash
 docker compose up --build
 ```
