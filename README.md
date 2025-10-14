@@ -13,6 +13,15 @@ This project demonstrates clean architectural principles in Go, including:
 - **RabbitMQ** for messaging
 - **Twilio** for notifications
 - Graceful Shutdown
+- Configuration Management
+- **Logging** with Zap
+- Docker and Docker Compose
+- **Live Reload** with Air
+- **Database Migrations** with Golang-Migrate
+- **Mocking** with Mockery
+- Comprehensive Documentation
+- **Makefile** for common tasks
+- 
 
 ### Run with Docker (air for live reload)
 ```bash
