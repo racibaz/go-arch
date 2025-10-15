@@ -8,6 +8,7 @@ import (
 	responseDtos "github.com/racibaz/go-arch/internal/modules/post/presentation/http/reponse_dtos"
 	requestDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/request_dtos"
 	errors "github.com/racibaz/go-arch/pkg/error"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	validator "github.com/racibaz/go-arch/pkg/validator"
 	"time"
@@ -42,17 +43,11 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/posts [post]
 func (postController PostController) Store(c *gin.Context) {
-	var createPostRequestDto requestDto.CreatePostRequestDto
 
-	// Bind the JSON request body to the CreatePostRequestDto struct
-	if err := c.ShouldBindJSON(&createPostRequestDto); err != nil {
-		c.JSON(
-			http.StatusBadRequest,
-			errors.NewInValidError(
-				"Invalid request body",
-				err.Error(),
-			))
+	createPostRequestDto, err := helper.Decode[requestDto.CreatePostRequestDto](c)
 
+	if err != nil {
+		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
 		return
 	}
 
@@ -71,7 +66,7 @@ func (postController PostController) Store(c *gin.Context) {
 
 	newUuid := uuid.NewID()
 
-	err := postController.Service.CreatePost(dto.CreatePostInput{
+	err = postController.Service.CreatePost(dto.CreatePostInput{
 		ID:          newUuid,
 		UserID:      createPostRequestDto.UserId,
 		Title:       createPostRequestDto.Title,
@@ -83,14 +78,7 @@ func (postController PostController) Store(c *gin.Context) {
 	})
 
 	if err != nil {
-
-		c.JSON(
-			http.StatusInternalServerError,
-			errors.NewInValidError(
-				"post create failed",
-				err.Error(),
-			))
-
+		helper.ErrorResponse(c, "post create failed", err, http.StatusInternalServerError)
 		return
 	}
 
@@ -101,11 +89,7 @@ func (postController PostController) Store(c *gin.Context) {
 		Status:      postValueObject.PostStatusDraft.String(),
 	}
 
-	// This method would typically create a new post and return it.
-	c.JSON(http.StatusCreated, gin.H{
-		"message": "Post created successfully",
-		"data":    responseData,
-	})
+	helper.SuccessResponse(c, "Post created successfully", responseData, http.StatusCreated)
 }
 
 // Show PostGetById Show is a method to retrieve a post by its ID
