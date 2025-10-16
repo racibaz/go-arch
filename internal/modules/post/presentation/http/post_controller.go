@@ -7,7 +7,6 @@ import (
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	responseDtos "github.com/racibaz/go-arch/internal/modules/post/presentation/http/reponse_dtos"
 	requestDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/request_dtos"
-	errors "github.com/racibaz/go-arch/pkg/error"
 	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	validator "github.com/racibaz/go-arch/pkg/validator"
@@ -111,24 +110,16 @@ func (postController PostController) Show(c *gin.Context) {
 	result, err := postController.Service.GetById(postID)
 
 	if err != nil {
-		c.JSON(
-			http.StatusInternalServerError,
-			errors.NewNotFoundError("Page not found"),
-		)
+		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
 		return
 	}
 
-	response := responseDtos.GetPostResponseDto{
+	responseData := responseDtos.GetPostResponseDto{
 		Title:       result.Title,
 		Description: result.Description,
 		Content:     result.Content,
 		Status:      result.Status.String(),
 	}
 
-	// This method would typically retrieve a post by its ID and return it.
-	// For now, we will just return a placeholder response.
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Show post",
-		"data":    response,
-	})
+	helper.SuccessResponse(c, "Show post", responseData, http.StatusOK)
 }
