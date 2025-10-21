@@ -26,6 +26,8 @@ This project demonstrates clean architectural principles in Go, including:
 ```bash
 docker compose up --build
 
+docker exec -it Blog-app sh
+
 make db_migrate_up
 ```
 
