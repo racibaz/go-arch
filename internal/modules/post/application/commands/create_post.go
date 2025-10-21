@@ -64,7 +64,7 @@ func (postService CreatePostService) CreatePost(ctx context.Context, postInput d
 	}
 	// Publish an event indicating that a new post has been created
 	if err := postService.messagePublisher.PublishPostCreated(ctx, post); err != nil {
-		return fmt.Errorf("failed to publish the trip created event: %v", err)
+		return fmt.Errorf("failed to publish the post created event: %v", err)
 	}
 
 	postService.logger.Info("Post created successfully with ID: %s", post.ID())

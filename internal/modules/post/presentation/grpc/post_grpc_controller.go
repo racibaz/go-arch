@@ -39,7 +39,7 @@ func (controller *PostGrpcController) CreatePost(ctx context.Context, in *proto.
 		UpdatedAt:   time.Time{},
 	}
 
-	err := controller.Service.CreatePost(input)
+	err := controller.Service.CreatePost(ctx, input)
 	if err != nil {
 		return nil, err
 	}

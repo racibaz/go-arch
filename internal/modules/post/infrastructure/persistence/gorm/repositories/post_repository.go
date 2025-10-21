@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/entities"
@@ -24,7 +25,7 @@ func New() *GormPostRepository {
 	}
 }
 
-func (repo *GormPostRepository) Save(post *domain.Post) error {
+func (repo *GormPostRepository) Save(ctx context.Context, post *domain.Post) error {
 	var newPost entities.Post
 
 	persistenceModel := postMapper.ToPersistence(*post)
@@ -37,7 +38,7 @@ func (repo *GormPostRepository) Save(post *domain.Post) error {
 	return nil
 }
 
-func (repo *GormPostRepository) GetByID(id string) (*domain.Post, error) {
+func (repo *GormPostRepository) GetByID(ctx context.Context, id string) (*domain.Post, error) {
 
 	var post domain.Post
 
@@ -48,12 +49,12 @@ func (repo *GormPostRepository) GetByID(id string) (*domain.Post, error) {
 	return &post, nil
 }
 
-func (repo *GormPostRepository) Update(post *domain.Post) error {
+func (repo *GormPostRepository) Update(ctx context.Context, post *domain.Post) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (repo *GormPostRepository) Delete(id string) error {
+func (repo *GormPostRepository) Delete(ctx context.Context, id string) error {
 	//TODO implement me
 	panic("implement me")
 }

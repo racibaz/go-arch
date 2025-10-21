@@ -3,6 +3,7 @@ package rabbitmq
 import (
 	"fmt"
 	"github.com/racibaz/go-arch/pkg/config"
+	"log"
 )
 
 func Connect() *RabbitMQ {
@@ -10,10 +11,8 @@ func Connect() *RabbitMQ {
 
 	conn, err := NewRabbitMQ(conf.RabbitMQ.Url)
 	if err != nil {
-		panic(fmt.Sprintf("failed to connect to RabbitMQ : %v", err))
+		log.Panicf(fmt.Sprintf("failed to connect to RabbitMQ : %v", err))
 	}
-
-	defer conn.Close()
 
 	fmt.Println("Connected to RabbitMQ")
 

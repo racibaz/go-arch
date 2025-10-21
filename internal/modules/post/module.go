@@ -1,7 +1,6 @@
 package module
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/post/application/handlers"
 	postService "github.com/racibaz/go-arch/internal/modules/post/application/ports"
@@ -25,13 +24,12 @@ type PostModule struct {
 func NewPostModule() *PostModule {
 
 	domainDispatcher := ddd.NewEventDispatcher[ddd.AggregateEvent]()
-	ctx := *gin.Context
 
 	//repo := in_memory.New()
 	repo := gromPostRepo.New()         // Use GORM repository for persistence
 	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
 	rabbitmqConn := rabbitmqConn.Connect()
-	//messagePublisher := rabbitmq.NewMessagePublisher(config.RabbitMQ.Url, logger)
+
 	messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)
 	/* todo we need to use processor in services to publish events after transaction is committed
 	for now we will use directly the publisher in the service
