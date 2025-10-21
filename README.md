@@ -25,6 +25,8 @@ This project demonstrates clean architectural principles in Go, including:
 ### Run with Docker (air for live reload)
 ```bash
 docker compose up --build
+
+make db_migrate_up
 ```
 
 ### Makefile Commands
