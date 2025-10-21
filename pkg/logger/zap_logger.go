@@ -18,7 +18,6 @@ func NewZapLogger() (*ZapLogger, error) {
 	config.EncoderConfig.StacktraceKey = ""
 	config.OutputPaths = []string{"stdout"}
 	config.ErrorOutputPaths = []string{"stderr"}
-	config.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
 
 	logger, err := config.Build(zap.AddCallerSkip(1))
 	if err != nil {
