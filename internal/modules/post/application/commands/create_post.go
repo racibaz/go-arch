@@ -1,28 +1,27 @@
 package commands
 
 import (
-	"encoding/json"
+	"context"
+	"fmt"
 	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	applicationPorts "github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
 	"github.com/racibaz/go-arch/pkg/messaging"
-	"github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
-	"log"
 	"time"
 )
 
 type CreatePostService struct {
 	PostRepository   ports.PostRepository
 	logger           logger.Logger
-	messagePublisher rabbitmq.MessagePublisher
+	messagePublisher messaging.MessagePublisher
 }
 
 var _ applicationPorts.PostService = (*CreatePostService)(nil)
 
 // NewCreatePostService initializes a new CreatePostService with the provided PostRepository.
-func NewCreatePostService(postRepository ports.PostRepository, logger logger.Logger, messagePublisher rabbitmq.MessagePublisher) *CreatePostService {
+func NewCreatePostService(postRepository ports.PostRepository, logger logger.Logger, messagePublisher messaging.MessagePublisher) *CreatePostService {
 	return &CreatePostService{
 		PostRepository:   postRepository,
 		logger:           logger,
@@ -30,7 +29,7 @@ func NewCreatePostService(postRepository ports.PostRepository, logger logger.Log
 	}
 }
 
-func (postService CreatePostService) CreatePost(postInput dto.CreatePostInput) error {
+func (postService CreatePostService) CreatePost(ctx context.Context, postInput dto.CreatePostInput) error {
 
 	// Create a new post using the factory
 	post, _ := domain.Create(
@@ -57,30 +56,23 @@ func (postService CreatePostService) CreatePost(postInput dto.CreatePostInput) e
 		return domain.ErrAlreadyExists
 	}
 
-	savingErr := postService.PostRepository.Save(post)
+	savingErr := postService.PostRepository.Save(ctx, post)
 
 	if savingErr != nil {
 		postService.logger.Error("Error saving post: %v", savingErr)
 		return savingErr
 	}
-
-	payload, err := json.Marshal(post)
-	if err != nil {
-		log.Printf("Error marshalling payload: %v", err)
-		return err
+	// Publish an event indicating that a new post has been created
+	if err := postService.messagePublisher.PublishPostCreated(ctx, post); err != nil {
+		return fmt.Errorf("failed to publish the trip created event: %v", err)
 	}
-
-	postService.messagePublisher.PublishEvent("", messaging.MessagePayload{
-		OwnerID: post.UserID, // todo it should get auth user id
-		Data:    payload,
-	})
 
 	postService.logger.Info("Post created successfully with ID: %s", post.ID())
 
 	return nil
 }
 
-func (postService CreatePostService) GetById(id string) (*domain.Post, error) {
+func (postService CreatePostService) GetById(ctx context.Context, id string) (*domain.Post, error) {
 
-	return postService.PostRepository.GetByID(id)
+	return postService.PostRepository.GetByID(ctx, id)
 }
