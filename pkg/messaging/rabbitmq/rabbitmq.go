@@ -1,37 +1,51 @@
 package rabbitmq
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/rabbitmq/amqp091-go"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/racibaz/go-arch/pkg/config"
+	"github.com/racibaz/go-arch/pkg/messaging"
 	"log"
 )
 
-type RabbitMQConection struct {
-	conn  *amqp091.Connection
-	queue string
+type RabbitMQ struct {
+	conn    *amqp.Connection
+	Channel *amqp.Channel
 }
 
-func NewRabbitMQConnection(url string) *RabbitMQConection {
-	config := config.Get()
-	conn, err := amqp091.Dial(url)
-
+func NewRabbitMQ(url string) (*RabbitMQ, error) {
+	conn, err := amqp.Dial(url)
 	if err != nil {
-		panic(fmt.Sprintf("failed to connect to RabbitMQ : %v", err))
+		return nil, fmt.Errorf("failed to connect to RabbitMQ: %v", err)
 	}
 
+	ch, err := conn.Channel()
+	if err != nil {
+		conn.Close()
+		return nil, fmt.Errorf("failed to create channel: %v", err)
+	}
 	log.Println("RabbitMq has been connected")
 
-	return &RabbitMQConection{
-		conn:  conn,
-		queue: config.RabbitMQ.DefaultQueue,
+	rmq := &RabbitMQ{
+		conn:    conn,
+		Channel: ch,
 	}
+
+	if err := rmq.setupExchangesAndQueues(); err != nil {
+		// Clean up if setup fails
+		rmq.Close()
+		return nil, fmt.Errorf("failed to setup exchanges and queues: %v", err)
+	}
+
+	return rmq, nil
 }
 
-func (r *RabbitMQConection) Connect() *amqp091.Connection {
+func (r *RabbitMQ) Connect() *amqp.Connection {
 	config := config.Get()
 
-	conn, err := amqp091.Dial(config.RabbitMQ.Url)
+	conn, err := amqp.Dial(config.RabbitMQ.Url)
 
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to RabbitMQ : %v", err))
@@ -41,7 +55,7 @@ func (r *RabbitMQConection) Connect() *amqp091.Connection {
 	return conn
 }
 
-func (r *RabbitMQConection) DeclareQueue(queueName string) error {
+func (r *RabbitMQ) DeclareQueue(queueName string) error {
 	var err error
 	channel, err := r.conn.Channel()
 	defer channel.Close()
@@ -57,15 +71,81 @@ func (r *RabbitMQConection) DeclareQueue(queueName string) error {
 	return err
 }
 
-func (r *RabbitMQConection) Connection() *amqp091.Connection {
+func (r *RabbitMQ) Connection() *amqp.Connection {
 	if r.conn == nil {
 		r.conn = r.Connect()
 	}
 	return r.conn
 }
 
-func (r *RabbitMQConection) Channel() *amqp091.Channel {
-	var channel *amqp091.Channel
+func (r *RabbitMQ) setupExchangesAndQueues() error {
+
+	//todo we need to check DLQ exchange and queue
+
+	err := r.Channel.ExchangeDeclare(
+		messaging.DefaultExchange, // name
+		"topic",                   // type
+		true,                      // durable
+		false,                     // auto-deleted
+		false,                     // internal
+		false,                     // no-wait
+		nil,                       // arguments
+	)
+	if err != nil {
+		return fmt.Errorf("failed to declare exchange: %s: %v", messaging.DefaultExchange, err)
+	}
+
+	if err := r.declareAndBindQueue(
+		messaging.PostProcessingQueue,
+		[]string{
+			messaging.PostEventCreated,
+			messaging.PostEventUpdated,
+			messaging.PostEventDeleted,
+			messaging.PostEventPublished,
+		},
+		messaging.DefaultExchange,
+	); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *RabbitMQ) declareAndBindQueue(queueName string, messageTypes []string, exchange string) error {
+	// Add dead letter configuration
+	args := amqp.Table{
+		"x-dead-letter-exchange": messaging.DeadLetterExchange,
+	}
+
+	q, err := r.Channel.QueueDeclare(
+		queueName, // name
+		true,      // durable
+		false,     // delete when unused
+		false,     // exclusive
+		false,     // no-wait
+		args,      // arguments with DLX config
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, msg := range messageTypes {
+		if err := r.Channel.QueueBind(
+			q.Name,   // queue name
+			msg,      // routing key
+			exchange, // exchange
+			false,
+			nil,
+		); err != nil {
+			return fmt.Errorf("failed to bind queue to %s: %v", queueName, err)
+		}
+	}
+
+	return nil
+}
+
+func (r *RabbitMQ) GetChannel() *amqp.Channel {
+	var channel *amqp.Channel
 	connection := r.conn
 	if connection == nil {
 		connection = r.Connect()
@@ -84,10 +164,34 @@ func (r *RabbitMQConection) Channel() *amqp091.Channel {
 	return channel
 }
 
-func (r *RabbitMQConection) Queue() string {
-	return r.queue
+func (r *RabbitMQ) PublishMessage(ctx context.Context, routingKey string, message messaging.MessagePayload) error {
+
+	log.Printf("Publishing message with routing key: %s", routingKey)
+
+	jsonMsg, err := json.Marshal(message)
+	if err != nil {
+		return fmt.Errorf("failed to marshal message: %v", err)
+	}
+
+	msg := amqp.Publishing{
+		DeliveryMode: amqp.Persistent,
+		ContentType:  "application/json",
+		Body:         jsonMsg,
+	}
+	//todo add tracing here if needed
+	return r.publish(ctx, messaging.DefaultExchange, routingKey, msg)
 }
 
-func (r *RabbitMQConection) Close() {
+func (r *RabbitMQ) publish(ctx context.Context, exchange, routingKey string, msg amqp.Publishing) error {
+	return r.Channel.PublishWithContext(ctx,
+		exchange,   // exchange
+		routingKey, // routing key
+		false,      // mandatory
+		false,      // immediate
+		msg,
+	)
+}
+
+func (r *RabbitMQ) Close() {
 	r.conn.Close()
 }

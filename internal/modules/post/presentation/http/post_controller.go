@@ -10,11 +10,10 @@ import (
 	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	validator "github.com/racibaz/go-arch/pkg/validator"
-	"time"
-
 	_ "github.com/swaggo/files"
 	_ "github.com/swaggo/gin-swagger"
 	"net/http"
+	"time"
 )
 
 type PostController struct {
@@ -42,7 +41,6 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/posts [post]
 func (postController PostController) Store(c *gin.Context) {
-
 	createPostRequestDto, err := helper.Decode[requestDto.CreatePostRequestDto](c)
 
 	if err != nil {
@@ -65,7 +63,7 @@ func (postController PostController) Store(c *gin.Context) {
 
 	newUuid := uuid.NewID()
 
-	err = postController.Service.CreatePost(dto.CreatePostInput{
+	err = postController.Service.CreatePost(c, dto.CreatePostInput{
 		ID:          newUuid,
 		UserID:      createPostRequestDto.UserId,
 		Title:       createPostRequestDto.Title,
@@ -107,7 +105,7 @@ func (postController PostController) Show(c *gin.Context) {
 
 	postID := c.Param("id")
 
-	result, err := postController.Service.GetById(postID)
+	result, err := postController.Service.GetById(c, postID)
 
 	if err != nil {
 		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
