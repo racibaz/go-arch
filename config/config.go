@@ -45,7 +45,9 @@ type Grpc struct {
 }
 
 type RabbitMQ struct {
-	Url string
+	Url             string
+	DefaultExchange string
+	DefaultQueue    string
 }
 
 func (config *Config) DatabaseUrl() string {
