@@ -69,6 +69,21 @@ definitions:
 info:
   contact: {}
 paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: do health check
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: health
+      tags:
+      - health
   /posts:
     post:
       consumes:

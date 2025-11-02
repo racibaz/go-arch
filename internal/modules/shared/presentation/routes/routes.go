@@ -7,7 +7,23 @@ import (
 	"github.com/racibaz/go-arch/pkg/config"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"net/http"
 )
+
+//	@BasePath	/api/v1
+
+// Health Check Endpoint
+// @Summary health
+// @Schemes
+// @Description do health check
+// @Tags health
+// @Accept json
+// @Produce json
+// @Success 200 {string} ok
+// @Router /health [get]
+func health(g *gin.Context) {
+	g.JSON(http.StatusOK, "ok")
+}
 
 func Routes(router *gin.Engine) {
 
@@ -22,4 +38,6 @@ func Routes(router *gin.Engine) {
 	ginSwagger.WrapHandler(swaggerfiles.Handler,
 		ginSwagger.URL(url), // The url pointing to API definition
 		ginSwagger.DefaultModelsExpandDepth(-1))
+
+	router.GET("/health", health)
 }
