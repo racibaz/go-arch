@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: go-arch-config
+  namespace: development
+data:
+  config.yml: |
+    app:
+      name: "Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ and Gin in Golang"
+      debug: "true"
+      env: "dev"
+      loglevel: "debug"
+      version: "1.0.0"
+
+    server:
+      host: "0.0.0.0"
+      port: "3000"
+
+    db:
+      host: "postgres"
+      port: "5432"
+      testPort: "5433"
+      username: "postgres"
+      password: "postgres"
+      name: "go-arch"
+
+    swagger:
+      host: "0.0.0.0"
+      port: "8080"
+      path: "swagger/doc.json"
+
+    grpc:
+      host: "0.0.0.0"
+      port: "9090"
+
+    rabbitmq:
+      url: "amqp://guest:guest@rabbitmq:5672/"
+      defaultExchange: "default_exchange"
+      defaultQueue: "default_queue"

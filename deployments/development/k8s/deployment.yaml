@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-arch
+  namespace: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-arch
+  template:
+    metadata:
+      labels:
+        app: go-arch
+    spec:
+      containers:
+        - name: go-arch
+          image: 346734673467/go-arch:latest
+          ports:
+            - containerPort: 3000
+            - containerPort: 9090
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config/config.yml
+              subPath: config.yml
+          envFrom:
+            - configMapRef:
+                name: go-arch-config
+            - secretRef:
+                name: go-arch-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 6
+      volumes:
+        - name: config-volume
+          configMap:
+            name: go-arch-config
