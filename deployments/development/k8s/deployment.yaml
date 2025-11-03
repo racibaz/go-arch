@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: go-arch
-          image: 346734673467/go-arch:latest
+          image: racibaz/go-arch:latest
           ports:
             - containerPort: 3000
             - containerPort: 9090
