@@ -11,6 +11,6 @@ type PostRepository interface {
 	GetByID(ctx context.Context, id string) (*domain.Post, error)
 	Update(ctx context.Context, post *domain.Post) error
 	Delete(ctx context.Context, id string) error
-	List() ([]*domain.Post, error)
-	IsExists(title, description string) (bool, error)
+	List(ctx context.Context) ([]*domain.Post, error)
+	IsExists(ctx context.Context, title, description string) (bool, error)
 }

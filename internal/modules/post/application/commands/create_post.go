@@ -44,7 +44,7 @@ func (postService CreatePostService) CreatePost(ctx context.Context, postInput d
 	)
 
 	// check is the post exists in db?
-	isExists, err := postService.PostRepository.IsExists(post.Title, post.Description)
+	isExists, err := postService.PostRepository.IsExists(ctx, post.Title, post.Description)
 
 	if err != nil {
 		return err

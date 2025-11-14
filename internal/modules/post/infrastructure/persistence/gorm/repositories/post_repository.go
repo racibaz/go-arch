@@ -30,7 +30,7 @@ func (repo *GormPostRepository) Save(ctx context.Context, post *domain.Post) err
 
 	persistenceModel := postMapper.ToPersistence(*post)
 
-	err := repo.DB.Create(&persistenceModel).Scan(&newPost).Error
+	err := repo.DB.WithContext(ctx).Create(&persistenceModel).Scan(&newPost).Error
 	if err != nil {
 		return err
 	}
@@ -42,7 +42,7 @@ func (repo *GormPostRepository) GetByID(ctx context.Context, id string) (*domain
 
 	var post domain.Post
 
-	if err := repo.DB.Where("id = ?", id).First(&post).Error; err != nil {
+	if err := repo.DB.WithContext(ctx).Where("id = ?", id).First(&post).Error; err != nil {
 		return nil, err
 	}
 
@@ -59,16 +59,16 @@ func (repo *GormPostRepository) Delete(ctx context.Context, id string) error {
 	panic("implement me")
 }
 
-func (repo *GormPostRepository) List() ([]*domain.Post, error) {
+func (repo *GormPostRepository) List(ctx context.Context) ([]*domain.Post, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (repo *GormPostRepository) IsExists(title, description string) (bool, error) {
+func (repo *GormPostRepository) IsExists(ctx context.Context, title, description string) (bool, error) {
 
 	var post domain.Post
 
-	repo.DB.Where("title = ?", title).Where("description = ?", description).First(&post)
+	repo.DB.WithContext(ctx).Where("title = ?", title).Where("description = ?", description).First(&post)
 
 	if post.ID() != "" {
 		return true, nil
