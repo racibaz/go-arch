@@ -21,29 +21,32 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Post struct {
+type CreatePostInput struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Title         string                 `protobuf:"bytes,1,opt,name=Title,proto3" json:"Title,omitempty"`
-	Description   string                 `protobuf:"bytes,2,opt,name=Description,proto3" json:"Description,omitempty"`
-	Content       string                 `protobuf:"bytes,3,opt,name=Content,proto3" json:"Content,omitempty"`
+	ID            string                 `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
+	UserID        string                 `protobuf:"bytes,2,opt,name=UserID,proto3" json:"UserID,omitempty"`
+	Title         string                 `protobuf:"bytes,3,opt,name=Title,proto3" json:"Title,omitempty"`
+	Description   string                 `protobuf:"bytes,4,opt,name=Description,proto3" json:"Description,omitempty"`
+	Content       string                 `protobuf:"bytes,5,opt,name=Content,proto3" json:"Content,omitempty"`
+	Status        int32                  `protobuf:"varint,6,opt,name=Status,proto3" json:"Status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Post) Reset() {
-	*x = Post{}
+func (x *CreatePostInput) Reset() {
+	*x = CreatePostInput{}
 	mi := &file_post_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Post) String() string {
+func (x *CreatePostInput) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Post) ProtoMessage() {}
+func (*CreatePostInput) ProtoMessage() {}
 
-func (x *Post) ProtoReflect() protoreflect.Message {
+func (x *CreatePostInput) ProtoReflect() protoreflect.Message {
 	mi := &file_post_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -55,35 +58,56 @@ func (x *Post) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Post.ProtoReflect.Descriptor instead.
-func (*Post) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreatePostInput.ProtoReflect.Descriptor instead.
+func (*CreatePostInput) Descriptor() ([]byte, []int) {
 	return file_post_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Post) GetTitle() string {
+func (x *CreatePostInput) GetID() string {
+	if x != nil {
+		return x.ID
+	}
+	return ""
+}
+
+func (x *CreatePostInput) GetUserID() string {
+	if x != nil {
+		return x.UserID
+	}
+	return ""
+}
+
+func (x *CreatePostInput) GetTitle() string {
 	if x != nil {
 		return x.Title
 	}
 	return ""
 }
 
-func (x *Post) GetDescription() string {
+func (x *CreatePostInput) GetDescription() string {
 	if x != nil {
 		return x.Description
 	}
 	return ""
 }
 
-func (x *Post) GetContent() string {
+func (x *CreatePostInput) GetContent() string {
 	if x != nil {
 		return x.Content
 	}
 	return ""
 }
 
+func (x *CreatePostInput) GetStatus() int32 {
+	if x != nil {
+		return x.Status
+	}
+	return 0
+}
+
 type CreatePostRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Post          *Post                  `protobuf:"bytes,1,opt,name=Post,proto3" json:"Post,omitempty"` // The post to be created
+	Post          *CreatePostInput       `protobuf:"bytes,1,opt,name=Post,proto3" json:"Post,omitempty"` // The post to be created
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -118,7 +142,7 @@ func (*CreatePostRequest) Descriptor() ([]byte, []int) {
 	return file_post_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreatePostRequest) GetPost() *Post {
+func (x *CreatePostRequest) GetPost() *CreatePostInput {
 	if x != nil {
 		return x.Post
 	}
@@ -174,18 +198,21 @@ var File_post_proto protoreflect.FileDescriptor
 const file_post_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"post.proto\"X\n" +
-	"\x04Post\x12\x14\n" +
-	"\x05Title\x18\x01 \x01(\tR\x05Title\x12 \n" +
-	"\vDescription\x18\x02 \x01(\tR\vDescription\x12\x18\n" +
-	"\aContent\x18\x03 \x01(\tR\aContent\".\n" +
-	"\x11CreatePostRequest\x12\x19\n" +
-	"\x04Post\x18\x01 \x01(\v2\x05.PostR\x04Post\"$\n" +
+	"post.proto\"\xa3\x01\n" +
+	"\x0fCreatePostInput\x12\x0e\n" +
+	"\x02ID\x18\x01 \x01(\tR\x02ID\x12\x16\n" +
+	"\x06UserID\x18\x02 \x01(\tR\x06UserID\x12\x14\n" +
+	"\x05Title\x18\x03 \x01(\tR\x05Title\x12 \n" +
+	"\vDescription\x18\x04 \x01(\tR\vDescription\x12\x18\n" +
+	"\aContent\x18\x05 \x01(\tR\aContent\x12\x16\n" +
+	"\x06Status\x18\x06 \x01(\x05R\x06Status\"9\n" +
+	"\x11CreatePostRequest\x12$\n" +
+	"\x04Post\x18\x01 \x01(\v2\x10.CreatePostInputR\x04Post\"$\n" +
 	"\x12CreatePostResponse\x12\x0e\n" +
-	"\x02Id\x18\x01 \x01(\tR\x02Id29\n" +
-	"\vPostService\x12*\n" +
+	"\x02Id\x18\x01 \x01(\tR\x02Id2D\n" +
+	"\vPostService\x125\n" +
 	"\n" +
-	"CreatePost\x12\x05.Post\x1a\x13.CreatePostResponse\"\x00BJZHgithub.com/racibaz/go-arch/internal/modules/post/presentation/grpc/protob\x06proto3"
+	"CreatePost\x12\x10.CreatePostInput\x1a\x13.CreatePostResponse\"\x00BJZHgithub.com/racibaz/go-arch/internal/modules/post/presentation/grpc/protob\x06proto3"
 
 var (
 	file_post_proto_rawDescOnce sync.Once
@@ -201,13 +228,13 @@ func file_post_proto_rawDescGZIP() []byte {
 
 var file_post_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_post_proto_goTypes = []any{
-	(*Post)(nil),               // 0: Post
+	(*CreatePostInput)(nil),    // 0: CreatePostInput
 	(*CreatePostRequest)(nil),  // 1: CreatePostRequest
 	(*CreatePostResponse)(nil), // 2: CreatePostResponse
 }
 var file_post_proto_depIdxs = []int32{
-	0, // 0: CreatePostRequest.Post:type_name -> Post
-	0, // 1: PostService.CreatePost:input_type -> Post
+	0, // 0: CreatePostRequest.Post:type_name -> CreatePostInput
+	0, // 1: PostService.CreatePost:input_type -> CreatePostInput
 	2, // 2: PostService.CreatePost:output_type -> CreatePostResponse
 	2, // [2:3] is the sub-list for method output_type
 	1, // [1:2] is the sub-list for method input_type

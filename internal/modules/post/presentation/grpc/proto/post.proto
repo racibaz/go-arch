@@ -3,17 +3,20 @@ syntax = "proto3";
 option go_package = "github.com/racibaz/go-arch/internal/modules/post/presentation/grpc/proto";
 
 service PostService{
-	rpc CreatePost(Post) returns (CreatePostResponse){}
+	rpc CreatePost(CreatePostInput) returns (CreatePostResponse){}
 }
 
-message Post {
-	  string Title = 1;
-	  string Description = 2;
-	  string Content = 3;
+message CreatePostInput {
+	  string ID = 1;
+	  string UserID = 2;
+	  string Title = 3;
+	  string Description = 4;
+	  string Content = 5;
+	  int32 Status = 6;
 }
 
 message CreatePostRequest {
-	  Post Post = 1; // The post to be created
+	CreatePostInput Post = 1; // The post to be created
 }
 
 message CreatePostResponse {

@@ -9,7 +9,8 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var addr string = "0.0.0.0:9090"
+// todo make addr configurable via env var or config file
+var addr string = "0.0.0.0:51186"
 
 func main() {
 

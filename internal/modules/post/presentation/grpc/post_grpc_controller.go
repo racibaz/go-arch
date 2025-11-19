@@ -25,7 +25,7 @@ func NewPostGrpcController(grpc *grpc.Server, postService ports.PostService) {
 	proto.RegisterPostServiceServer(grpc, gRPController)
 }
 
-func (controller *PostGrpcController) CreatePost(ctx context.Context, in *proto.Post) (*proto.CreatePostResponse, error) {
+func (controller *PostGrpcController) CreatePost(ctx context.Context, in *proto.CreatePostInput) (*proto.CreatePostResponse, error) {
 
 	postId := uuid.NewID()
 
