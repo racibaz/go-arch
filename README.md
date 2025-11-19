@@ -1,5 +1,5 @@
 # Go-Arch
-Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ and Gin in Golang
+Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jeager and Gin in Golang
 
 ## 📖 Overview
 This project demonstrates clean architectural principles in Go, including:
@@ -11,6 +11,10 @@ This project demonstrates clean architectural principles in Go, including:
 - **Swagger UI** for API exploration
 - **PostgreSQL with Gorm ORM**
 - **RabbitMQ** for messaging
+- **Prometheus** for metrics
+- **Grafana** for visualization
+- **OpenTelemetry** for tracing
+- **Jaeger** for distributed tracing
 - **Twilio** for notifications
 - Graceful Shutdown
 - Configuration Management
@@ -76,6 +80,22 @@ make mock
 make generate_proto
 ```
 
+### RabbitMQ UI
+`http://localhost:15672/#/`
+
+#### Username: guest
+#### Password: guest
+
+### Prometheus UI
+`http://localhost:9090/`
+
+
+### Grafana UI
+`http://localhost:3002/login`
+
+#### Username: admin
+#### Password: admin
+
 
 ## Dependencies
 - uuid: `github.com/google/uuid`
@@ -95,6 +115,9 @@ make generate_proto
 - twilio: `github.com/twilio/twilio-go`
 - rabbitmq: `github.com/rabbitmq/amqp091-go`
 - migrations: `github.com/golang-migrate/migrate/v4`
+- prometheus: `github.com/prometheus/client_golang`
+- opentelemetry: `go.opentelemetry.io/otel`
+- jaeger: `go.opentelemetry.io/otel/exporters/jaeger`
 
 
 ## 🛠 Roadmap / TODO

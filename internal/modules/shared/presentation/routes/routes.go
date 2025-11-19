@@ -3,8 +3,10 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	openapiSpec "github.com/racibaz/go-arch/api/openapi-spec"
 	"github.com/racibaz/go-arch/pkg/config"
+	"github.com/racibaz/go-arch/pkg/prometheus"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
@@ -26,6 +28,12 @@ func health(g *gin.Context) {
 }
 
 func Routes(router *gin.Engine) {
+
+	// Middleware to collect metrics
+	router.Use(prometheus.MetricsMiddleware)
+
+	// Prometheus metrics endpoint
+	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	configs := config.Get()
 	openapiSpec.SwaggerInfo.Title = configs.App.Name
