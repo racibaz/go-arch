@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	openapiSpec "github.com/racibaz/go-arch/api/openapi-spec"
+	openapiSpec "github.com/racibaz/go-arch/docs/api/openapi-spec"
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/prometheus"
 	swaggerfiles "github.com/swaggo/files"

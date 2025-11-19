@@ -82,7 +82,7 @@ make generate_proto
   make generate_swagger
 ```
 
-![Swagger UI](./api/docs/images/swagger_ui.png)
+![Swagger UI](docs/images/swagger_ui.png)
 
 
 
@@ -92,8 +92,8 @@ make generate_proto
 #### Username: guest
 #### Password: guest
 
-![RabbitMQ UI](./api/docs/images/rabbitmq1.png)
-![RabbitMQ UI](./api/docs/images/rabbitmq2.png)
+![RabbitMQ UI](docs/images/rabbitmq1.png)
+![RabbitMQ UI](docs/images/rabbitmq2.png)
 
 
 
@@ -101,7 +101,7 @@ make generate_proto
 #### `http://localhost:9090/`
 #### `http://localhost:3001/metrics`
 
-![Prometheus UI](./api/docs/images/prometheus.png)
+![Prometheus UI](docs/images/prometheus.png)
 
 ### Grafana UI
 `http://localhost:3002/login`
@@ -109,7 +109,7 @@ make generate_proto
 #### Username: admin
 #### Password: admin
 
-![Grafana UI](./api/docs/images/grafana.png)
+![Grafana UI](docs/images/grafana.png)
 
 
 
@@ -152,7 +152,7 @@ make generate_proto
 
 
 ## 📬 Postman Collection
-[Download](api/docs/postman/baz-arch.postman_collection.json)
+[Download](docs/postman/baz-arch.postman_collection.json)
 
 ## Validation Error Example
 When sending a POST request to create a post with invalid data, you might receive a validation error response like this:
