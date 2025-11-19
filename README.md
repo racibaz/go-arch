@@ -64,7 +64,7 @@ make mock
 ```
 
 ### Swagger Documentation UI
-`http://127.0.0.1:8080/swagger/index.html#`
+`http://127.0.0.1:3001/swagger/index.html#`
 
 #### Generate Swagger Documentation
 ```bash

@@ -22,13 +22,13 @@ db:
 #in different directory such as cmd/swagger
 swagger:
   host: "0.0.0.0"
-  port: "8080"
+  port: "3000"
   path: "swagger/doc.json"
 
 
 grpc:
   host: "0.0.0.0"
-  port: "9090"
+  port: "50051"
 
 
 rabbitmq:

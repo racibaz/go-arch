@@ -34,9 +34,17 @@ COPY . .
 # Build the Go app
 #RUN go build -o main .
 
-# Expose port 8080 to the outside world
+# Expose ports to the outside world
+EXPOSE 3000
 EXPOSE 8080
+EXPOSE 8081
 EXPOSE 9090
+EXPOSE 9091
+EXPOSE 50051
+EXPOSE 50052
+EXPOSE 8889
+EXPOSE 3001
+EXPOSE 5672
 
 # Entrypoint script
 COPY entrypoint.sh /entrypoint.sh

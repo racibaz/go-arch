@@ -7,8 +7,8 @@ services:
       - .:/app
       - /app/tmp
     ports:
-      - "8080:3000"
-      - "9091:50051"
+      - "3001:3000"
+      - "51186:50051"
     networks:
       - app-network
     depends_on:

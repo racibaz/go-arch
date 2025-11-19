@@ -17,7 +17,7 @@ func Serve() {
 	configs := config.Get()
 
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%s", configs.Server.Port), //":8080"
+		Addr:    fmt.Sprintf(":%s", configs.Server.Port),
 		Handler: router.Handler(),
 	}
 
