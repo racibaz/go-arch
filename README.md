@@ -148,6 +148,7 @@ make generate_proto
 - [ ] MongoDB integration
 - [x] Grafana & Prometheus integration
 - [x] OpenTelemetry & Jaeger integration
+- [] Add custom metrics
 
 
 ## Validation Error Example
