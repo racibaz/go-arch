@@ -151,6 +151,9 @@ make generate_proto
 - [ ] Add custom metrics
 
 
+## 📬 Postman Collection
+[Download](api/docs/postman/baz-arch.postman_collection.json)
+
 ## Validation Error Example
 When sending a POST request to create a post with invalid data, you might receive a validation error response like this:
 ```
