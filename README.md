@@ -87,7 +87,8 @@ make generate_proto
 #### Password: guest
 
 ### Prometheus UI
-`http://localhost:9090/`
+#### `http://localhost:9090/`
+#### `http://localhost:3001/metrics`
 
 
 ### Grafana UI
@@ -129,9 +130,8 @@ make generate_proto
 - [ ] Add GraphQL API
 - [ ] Add more gRPC services
 - [ ] MongoDB integration
-- [ ] Grafana & Prometheus integration
-- [ ] OpenTelemetry & Jaeger integration
-
+- [x] Grafana & Prometheus integration
+- [x] OpenTelemetry & Jaeger integration
 
 
 ## Validation Error Example
