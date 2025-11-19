@@ -67,6 +67,13 @@ make seed
 make mock
 ```
 
+
+#### Generate gRPC Code
+```bash
+make generate_proto
+```
+
+
 ### Swagger Documentation UI
 `http://127.0.0.1:3001/swagger/index.html#`
 
@@ -75,10 +82,9 @@ make mock
   make generate_swagger
 ```
 
-#### Generate gRPC Code
-```bash
-make generate_proto
-```
+![Swagger UI](./api/docs/images/swagger_ui.png)
+
+
 
 ### RabbitMQ UI
 `http://localhost:15672/#/`
@@ -86,16 +92,26 @@ make generate_proto
 #### Username: guest
 #### Password: guest
 
+![RabbitMQ UI](./api/docs/images/rabbitmq1.png)
+![RabbitMQ UI](./api/docs/images/rabbitmq2.png)
+
+
+
 ### Prometheus UI
 #### `http://localhost:9090/`
 #### `http://localhost:3001/metrics`
 
+![Prometheus UI](./api/docs/images/prometheus.png)
 
 ### Grafana UI
 `http://localhost:3002/login`
 
 #### Username: admin
 #### Password: admin
+
+![Grafana UI](./api/docs/images/grafana.png)
+
+
 
 
 ## Dependencies
