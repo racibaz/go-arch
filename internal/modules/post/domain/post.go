@@ -5,7 +5,6 @@ package domain
 import (
 	"errors"
 	"fmt"
-	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/es"
 	"strings"
 	"time"
@@ -25,16 +24,12 @@ var (
 	ErrNotFound             = errors.New("the post was not found")
 	ErrAlreadyExists        = errors.New("the post already exists")
 	ErrEmptyId              = errors.New("id cannot be empty")
+	ErrEmptyUserId          = errors.New("user id cannot be empty")
 	ErrMinTitleLength       = errors.New(fmt.Sprintf("title must be at least %d characters long", TitleMinLength))
 	ErrMinDescriptionLength = errors.New(fmt.Sprintf("description must be at least %d characters long", DescriptionMinLength))
 	ErrMinContentLength     = errors.New(fmt.Sprintf("content must be at least %d characters long", ContentMinLength))
 	ErrInvalidStatus        = errors.New("status is not valid")
 )
-
-var _ interface {
-	es.EventApplier
-	es.Snapshotter
-} = (*Post)(nil)
 
 type Post struct {
 	es.Aggregate
@@ -62,14 +57,10 @@ func Create(id, userID, title, description, content string, status PostStatus, c
 	}
 
 	//validate the post before returning it
-	err := post.Validate()
+	err := post.validate()
 	if err != nil {
 		return nil, err
 	}
-
-	post.AddEvent(PostCreatedEvent, &PostCreated{
-		Post: post,
-	})
 
 	return post, nil
 }
@@ -78,7 +69,7 @@ func (p *Post) Delete() {
 	//todo implement me
 }
 
-func (p *Post) Sanitize() {
+func (p *Post) sanitize() {
 
 	// Trim whitespace from the input parameters
 	p.UserID = strings.TrimSpace(p.UserID)
@@ -88,10 +79,10 @@ func (p *Post) Sanitize() {
 }
 
 // Validate checks if the Post fields are valid.
-func (p *Post) Validate() error {
+func (p *Post) validate() error {
 
 	// Sanitize the input parameters
-	p.Sanitize()
+	p.sanitize()
 
 	// Validate the input parameters
 	if p.Aggregate.ID() == "" {
@@ -99,7 +90,7 @@ func (p *Post) Validate() error {
 	}
 
 	if p.UserID == "" {
-		return ErrEmptyId
+		return ErrEmptyUserId
 	}
 
 	if len(p.Title) < TitleMinLength {
@@ -121,43 +112,4 @@ func (p *Post) Validate() error {
 	// and more validations can be added here
 
 	return nil
-}
-
-// ApplyEvent implements es.EventApplier
-func (p *Post) ApplyEvent(event ddd.Event) error {
-	switch payload := event.Payload().(type) {
-	case *PostCreated:
-		p.UserID = payload.Post.UserID
-		p.Status = payload.Post.Status
-	default:
-		return errors.New(fmt.Sprintf("%T received the event %s with unexpected payload %T", p, event.EventName(), payload))
-	}
-
-	return nil
-}
-
-// ApplySnapshot implements es.Snapshotter
-func (p *Post) ApplySnapshot(snapshot es.Snapshot) error {
-	switch ss := snapshot.(type) {
-	case *PostV1:
-		p.UserID = ss.UserID
-		p.Title = ss.Title
-		p.Content = ss.Content
-		p.Status = ss.Status
-
-	default:
-		return errors.New(fmt.Sprintf("%T received the unexpected snapshot %T", p, snapshot))
-	}
-
-	return nil
-}
-
-// ToSnapshot implements es.Snapshotter
-func (p Post) ToSnapshot() es.Snapshot {
-	return PostV1{
-		UserID:  p.UserID,
-		Title:   p.Title,
-		Content: p.Content,
-		Status:  p.Status,
-	}
 }
