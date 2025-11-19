@@ -1,7 +1,7 @@
 package main
 
 import (
-	grpcPostClient "github.com/racibaz/go-arch/grpc_client/posts"
+	grpcPostClient "github.com/racibaz/go-arch/cmd/grpc_client/posts"
 	"github.com/racibaz/go-arch/internal/modules/post/presentation/grpc/proto"
 	"log"
 
@@ -12,7 +12,7 @@ import (
 var addr string = "0.0.0.0:9090"
 
 func main() {
-	
+
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
