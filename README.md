@@ -154,6 +154,7 @@ make generate_proto
 - [x] OpenTelemetry & Jaeger integration
 - [x] Tracing with Jaeger
 - [ ] Add correlationId support
+- [ ] GitHub Actions Workflow for CI/CD
 
 
 ## 📬 Postman Collection
