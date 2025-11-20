@@ -9,6 +9,8 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
 	"github.com/racibaz/go-arch/pkg/messaging"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 	"time"
 )
 
@@ -16,6 +18,7 @@ type CreatePostService struct {
 	PostRepository   ports.PostRepository
 	logger           logger.Logger
 	messagePublisher messaging.MessagePublisher
+	tracer           trace.Tracer
 }
 
 var _ applicationPorts.PostService = (*CreatePostService)(nil)
@@ -26,10 +29,14 @@ func NewCreatePostService(postRepository ports.PostRepository, logger logger.Log
 		PostRepository:   postRepository,
 		logger:           logger,
 		messagePublisher: messagePublisher,
+		tracer:           otel.Tracer("CreatePostService"),
 	}
 }
 
 func (postService CreatePostService) CreatePost(ctx context.Context, postInput dto.CreatePostInput) error {
+
+	ctx, span := postService.tracer.Start(ctx, "CreatePost - Service")
+	defer span.End()
 
 	// Create a new post using the factory
 	post, _ := domain.Create(
@@ -73,6 +80,9 @@ func (postService CreatePostService) CreatePost(ctx context.Context, postInput d
 }
 
 func (postService CreatePostService) GetById(ctx context.Context, id string) (*domain.Post, error) {
+
+	ctx, span := postService.tracer.Start(ctx, "GetById - Service")
+	defer span.End()
 
 	return postService.PostRepository.GetByID(ctx, id)
 }

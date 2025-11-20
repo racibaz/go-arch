@@ -1,8 +1,8 @@
 package database
 
 import (
-	"fmt"
 	"github.com/racibaz/go-arch/pkg/config"
+	"github.com/uptrace/opentelemetry-go-extra/otelgorm"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -23,7 +23,12 @@ func Connect() {
 		return
 	}
 
-	fmt.Println("Connecting to database...")
+	log.Println("Connecting to database...")
+
+	// Integrate OpenTelemetry with GORM
+	if err := db.Use(otelgorm.NewPlugin()); err != nil {
+		panic(err)
+	}
 
 	DB = db
 }

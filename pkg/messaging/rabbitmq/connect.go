@@ -14,7 +14,7 @@ func Connect() *RabbitMQ {
 		log.Panicf(fmt.Sprintf("failed to connect to RabbitMQ : %v", err))
 	}
 
-	fmt.Println("Connected to RabbitMQ")
+	log.Println("Connected to RabbitMQ")
 
 	return conn
 }

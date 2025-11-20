@@ -7,6 +7,7 @@ import (
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	proto "github.com/racibaz/go-arch/internal/modules/post/presentation/grpc/proto"
 	"github.com/racibaz/go-arch/pkg/uuid"
+	"go.opentelemetry.io/otel"
 	"google.golang.org/grpc"
 	"time"
 )
@@ -27,14 +28,19 @@ func NewPostGrpcController(grpc *grpc.Server, postService ports.PostService) {
 
 func (controller *PostGrpcController) CreatePost(ctx context.Context, in *proto.CreatePostInput) (*proto.CreatePostResponse, error) {
 
-	postId := uuid.NewID()
+	tracer := otel.Tracer("go-arch")
+	ctx, span := tracer.Start(ctx, "PostModule - gRPC - PostController - Store")
+	defer span.End()
+
+	newUuid := uuid.NewID()
 
 	input := dto.CreatePostInput{
-		ID:          postId, //todo value object olmalı
+		ID:          newUuid,   //todo value object olmalı
+		UserID:      in.UserID, //todo value object olmalı
 		Title:       in.Title,
 		Description: in.Description,
 		Content:     in.Content,
-		Status:      postValueObject.PostStatus(postValueObject.PostStatusDraft),
+		Status:      postValueObject.PostStatusDraft,
 		CreatedAt:   time.Time{},
 		UpdatedAt:   time.Time{},
 	}
@@ -45,6 +51,6 @@ func (controller *PostGrpcController) CreatePost(ctx context.Context, in *proto.
 	}
 
 	return &proto.CreatePostResponse{
-		Id: postId,
+		Id: newUuid,
 	}, nil
 }

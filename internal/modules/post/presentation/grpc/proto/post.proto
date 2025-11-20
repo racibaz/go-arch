@@ -7,12 +7,10 @@ service PostService{
 }
 
 message CreatePostInput {
-	  string ID = 1;
-	  string UserID = 2;
-	  string Title = 3;
-	  string Description = 4;
-	  string Content = 5;
-	  int32 Status = 6;
+	  string UserID = 1;
+	  string Title = 2;
+	  string Description = 3;
+	  string Content = 4;
 }
 
 message CreatePostRequest {

@@ -111,7 +111,11 @@ make generate_proto
 
 ![Grafana UI](docs/images/grafana.png)
 
+### Jaeger UI
 
+`http://localhost:16686/search`
+
+![Jaeger UI](docs/images/jaeger.png)
 
 
 ## Dependencies
@@ -133,7 +137,7 @@ make generate_proto
 - rabbitmq: `github.com/rabbitmq/amqp091-go`
 - migrations: `github.com/golang-migrate/migrate/v4`
 - prometheus: `github.com/prometheus/client_golang`
-- opentelemetry: `go.opentelemetry.io/otel`
+- open telemetry: `go.opentelemetry.io/otel`
 - jaeger: `go.opentelemetry.io/otel/exporters/jaeger`
 
 
@@ -148,6 +152,7 @@ make generate_proto
 - [ ] MongoDB integration
 - [x] Grafana & Prometheus integration
 - [x] OpenTelemetry & Jaeger integration
+- [x] Tracing with Jaeger
 - [ ] Add custom metrics
 
 

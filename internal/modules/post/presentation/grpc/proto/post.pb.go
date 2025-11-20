@@ -23,12 +23,10 @@ const (
 
 type CreatePostInput struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ID            string                 `protobuf:"bytes,1,opt,name=ID,proto3" json:"ID,omitempty"`
-	UserID        string                 `protobuf:"bytes,2,opt,name=UserID,proto3" json:"UserID,omitempty"`
-	Title         string                 `protobuf:"bytes,3,opt,name=Title,proto3" json:"Title,omitempty"`
-	Description   string                 `protobuf:"bytes,4,opt,name=Description,proto3" json:"Description,omitempty"`
-	Content       string                 `protobuf:"bytes,5,opt,name=Content,proto3" json:"Content,omitempty"`
-	Status        int32                  `protobuf:"varint,6,opt,name=Status,proto3" json:"Status,omitempty"`
+	UserID        string                 `protobuf:"bytes,1,opt,name=UserID,proto3" json:"UserID,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=Title,proto3" json:"Title,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=Description,proto3" json:"Description,omitempty"`
+	Content       string                 `protobuf:"bytes,4,opt,name=Content,proto3" json:"Content,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -63,13 +61,6 @@ func (*CreatePostInput) Descriptor() ([]byte, []int) {
 	return file_post_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CreatePostInput) GetID() string {
-	if x != nil {
-		return x.ID
-	}
-	return ""
-}
-
 func (x *CreatePostInput) GetUserID() string {
 	if x != nil {
 		return x.UserID
@@ -96,13 +87,6 @@ func (x *CreatePostInput) GetContent() string {
 		return x.Content
 	}
 	return ""
-}
-
-func (x *CreatePostInput) GetStatus() int32 {
-	if x != nil {
-		return x.Status
-	}
-	return 0
 }
 
 type CreatePostRequest struct {
@@ -198,14 +182,12 @@ var File_post_proto protoreflect.FileDescriptor
 const file_post_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"post.proto\"\xa3\x01\n" +
-	"\x0fCreatePostInput\x12\x0e\n" +
-	"\x02ID\x18\x01 \x01(\tR\x02ID\x12\x16\n" +
-	"\x06UserID\x18\x02 \x01(\tR\x06UserID\x12\x14\n" +
-	"\x05Title\x18\x03 \x01(\tR\x05Title\x12 \n" +
-	"\vDescription\x18\x04 \x01(\tR\vDescription\x12\x18\n" +
-	"\aContent\x18\x05 \x01(\tR\aContent\x12\x16\n" +
-	"\x06Status\x18\x06 \x01(\x05R\x06Status\"9\n" +
+	"post.proto\"{\n" +
+	"\x0fCreatePostInput\x12\x16\n" +
+	"\x06UserID\x18\x01 \x01(\tR\x06UserID\x12\x14\n" +
+	"\x05Title\x18\x02 \x01(\tR\x05Title\x12 \n" +
+	"\vDescription\x18\x03 \x01(\tR\vDescription\x12\x18\n" +
+	"\aContent\x18\x04 \x01(\tR\aContent\"9\n" +
 	"\x11CreatePostRequest\x12$\n" +
 	"\x04Post\x18\x01 \x01(\v2\x10.CreatePostInputR\x04Post\"$\n" +
 	"\x12CreatePostResponse\x12\x0e\n" +

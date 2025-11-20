@@ -12,6 +12,9 @@ import (
 	validator "github.com/racibaz/go-arch/pkg/validator"
 	_ "github.com/swaggo/files"
 	_ "github.com/swaggo/gin-swagger"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
 	"net/http"
 	"time"
 )
@@ -41,6 +44,11 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/posts [post]
 func (postController PostController) Store(c *gin.Context) {
+
+	tracer := otel.Tracer("go-arch")
+	ctx, span := tracer.Start(c.Request.Context(), "PostModule - Restful - PostController - Store")
+	defer span.End()
+
 	createPostRequestDto, err := helper.Decode[requestDto.CreatePostRequestDto](c)
 
 	if err != nil {
@@ -63,7 +71,7 @@ func (postController PostController) Store(c *gin.Context) {
 
 	newUuid := uuid.NewID()
 
-	err = postController.Service.CreatePost(c, dto.CreatePostInput{
+	err = postController.Service.CreatePost(ctx, dto.CreatePostInput{
 		ID:          newUuid,
 		UserID:      createPostRequestDto.UserId,
 		Title:       createPostRequestDto.Title,
@@ -75,6 +83,8 @@ func (postController PostController) Store(c *gin.Context) {
 	})
 
 	if err != nil {
+		span.SetAttributes(attribute.String("error", "Post create failed"))
+		span.SetStatus(codes.Error, "Post create failed")
 		helper.ErrorResponse(c, "post create failed", err, http.StatusInternalServerError)
 		return
 	}
@@ -85,6 +95,8 @@ func (postController PostController) Store(c *gin.Context) {
 		Content:     createPostRequestDto.Content,
 		Status:      postValueObject.PostStatusDraft.String(),
 	}
+
+	span.SetAttributes(attribute.String("post.id", newUuid))
 
 	helper.SuccessResponse(c, "Post created successfully", responseData, http.StatusCreated)
 }
@@ -103,9 +115,13 @@ func (postController PostController) Store(c *gin.Context) {
 //	@Router			/posts/{id} [get]
 func (postController PostController) Show(c *gin.Context) {
 
+	tracer := otel.Tracer("go-arch")
+	ctx, span := tracer.Start(c, "PostModule - Restful - PostController - Show")
+	defer span.End()
+
 	postID := c.Param("id")
 
-	result, err := postController.Service.GetById(c, postID)
+	result, err := postController.Service.GetById(ctx, postID)
 
 	if err != nil {
 		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
