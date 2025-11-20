@@ -153,7 +153,7 @@ make generate_proto
 - [x] Grafana & Prometheus integration
 - [x] OpenTelemetry & Jaeger integration
 - [x] Tracing with Jaeger
-- [ ] Add custom metrics
+- [ ] Add correlationId support
 
 
 ## 📬 Postman Collection
