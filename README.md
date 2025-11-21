@@ -322,7 +322,7 @@ go test -v -cover ./...
 
 ## Contributing
 
-Please see the [CONTRIBUTING](CONTRIBUTING) file.
+Please see the [CONTRIBUTING](CONTRIBUTING.md) file.
 
 ## License
 
