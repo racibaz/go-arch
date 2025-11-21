@@ -5,7 +5,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
-	responseDtos "github.com/racibaz/go-arch/internal/modules/post/presentation/http/reponse_dtos"
+	responseDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/reponse_dtos"
 	requestDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/request_dtos"
 	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
@@ -40,7 +40,7 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Accept			json
 //	@Produce		json
 //	@Param			post	body		requestDto.CreatePostRequestDto	true	"Create Post Request DTO"
-//	@Success		201		{object}	responseDtos.CreatePostResponseDto	"Post created successfully"
+//	@Success		201		{object}	responseDto.CreatePostResponseDto	"Post created successfully"
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/posts [post]
 func (postController PostController) Store(c *gin.Context) {
@@ -89,7 +89,7 @@ func (postController PostController) Store(c *gin.Context) {
 		return
 	}
 
-	responseData := responseDtos.CreatePostResponseDto{
+	responseData := responseDto.CreatePostResponseDto{
 		Title:       createPostRequestDto.Title,
 		Description: createPostRequestDto.Description,
 		Content:     createPostRequestDto.Content,
@@ -110,7 +110,7 @@ func (postController PostController) Store(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		string		true	"Post ID"
-//	@Success		200	{object}	responseDtos.GetPostResponseDto	"Post retrieved successfully"
+//	@Success		200	{object}	responseDto.GetPostResponseDto	"Post retrieved successfully"
 //	@Failure		404	{object}	errors.AppError		"Page not found"
 //	@Router			/posts/{id} [get]
 func (postController PostController) Show(c *gin.Context) {
@@ -128,7 +128,7 @@ func (postController PostController) Show(c *gin.Context) {
 		return
 	}
 
-	responseData := responseDtos.GetPostResponseDto{
+	responseData := responseDto.GetPostResponseDto{
 		Title:       result.Title,
 		Description: result.Description,
 		Content:     result.Content,
