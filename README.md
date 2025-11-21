@@ -11,7 +11,7 @@
 </p>
 
 # Go-Arch
-Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jeager and Gin in Golang
+Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jaeger and Gin in Golang
 
 ## 📖 Overview
 This project demonstrates clean architectural principles in Go, including:

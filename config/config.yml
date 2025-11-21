@@ -1,5 +1,5 @@
 app:
-  name: "Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jeager and Gin in Golang"
+  name: "Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jaeger and Gin in Golang"
   debug: "true"
   env: "dev" # local, dev, prod, test
   loglevel: "debug"
