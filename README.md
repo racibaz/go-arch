@@ -74,10 +74,6 @@ make mock
 
 
 ├── cmd
-│   ├── migrate.go
-│   ├── root.go
-│   ├── seed.go
-│   └── serve.go
 ├── internal
 │   ├── database
 │   │   ├── migration
@@ -114,6 +110,28 @@ make mock
 ├── main.go
 ├── migrations
 ├── pkg
+│   ├── bootstrap
+│   │   ├── migrate.go
+│   │   ├── seed.go
+│   │   └── serve.go
+│   ├── config
+│   ├── database
+│   ├── ddd
+│   ├── env
+│   ├── error
+│   ├── es
+│   ├── grpc
+│   ├── helper
+│   ├── logger
+│   ├── messaging
+│   ├── notification
+│   ├── prometheus
+│   ├── registry
+│   ├── routing
+│   ├── trace
+│   ├── uuid
+│   └── validator
+
 
 ```
 
@@ -204,6 +222,7 @@ make generate_proto
 - [x] Tracing with Jaeger
 - [ ] Add correlationId support
 - [ ] GitHub Actions Workflow for CI/CD
+- [ ] EFK Stack for logging
 
 
 ## 📬 Postman Collection
