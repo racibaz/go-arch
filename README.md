@@ -319,6 +319,9 @@ go test -v -cover ./...
 ```
 
 
+## Code of Conduct
+
+Please note that this project is governed by a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
 ## Contributing
 
