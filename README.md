@@ -7,7 +7,8 @@ This project demonstrates clean architectural principles in Go, including:
 - **Hexagonal Architecture** for separation of concerns
 - **DDD** for domain modeling
 - **TDD** for reliable, testable code
-- **RESTful** and **gRPC APIs**
+- **RESTful APIs** 
+- **gRPC APIs**
 - **Swagger UI** for API exploration
 - **PostgreSQL with Gorm ORM**
 - **RabbitMQ** for messaging
@@ -67,6 +68,54 @@ make seed
 make mock
 ```
 
+## Project Structure
+
+```lua
+
+
+├── cmd
+│   ├── migrate.go
+│   ├── root.go
+│   ├── seed.go
+│   └── serve.go
+├── internal
+│   ├── database
+│   │   ├── migration
+│   │   └── seeder
+│   ├── modules
+│   │   ├── post
+│   │   │   ├── application
+│   │   │   │   ├── commands
+│   │   │   │   ├── dtos
+│   │   │   │   ├── handlers
+│   │   │   │   ├── ports
+│   │   │   │   └── queries
+│   │   │   ├── domain
+│   │   │   ├── infrastructure
+│   │   │   │   ├── messaging
+│   │   │   │   │   └── rabbitmq
+│   │   │   │   ├── notification
+│   │   │   │   │   └── sms
+│   │   │   │   └── persistence
+│   │   │   │       ├── gorm
+│   │   │   │       │   ├── entities
+│   │   │   │       │   ├── mappers
+│   │   │   │       │   └── repositories
+│   │   │   │       └── in_memory
+│   │   │   ├── module.go
+│   │   │   ├── presentation
+│   │   │   └── test
+│   │   │       └── integration
+│   │   └── shared
+│   │       ├── domain
+│   │       ├── infrastructure
+│   │       └── presentation
+│   └── providers
+├── main.go
+├── migrations
+├── pkg
+
+```
 
 #### Generate gRPC Code
 ```bash
