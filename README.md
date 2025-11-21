@@ -1,3 +1,15 @@
+<p align="center">
+  <a href="https://goreportcard.com/report/github.com/racibaz/go-arch">
+    <img src="https://goreportcard.com/badge/github.com/racibaz/go-arch" alt="Go Report Card" />
+  </a>
+  &nbsp;
+  <img src="https://img.shields.io/github/go-mod/go-version/racibaz/go-arch" alt="Go Version" />
+  &nbsp;
+  <img src="https://img.shields.io/docker/pulls/racibaz/go-arch" alt="Docker Image" />
+  &nbsp;
+  <img src="https://img.shields.io/github/license/racibaz/go-arch" alt="License" />
+</p>
+
 # Go-Arch
 Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jeager and Gin in Golang
 
@@ -70,9 +82,46 @@ make mock
 
 ## Project Structure
 
+Minimal Structure
+
 ```lua
+├── Dockerfile
+├── LICENSE
+├── Makefile
+├── README.md
+├── cmd
+├── config
+├── deployments
+├── docker-compose.yml
+├── docs
+├── entrypoint.sh
+├── go.mod
+├── go.sum
+├── internal
+│   ├── database
+│   │   ├── migration
+│   │   └── seeder
+│   ├── modules
+│   │   ├── post
+│   │   │   ├── application
+│   │   │   ├── domain
+│   │   │   ├── infrastructure
+│   │   │   ├── module.go
+│   │   │   ├── presentation
+│   │   │   └── test
+│   │   └── shared
+│   │       ├── domain
+│   │       ├── infrastructure
+│   │       └── presentation
+│   └── providers
+├── main.go
+├── migrations
+├── pkg
+```
 
+Expanded Structure
 
+```lua
 ├── cmd
 ├── internal
 │   ├── database
@@ -100,6 +149,11 @@ make mock
 │   │   │   │       └── in_memory
 │   │   │   ├── module.go
 │   │   │   ├── presentation
+│   │   │   │   ├── grpc
+│   │   │   │   │   └── proto
+│   │   │   │   ├── http
+│   │   │   │   │   ├── reponse_dtos
+│   │   │   │   │   └── request_dtos
 │   │   │   └── test
 │   │   │       └── integration
 │   │   └── shared
