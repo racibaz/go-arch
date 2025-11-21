@@ -317,3 +317,13 @@ go test -v ./...
 ```bash
 go test -v -cover ./...
 ```
+
+
+
+## Contributing
+
+Please see the [CONTRIBUTING](CONTRIBUTING) file.
+
+## License
+
+This project is licensed under the Apache 2.0 License. For further details, please see the [LICENSE](LICENSE) file.
