@@ -46,6 +46,9 @@ EXPOSE 8889
 EXPOSE 3001
 EXPOSE 3002
 EXPOSE 5672
+EXPOSE 24224
+EXPOSE 9200
+EXPOSE 9300
 
 # Entrypoint script
 COPY entrypoint.sh /entrypoint.sh

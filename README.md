@@ -11,7 +11,7 @@
 </p>
 
 # Go-Arch
-Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jaeger and Gin in Golang
+Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jaeger, Elasticsearch, Kibana and Gin in Golang
 
 ## 📖 Overview
 This project demonstrates clean architectural principles in Go, including:
@@ -38,6 +38,8 @@ This project demonstrates clean architectural principles in Go, including:
 - **Mocking** with Mockery
 - Comprehensive Documentation
 - **Makefile** for common tasks
+- **Postman Collection** for API testing
+- **EFK Stack** for logging
 
 ### Run with Docker (air for live reload)
 ```bash
@@ -194,7 +196,6 @@ Expanded Structure
 make generate_proto
 ```
 
-
 ### Swagger Documentation UI
 `http://127.0.0.1:3001/swagger/index.html#`
 
@@ -206,7 +207,6 @@ make generate_proto
 ![Swagger UI](docs/images/swagger_ui.png)
 
 
-
 ### RabbitMQ UI
 `http://localhost:15672/#/`
 
@@ -215,7 +215,6 @@ make generate_proto
 
 ![RabbitMQ UI](docs/images/rabbitmq1.png)
 ![RabbitMQ UI](docs/images/rabbitmq2.png)
-
 
 
 ### Prometheus UI
@@ -237,6 +236,16 @@ make generate_proto
 `http://localhost:16686/search`
 
 ![Jaeger UI](docs/images/jaeger.png)
+
+### Elasticsearch
+`http://localhost:9200/`
+
+
+### Kibana UI
+`http://127.0.0.1:5601/app/home#/`
+
+![Jaeger UI](docs/images/kibana.png)
+
 
 
 ## Dependencies
@@ -276,7 +285,7 @@ make generate_proto
 - [x] Tracing with Jaeger
 - [ ] Add correlationId support
 - [ ] GitHub Actions Workflow for CI/CD
-- [ ] EFK Stack for logging
+- [x] EFK Stack for logging
 
 
 ## 📬 Postman Collection
