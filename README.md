@@ -286,6 +286,8 @@ make generate_proto
 - [ ] Add correlationId support
 - [ ] GitHub Actions Workflow for CI/CD
 - [x] EFK Stack for logging
+- [ ] Single environment
+- [ ] Add Auth Module 
 
 
 ## 📬 Postman Collection
