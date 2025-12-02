@@ -11,7 +11,15 @@
 </p>
 
 # Go-Arch
-Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jaeger, Elasticsearch, Kibana and Gin in Golang
+Go-Arch provides a full-featured template for building modern backend services in Go, combining:
+- Hexagonal (ports & adapters) architecture + Domain-Driven Design (DDD)
+- RESTful APIs and gRPC support
+- Database integration via Gorm + PostgreSQL + migrations
+- Message queue support (RabbitMQ) & async notifications
+- Swagger UI for API documentation + auto-generated docs / protos
+- Built-in config management, logging, graceful shutdown, and Docker / docker-compose setup — ready for production or microservice environments.
+
+Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork, configure, build — and go.
 
 ## 📖 Overview
 This project demonstrates clean architectural principles in Go, including:
@@ -41,6 +49,48 @@ This project demonstrates clean architectural principles in Go, including:
 - **Postman Collection** for API testing
 - **EFK Stack** for logging
 
+## 📚 Table of Contents
+
+- [📖 Overview](#-overview)
+- [🧩 Build Your First Module](#build-your-first-module)
+- [📝 Notes](#notes)
+- [🐳 Run with Docker (air for live reload)](#run-with-docker-air-for-live-reload)
+- [🔧 Makefile Commands](#makefile-commands)
+- [📂 Project Structure](#project-structure)
+- [⚙️ Generate gRPC Code](#generate-grpc-code)
+- [📑 Swagger Documentation UI](#swagger-documentation-ui)
+     - [Generate Swagger Documentation](#generate-swagger-documentation)
+- [📬 RabbitMQ UI](#rabbitmq-ui)
+- [📡 Prometheus UI](#prometheus-ui)
+- [📊 Grafana UI](#grafana-ui)
+- [🔎 Jaeger UI](#jaeger-ui)
+- [🗄️ Elasticsearch](#elasticsearch)
+- [🌐 Kibana UI](#kibana-ui)
+- [📦 Dependencies](#dependencies)
+- [🛠 Roadmap / TODO](#-roadmap--todo)
+- [📬 Postman Collection](#-postman-collection)
+- [❌ Validation Error Example](#validation-error-example)
+- [✔️ Linters](#linters)
+- [🧪 Test](#test)
+- [🤝 Code of Conduct](#code-of-conduct)
+- [👥 Contributing](#contributing)
+- [📜 License](#license)
+
+## Build Your First Module
+To create a new module, follow these steps:
+1. Create a new folder under `internal/modules/` with your module name (e.g., `user`).
+2. Implement the necessary components in each subfolder following the existing module structure (e.g., `post` module).
+3. Inside the module folder, create the following subfolders:
+   - `application`: Contains commands, queries, handlers, ports, and DTOs.
+   - `domain`: Contains domain entities, value objects, and domain services.
+   - `infrastructure`: Contains persistence (e.g., Gorm repositories), messaging, and notification implementations.
+   - `presentation`: Contains HTTP handlers (request/response DTOs) and gRPC services (proto files).
+   - `test`: Contains integration tests for the module.
+   - `module.go`: The module's main entry point for registration.
+   - `docs/`: Documentation specific to the module.
+4. Call your routes in the main application registry located at `internal/providers/routers/router.go`.
+5. Update the Swagger documentation annotations with the "make generate_swagger" command.  
+   👉 [make generate_swagger](#generate-swagger-documentation)
 
 ## Notes
 - There are two config files that are .env and config.yaml. You can override config.yaml values with environment variables defined in the .env file.
