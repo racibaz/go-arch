@@ -58,6 +58,9 @@ func (r *RabbitMQ) Connect() *amqp.Connection {
 func (r *RabbitMQ) DeclareQueue(queueName string) error {
 	var err error
 	channel, err := r.conn.Channel()
+	if err != nil {
+		return fmt.Errorf("failed to create channel: %v", err)
+	}
 	defer channel.Close()
 
 	_, err = channel.QueueDeclare(
