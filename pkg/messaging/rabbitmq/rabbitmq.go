@@ -45,7 +45,7 @@ func NewRabbitMQ(url string) (*RabbitMQ, error) {
 func (r *RabbitMQ) Connect() *amqp.Connection {
 	config := config.Get()
 
-	conn, err := amqp.Dial(config.RabbitMQ.Url)
+	conn, err := amqp.Dial(config.RabbitMQUrl())
 
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to RabbitMQ : %v", err))

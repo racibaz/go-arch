@@ -8,8 +8,9 @@ import (
 
 func Connect() *RabbitMQ {
 	conf := config.Get()
+	fmt.Println("RabbitMQUrl", conf.RabbitMQUrl())
 
-	conn, err := NewRabbitMQ(conf.RabbitMQ.Url)
+	conn, err := NewRabbitMQ(conf.RabbitMQUrl())
 	if err != nil {
 		log.Panicf(fmt.Sprintf("failed to connect to RabbitMQ : %v", err))
 	}

@@ -45,9 +45,14 @@ type Grpc struct {
 }
 
 type RabbitMQ struct {
-	Url             string `mapstructure:"url"`
 	DefaultExchange string `mapstructure:"default_exchange"`
 	DefaultQueue    string `mapstructure:"default_queue"`
+	Username        string `mapstructure:"username"`
+	Password        string `mapstructure:"password"`
+	Port            string `mapstructure:"port"`
+	TestPort        string `mapstructure:"test_port"`
+	DockerHost      string `mapstructure:"docker_host"`
+	LocalHost       string `mapstructure:"local_host"`
 }
 
 func (config *Config) DatabaseUrl() string {
@@ -69,5 +74,32 @@ func (config *Config) DatabaseUrl() string {
 		config.DB.Password,
 		config.DB.Name,
 		dbPort,
+	)
+}
+
+func (config *Config) RabbitMQUrl() string {
+
+	var host, port string = "", ""
+
+	switch config.App.Env {
+	case "test":
+		port = config.RabbitMQ.TestPort
+		host = config.RabbitMQ.DockerHost
+	case "local":
+		port = config.RabbitMQ.Port
+		host = config.RabbitMQ.LocalHost
+	case "dev":
+		port = config.RabbitMQ.Port
+		host = config.RabbitMQ.DockerHost
+	case "prod":
+		port = config.RabbitMQ.Port
+		host = config.RabbitMQ.DockerHost
+	}
+
+	return fmt.Sprintf("amqp://%s:%s@%s:%s/",
+		config.RabbitMQ.Username,
+		config.RabbitMQ.Password,
+		host,
+		port,
 	)
 }
