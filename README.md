@@ -110,10 +110,20 @@ To create a new module, follow these steps:
 
 ### Run with Docker (air for live reload)
 ```bash
+git clone https://github.com/racibaz/go-arch.git
+
+cd go-arch
+
+mv .env.example .env
+
 docker compose up --build
-
+```
+To access the running container shell:
+```bash
 docker exec -it Blog-app sh
-
+```
+To run database migrations using Makefile commands inside the container shell:
+```bash
 make db_migrate_up
 ```
 
