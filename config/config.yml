@@ -32,8 +32,6 @@ grpc:
 
 
 rabbitmq:
-  #url: "amqp://guest:guest@rabbitmq:5672/" # for docker development
-  #url: "amqp://guest:guest@localhost:5672/" # for local development
   default_exchange: "default_exchange"
   default_queue: "default_queue"
   username: "guest"

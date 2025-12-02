@@ -41,6 +41,23 @@ This project demonstrates clean architectural principles in Go, including:
 - **Postman Collection** for API testing
 - **EFK Stack** for logging
 
+
+## Notes
+- There are two config files that are .env and config.yaml. You can override config.yaml values with environment variables defined in the .env file.
+- You can use two ways to run database migrations:
+    1. Using golang-migrate package via Makefile commands.
+       The Command examples:
+        - name=init_schema make db_create_migration
+        - make db_migrate_up
+        - make db_migrate_down
+        - make db_migrate_force
+        - make db_migrate_drop
+        - make db_migrate_version
+    2. Using the `cmd/migrate` CLI application provided in the project.
+       The Command example:
+        - make migrate
+
+
 ### Run with Docker (air for live reload)
 ```bash
 docker compose up --build
@@ -286,9 +303,9 @@ make generate_proto
 - [ ] Add correlationId support
 - [ ] GitHub Actions Workflow for CI/CD
 - [x] EFK Stack for logging
-- [x] Single environment
+- [x] Single environment (override config.yaml file with .env file)
 - [ ] Add Auth Module 
-- [ ] Change migration strategy to use embedded migrations
+- [x] Alternative migration usage with cmd/migrate CLI app and golang-migrate package
 - [ ] Kubernetes deployment manifests
 - [ ] Helm charts for easy deployment
 - [ ] Support for more notification channels (e.g., Email, Push Notifications)
@@ -296,9 +313,6 @@ make generate_proto
 - [ ] Implement API versioning
 - [ ] Implement feature toggles
 
-
-## Notes
-- There are two config files that are .env and config.yaml. You can override config.yaml values with environment variables defined in the .env file.
 
 
 ## 📬 Postman Collection
