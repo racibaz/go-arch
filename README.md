@@ -286,8 +286,19 @@ make generate_proto
 - [ ] Add correlationId support
 - [ ] GitHub Actions Workflow for CI/CD
 - [x] EFK Stack for logging
-- [ ] Single environment
+- [x] Single environment
 - [ ] Add Auth Module 
+- [ ] Change migration strategy to use embedded migrations
+- [ ] Kubernetes deployment manifests
+- [ ] Helm charts for easy deployment
+- [ ] Support for more notification channels (e.g., Email, Push Notifications)
+- [ ] Implement rate limiting
+- [ ] Implement API versioning
+- [ ] Implement feature toggles
+
+
+## Notes
+- There are two config files that are .env and config.yaml. You can override config.yaml values with environment variables defined in the .env file.
 
 
 ## 📬 Postman Collection

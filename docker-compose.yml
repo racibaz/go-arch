@@ -3,6 +3,8 @@ services:
   app:
     build: .
     container_name: ${APP_NAME:-go-arch}-app
+    env_file:
+      - .env
     volumes:
       - .:/app
       - /app/tmp

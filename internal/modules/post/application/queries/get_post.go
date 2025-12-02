@@ -1,9 +1,12 @@
 package queries
 
 import (
+	"context"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 )
 
 type GetPostInput struct {
@@ -14,23 +17,24 @@ type GetPostInput struct {
 type GetPostService struct {
 	PostRepository ports.PostRepository
 	logger         logger.Logger
+	tracer         trace.Tracer
 }
-
-//var _ applicationPorts.PostService = (*RemovePostService)(nil)
 
 // NewGetPostService initializes a new GetPostService with the provided PostRepository.
 func NewGetPostService(postRepository ports.PostRepository, logger logger.Logger) *GetPostService {
 	return &GetPostService{
 		PostRepository: postRepository,
 		logger:         logger,
+		tracer:         otel.Tracer("GetPostService"),
 	}
 }
 
-// todo add userID check
-// todo reponse type should be DTO
-func (postService GetPostService) GetPostByID(postInput GetPostInput) (*domain.Post, error) {
+func (postService GetPostService) GetPostByID(ctx context.Context, postInput GetPostInput) (*domain.Post, error) {
 
-	post, err := postService.PostRepository.GetByID(postInput.ID)
+	ctx, span := postService.tracer.Start(ctx, "GetById - Service")
+	defer span.End()
+
+	post, err := postService.PostRepository.GetByID(ctx, postInput.ID)
 	if err != nil {
 		return nil, err
 	}

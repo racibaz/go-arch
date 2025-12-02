@@ -2,7 +2,7 @@
 set -e
 
 #echo "Starting server with Air..."
-exec air
+exec air -d
 #go run main.go
 
 # In prod, you can use:

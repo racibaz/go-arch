@@ -1,6 +1,7 @@
 package in_memory
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
@@ -24,7 +25,7 @@ func New() *InMemoryPostRepository {
 }
 
 // TODO it should return mapper or aggregate root
-func (pr *InMemoryPostRepository) Save(post *domain.Post) error {
+func (pr *InMemoryPostRepository) Save(ctx context.Context, post *domain.Post) error {
 	pr.Mutex.Lock()
 	defer pr.Mutex.Unlock()
 
@@ -49,7 +50,7 @@ func (pr *InMemoryPostRepository) Save(post *domain.Post) error {
 	return nil
 }
 
-func (pr *InMemoryPostRepository) GetByID(id string) (*domain.Post, error) {
+func (pr *InMemoryPostRepository) GetByID(ctx context.Context, id string) (*domain.Post, error) {
 
 	postID, err := uuid.Parse(id)
 	if err != nil {
@@ -70,22 +71,22 @@ func (pr *InMemoryPostRepository) GetByID(id string) (*domain.Post, error) {
 	return exists, nil
 }
 
-func (pr *InMemoryPostRepository) Update(post *domain.Post) error {
+func (pr *InMemoryPostRepository) Update(ctx context.Context, post *domain.Post) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (pr *InMemoryPostRepository) Delete(id string) error {
+func (pr *InMemoryPostRepository) Delete(ctx context.Context, id string) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (pr *InMemoryPostRepository) List() ([]*domain.Post, error) {
+func (pr *InMemoryPostRepository) List(ctx context.Context) ([]*domain.Post, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (repo *InMemoryPostRepository) IsExists(title, description string) (bool, error) {
+func (repo *InMemoryPostRepository) IsExists(ctx context.Context, title, description string) (bool, error) {
 
 	//TODO implement me
 	return false, nil

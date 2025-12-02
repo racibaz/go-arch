@@ -3,51 +3,51 @@ package config
 import "fmt"
 
 type Config struct {
-	App      App
-	Server   Server
-	DB       DB
-	Grpc     Grpc
-	Swagger  Swagger
-	RabbitMQ RabbitMQ
+	App      App      `mapstructure:"app"`
+	Server   Server   `mapstructure:"server"`
+	DB       DB       `mapstructure:"db"`
+	Grpc     Grpc     `mapstructure:"grpc"`
+	Swagger  Swagger  `mapstructure:"swagger"`
+	RabbitMQ RabbitMQ `mapstructure:"rabbitmq"`
 }
 
 type App struct {
-	Name     string
-	Debug    string
-	Env      string
-	LogLevel string
-	Version  string
+	Name     string `mapstructure:"name"`
+	Debug    string `mapstructure:"debug"`
+	Env      string `mapstructure:"env"`
+	LogLevel string `mapstructure:"log_level"`
+	Version  string `mapstructure:"version"`
 }
 
 type Server struct {
-	Host string
-	Port string
+	Host string `mapstructure:"host"`
+	Port string `mapstructure:"port"`
 }
 
 type DB struct {
-	Username string
-	Password string
-	Host     string
-	Port     string
-	TestPort string
-	Name     string
+	Username string `mapstructure:"username"`
+	Password string `mapstructure:"password"`
+	Host     string `mapstructure:"host"`
+	Port     string `mapstructure:"port"`
+	TestPort string `mapstructure:"test_port"`
+	Name     string `mapstructure:"name"`
 }
 
 type Swagger struct {
-	Path string
-	Host string
-	Port string
+	Path string `mapstructure:"path"`
+	Host string `mapstructure:"host"`
+	Port string `mapstructure:"port"`
 }
 
 type Grpc struct {
-	Host string
-	Port string
+	Host string `mapstructure:"host"`
+	Port string `mapstructure:"port"`
 }
 
 type RabbitMQ struct {
-	Url             string
-	DefaultExchange string
-	DefaultQueue    string
+	Url             string `mapstructure:"url"`
+	DefaultExchange string `mapstructure:"default_exchange"`
+	DefaultQueue    string `mapstructure:"default_queue"`
 }
 
 func (config *Config) DatabaseUrl() string {

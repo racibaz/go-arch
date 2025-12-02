@@ -2,7 +2,7 @@ app:
   name: "Hexagonal Architecture, Domain Driven Design (DDD), Test Driven Design (TDD), RESTful, gRPC, Swagger, Gorm(PostgreSQL), Notification(Twilio), RabbitMQ, Prometheus, Grafana, Jaeger and Gin in Golang"
   debug: "true"
   env: "dev" # local, dev, prod, test
-  loglevel: "debug"
+  log_level: "debug"
   version: "1.0.0"
 
 server:
@@ -13,7 +13,7 @@ db:
   host: "postgres" #for docker development
   #host: "localhost" #for local development
   port: "5432"
-  testPort: "5433"
+  test_port: "5433"
   username: "postgres"
   password: "postgres"
   name: "go-arch"
@@ -34,5 +34,5 @@ grpc:
 rabbitmq:
   url: "amqp://guest:guest@rabbitmq:5672/" # for docker development
   #url: "amqp://guest:guest@localhost:5672/" # for local development
-  defaultExchange: "default_exchange"
-  defaultQueue: "default_queue"
+  default_exchange: "default_exchange"
+  default_queue: "default_queue"
