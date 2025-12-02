@@ -86,10 +86,10 @@ func (config *Config) RabbitMQUrl() string {
 		port = config.RabbitMQ.TestPort
 		host = config.RabbitMQ.DockerHost
 	case "local":
-		port = config.RabbitMQ.Port
+		port = config.RabbitMQ.TestPort
 		host = config.RabbitMQ.LocalHost
 	case "dev":
-		port = config.RabbitMQ.Port
+		port = config.RabbitMQ.TestPort
 		host = config.RabbitMQ.DockerHost
 	case "prod":
 		port = config.RabbitMQ.Port

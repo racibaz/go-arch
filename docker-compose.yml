@@ -27,7 +27,7 @@ services:
     container_name: ${APP_NAME:-go-arch}-db-test
     restart: always
     ports:
-      - ${DB_PORT_TEST}:5433
+      - ${DB_TEST_PORT}:5433
     environment:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
@@ -58,30 +58,6 @@ services:
       retries: 5
 
 
-  rabbitmq_test:
-    image: 'rabbitmq:3.13-management'
-    container_name: rabbitmq-test
-    ports:
-      # The standard AMQP protocol port
-      - '5433:5672'
-      # HTTP management UI
-      - '15672:15672'
-    environment:
-      # The location of the RabbitMQ server.  "amqp" is the protocol;
-      # "rabbitmq" is the hostname.  Note that there is not a guarantee
-      # that the server will start first!  Telling the pika client library
-      # to try multiple times gets around this ordering issue.
-      AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
-      RABBITMQ_DEFAULT_USER: "guest"
-      RABBITMQ_DEFAULT_PASS: "guest"
-    healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - app-network
-
   rabbitmq:
     image: 'rabbitmq:3.13-management'
     container_name: ${APP_NAME:-go-arch}-rabbitmq
@@ -96,8 +72,8 @@ services:
       # that the server will start first!  Telling the pika client library
       # to try multiple times gets around this ordering issue.
       AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
-      RABBITMQ_DEFAULT_USER: "guest"
-      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     healthcheck:
       test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
       interval: 10s
@@ -179,6 +155,8 @@ services:
     build: ./deployments/development/fluentd
     container_name: fluentd
     hostname: fluentd
+    environment:
+      FLUENT_ELASTICSEARCH_LOG_LEVEL: info
     depends_on:
       - elasticsearch
     volumes:

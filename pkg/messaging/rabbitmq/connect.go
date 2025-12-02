@@ -8,7 +8,6 @@ import (
 
 func Connect() *RabbitMQ {
 	conf := config.Get()
-	fmt.Println("RabbitMQUrl", conf.RabbitMQUrl())
 
 	conn, err := NewRabbitMQ(conf.RabbitMQUrl())
 	if err != nil {

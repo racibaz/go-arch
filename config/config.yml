@@ -37,7 +37,7 @@ rabbitmq:
   username: "guest"
   password: "guest"
   port: "5672"
-  test_port: "5673"
+  test_port: "5672"
   docker_host: "rabbitmq" # for docker development
   local_host: "localhost" # for local development
 
