@@ -126,6 +126,12 @@ To run database migrations using Makefile commands inside the container shell:
 ```bash
 make db_migrate_up
 ```
+Elasticsearch Enrollment Token & Kibana Verification Code:
+```bash
+docker exec -it elasticsearch bin/elasticsearch-create-enrollment-token --scope kibana
+docker exec -it kibana bin/kibana-verification-code
+```
+
 
 ### Makefile Commands
 ```bash
@@ -320,6 +326,7 @@ make generate_proto
 
 ### Kibana UI
 `http://127.0.0.1:5601/app/home#/`
+
 
 ![Jaeger UI](docs/images/kibana.png)
 
