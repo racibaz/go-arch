@@ -19,6 +19,13 @@ WORKDIR /app
 # Install migrate tool for database migrations
 RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
+# Install mockery tool for generating mocks
+RUN go install github.com/vektra/mockery/v2@latest
+
+# Install swag tool for API documentation
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+ENV PATH="/go/bin:${PATH}"
+
 # Install Air for live reloading
 RUN go install github.com/air-verse/air@latest
 
@@ -30,6 +37,9 @@ RUN go mod download
 
 # Copy the source from the current directory to the Working Directory inside the container
 COPY . .
+
+# Generate Swagger documentation
+RUN swag init -o api/openapi-spec
 
 # Build the Go app
 #RUN go build -o main .

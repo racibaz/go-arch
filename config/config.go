@@ -87,7 +87,6 @@ func (config *Config) RabbitMQUrl() string {
 	switch config.App.Env {
 	case "local":
 		host = config.App.Local
-
 	}
 
 	return fmt.Sprintf("amqp://%s:%s@%s:%s/",

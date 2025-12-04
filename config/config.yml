@@ -11,8 +11,8 @@ server:
   port: "3000"
 
 db:
-  host: "postgres" #for docker development
-  #host: "localhost" #for local development
+  #host: "postgres" #for docker development
+  host: "localhost" #for local development
   port: "5432"
   test_port: "5433"
   username: "postgres"
@@ -33,8 +33,8 @@ grpc:
 
 
 rabbitmq:
-  host: "rabbitmq" # for docker development
-  #host: "localhost" # for local development
+  #host: "rabbitmq" # for docker development
+  host: "localhost" # for local development
   default_exchange: "default_exchange"
   default_queue: "default_queue"
   username: "guest"

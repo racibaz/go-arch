@@ -2,9 +2,10 @@
 set -e
 
 #echo "Starting server with Air..."
-exec air -d
+#exec air -d
 #go run main.go
 
+make run
 # In prod, you can use:
 #echo "Starting server"
 #./main
