@@ -165,6 +165,87 @@ make seed
 make mock
 ```
 
+
+#### Generate gRPC Code
+```bash
+make generate_proto
+```
+
+### Swagger Documentation UI
+`http://127.0.0.1:3001/swagger/index.html#`
+
+#### Generate Swagger Documentation
+```bash
+  make generate_swagger
+```
+
+![Swagger UI](docs/images/swagger_ui.png)
+
+
+### RabbitMQ UI
+`http://localhost:15672/#/`
+
+#### Username: guest
+#### Password: guest
+
+![RabbitMQ UI](docs/images/rabbitmq1.png)
+![RabbitMQ UI](docs/images/rabbitmq2.png)
+
+
+### Prometheus UI
+#### `http://localhost:9090/`
+#### `http://localhost:3001/metrics`
+
+![Prometheus UI](docs/images/prometheus.png)
+
+### Grafana UI
+`http://localhost:3002/login`
+
+#### Username: admin
+#### Password: admin
+
+![Grafana UI](docs/images/grafana.png)
+
+### Jaeger UI
+
+`http://localhost:16686/search`
+
+![Jaeger UI](docs/images/jaeger.png)
+
+### Elasticsearch
+`http://localhost:9200/`
+
+
+### Kibana UI
+`http://127.0.0.1:5601/app/home#/`
+
+
+![Jaeger UI](docs/images/kibana.png)
+
+
+
+## Dependencies
+- uuid: `github.com/google/uuid`
+- cli: `github.com/spf13/cobra`
+- config: `github.com/spf13/viper`
+- framework: `github.com/gin-gonic/gin`
+- protobuf: `github.com/golang/protobuf`
+- grpc: `google.golang.org/grpc`
+- grpc-gen: `google.golang.org/genproto/googleapis/rpc`
+- orm: `gorm.io/gorm`
+- live reload: `github.com/air-verse/air`
+- open api: `github.com/swaggo/swag`
+- open api gin: `github.com/swaggo/gin-swagger`
+- testing: `github.com/stretchr/testify`
+- mocking: `github.com/vektra/mockery`
+- logger: `github.com/uber-go/zap`
+- twilio: `github.com/twilio/twilio-go`
+- rabbitmq: `github.com/rabbitmq/amqp091-go`
+- migrations: `github.com/golang-migrate/migrate/v4`
+- prometheus: `github.com/prometheus/client_golang`
+- open telemetry: `go.opentelemetry.io/otel`
+- jaeger: `go.opentelemetry.io/otel/exporters/jaeger`
+
 ## Project Structure
 
 Minimal Structure
@@ -273,86 +354,6 @@ Expanded Structure
 
 
 ```
-
-#### Generate gRPC Code
-```bash
-make generate_proto
-```
-
-### Swagger Documentation UI
-`http://127.0.0.1:3001/swagger/index.html#`
-
-#### Generate Swagger Documentation
-```bash
-  make generate_swagger
-```
-
-![Swagger UI](docs/images/swagger_ui.png)
-
-
-### RabbitMQ UI
-`http://localhost:15672/#/`
-
-#### Username: guest
-#### Password: guest
-
-![RabbitMQ UI](docs/images/rabbitmq1.png)
-![RabbitMQ UI](docs/images/rabbitmq2.png)
-
-
-### Prometheus UI
-#### `http://localhost:9090/`
-#### `http://localhost:3001/metrics`
-
-![Prometheus UI](docs/images/prometheus.png)
-
-### Grafana UI
-`http://localhost:3002/login`
-
-#### Username: admin
-#### Password: admin
-
-![Grafana UI](docs/images/grafana.png)
-
-### Jaeger UI
-
-`http://localhost:16686/search`
-
-![Jaeger UI](docs/images/jaeger.png)
-
-### Elasticsearch
-`http://localhost:9200/`
-
-
-### Kibana UI
-`http://127.0.0.1:5601/app/home#/`
-
-
-![Jaeger UI](docs/images/kibana.png)
-
-
-
-## Dependencies
-- uuid: `github.com/google/uuid`
-- cli: `github.com/spf13/cobra`
-- config: `github.com/spf13/viper`
-- framework: `github.com/gin-gonic/gin`
-- protobuf: `github.com/golang/protobuf`
-- grpc: `google.golang.org/grpc`
-- grpc-gen: `google.golang.org/genproto/googleapis/rpc`
-- orm: `gorm.io/gorm`
-- live reload: `github.com/air-verse/air`
-- open api: `github.com/swaggo/swag`
-- open api gin: `github.com/swaggo/gin-swagger`
-- testing: `github.com/stretchr/testify`
-- mocking: `github.com/vektra/mockery`
-- logger: `github.com/uber-go/zap`
-- twilio: `github.com/twilio/twilio-go`
-- rabbitmq: `github.com/rabbitmq/amqp091-go`
-- migrations: `github.com/golang-migrate/migrate/v4`
-- prometheus: `github.com/prometheus/client_golang`
-- open telemetry: `go.opentelemetry.io/otel`
-- jaeger: `go.opentelemetry.io/otel/exporters/jaeger`
 
 
 ## 🛠 Roadmap / TODO
