@@ -28,7 +28,7 @@ func NewPostModule() *PostModule {
 	//repo := in_memory.New()
 	repo := gromPostRepo.New()         // Use GORM repository for persistence
 	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
-	rabbitmqConn := rabbitmqConn.Connect()
+	rabbitmqConn := rabbitmqConn.Connection()
 
 	messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)
 	/* todo we need to use processor in services to publish events after transaction is committed

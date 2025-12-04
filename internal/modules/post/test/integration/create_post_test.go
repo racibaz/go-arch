@@ -23,7 +23,7 @@ func TestCreatePostIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	rabbitmqConn := rabbitmqConn.Connect()
+	rabbitmqConn := rabbitmqConn.Connection()
 
 	messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)
 	uc := commands.NewCreatePostService(repo, logger, messagePublisher)
@@ -69,7 +69,7 @@ func TestCreatePostWithoutTitleIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	rabbitmqConn := rabbitmqConn.Connect()
+	rabbitmqConn := rabbitmqConn.Connection()
 
 	messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)
 	uc := commands.NewCreatePostService(repo, logger, messagePublisher)
@@ -111,7 +111,7 @@ func TestCreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	rabbitmqConn := rabbitmqConn.Connect()
+	rabbitmqConn := rabbitmqConn.Connection()
 	messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)
 	uc := commands.NewCreatePostService(repo, logger, messagePublisher)
 
@@ -153,7 +153,7 @@ func TestCreatePostWithTDescriptionLessTenLettersIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	rabbitmqConn := rabbitmqConn.Connect()
+	rabbitmqConn := rabbitmqConn.Connection()
 	messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)
 	uc := commands.NewCreatePostService(repo, logger, messagePublisher)
 
@@ -194,7 +194,7 @@ func TestCreatePostWithTContentLessTenLettersIntegration(t *testing.T) {
 	//Arrange
 	repo := inMemoryRepository.New()
 	logger, _ := logger.NewZapLogger()
-	rabbitmqConn := rabbitmqConn.Connect()
+	rabbitmqConn := rabbitmqConn.Connection()
 
 	messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)
 	uc := commands.NewCreatePostService(repo, logger, messagePublisher)

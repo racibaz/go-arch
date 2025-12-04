@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func Connect() *RabbitMQ {
+func Connect() {
 	conf := config.Get()
 
 	conn, err := NewRabbitMQ(conf.RabbitMQUrl())
@@ -15,6 +15,5 @@ func Connect() *RabbitMQ {
 	}
 
 	log.Println("Connected to RabbitMQ")
-
-	return conn
+	Conn = conn
 }
