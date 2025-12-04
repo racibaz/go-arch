@@ -21,6 +21,34 @@ Go-Arch provides a full-featured template for building modern backend services i
 
 Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork, configure, build — and go.
 
+## 📚 Table of Contents
+
+- [📖 Overview](#-overview)
+- [🧩 Build Your First Module](#build-your-first-module)
+- [📝 Notes](#notes)
+- [🐳 Run with Docker (air for live reload)](#run-with-docker-air-for-live-reload)
+- [🔧 Makefile Commands](#makefile-commands)
+- [📂 Project Structure](#project-structure)
+- [⚙️ Generate gRPC Code](#generate-grpc-code)
+- [📑 Swagger Documentation UI](#swagger-documentation-ui)
+    - [Generate Swagger Documentation](#generate-swagger-documentation)
+- [📬 RabbitMQ UI](#rabbitmq-ui)
+- [📡 Prometheus UI](#prometheus-ui)
+- [📊 Grafana UI](#grafana-ui)
+- [🔎 Jaeger UI](#jaeger-ui)
+- [🗄️ Elasticsearch](#elasticsearch)
+- [🌐 Kibana UI](#kibana-ui)
+- [📦 Dependencies](#dependencies)
+- [🛠 Roadmap / TODO](#-roadmap--todo)
+- [📬 Postman Collection](#-postman-collection)
+- [❌ Validation Error Example](#validation-error-example)
+- [✔️ Linters](#linters)
+- [🧪 Test](#test)
+- [🤝 Code of Conduct](#code-of-conduct)
+- [👥 Contributing](#contributing)
+- [📜 License](#license)
+
+
 ## 📖 Overview
 This project demonstrates clean architectural principles in Go, including:
 
@@ -49,32 +77,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **Postman Collection** for API testing
 - **EFK Stack** for logging
 
-## 📚 Table of Contents
 
-- [📖 Overview](#-overview)
-- [🧩 Build Your First Module](#build-your-first-module)
-- [📝 Notes](#notes)
-- [🐳 Run with Docker (air for live reload)](#run-with-docker-air-for-live-reload)
-- [🔧 Makefile Commands](#makefile-commands)
-- [📂 Project Structure](#project-structure)
-- [⚙️ Generate gRPC Code](#generate-grpc-code)
-- [📑 Swagger Documentation UI](#swagger-documentation-ui)
-     - [Generate Swagger Documentation](#generate-swagger-documentation)
-- [📬 RabbitMQ UI](#rabbitmq-ui)
-- [📡 Prometheus UI](#prometheus-ui)
-- [📊 Grafana UI](#grafana-ui)
-- [🔎 Jaeger UI](#jaeger-ui)
-- [🗄️ Elasticsearch](#elasticsearch)
-- [🌐 Kibana UI](#kibana-ui)
-- [📦 Dependencies](#dependencies)
-- [🛠 Roadmap / TODO](#-roadmap--todo)
-- [📬 Postman Collection](#-postman-collection)
-- [❌ Validation Error Example](#validation-error-example)
-- [✔️ Linters](#linters)
-- [🧪 Test](#test)
-- [🤝 Code of Conduct](#code-of-conduct)
-- [👥 Contributing](#contributing)
-- [📜 License](#license)
 
 ## Build Your First Module
 To create a new module, follow these steps:
