@@ -17,6 +17,7 @@ type App struct {
 	Env      string `mapstructure:"env"`
 	LogLevel string `mapstructure:"log_level"`
 	Version  string `mapstructure:"version"`
+	Local    string `mapstructure:"local"`
 }
 
 type Server struct {
@@ -45,61 +46,54 @@ type Grpc struct {
 }
 
 type RabbitMQ struct {
+	Host            string `mapstructure:"host"`
 	DefaultExchange string `mapstructure:"default_exchange"`
 	DefaultQueue    string `mapstructure:"default_queue"`
 	Username        string `mapstructure:"username"`
 	Password        string `mapstructure:"password"`
 	Port            string `mapstructure:"port"`
 	TestPort        string `mapstructure:"test_port"`
-	DockerHost      string `mapstructure:"docker_host"`
-	LocalHost       string `mapstructure:"local_host"`
 }
 
 func (config *Config) DatabaseUrl() string {
 
-	var dbPort = config.DB.Port
+	port := config.DB.Port
+	host := config.DB.Host
 
 	switch config.App.Env {
 	case "test":
-		dbPort = config.DB.TestPort
-	case "dev", "local":
-		dbPort = config.DB.Port
-	case "prod":
-		dbPort = config.DB.Port
+		port = config.DB.TestPort
+		host = config.DB.Host
+	case "local":
+		port = config.DB.Port
+		host = config.App.Local
+	default:
+		port = config.DB.Port
 	}
 
 	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
-		config.DB.Host,
+		host,
 		config.DB.Username,
 		config.DB.Password,
 		config.DB.Name,
-		dbPort,
+		port,
 	)
 }
 
 func (config *Config) RabbitMQUrl() string {
 
-	var host, port string = "", ""
+	host := config.RabbitMQ.Host
 
 	switch config.App.Env {
-	case "test":
-		port = config.RabbitMQ.TestPort
-		host = config.RabbitMQ.DockerHost
 	case "local":
-		port = config.RabbitMQ.TestPort
-		host = config.RabbitMQ.LocalHost
-	case "dev":
-		port = config.RabbitMQ.TestPort
-		host = config.RabbitMQ.DockerHost
-	case "prod":
-		port = config.RabbitMQ.Port
-		host = config.RabbitMQ.DockerHost
+		host = config.App.Local
+
 	}
 
 	return fmt.Sprintf("amqp://%s:%s@%s:%s/",
 		config.RabbitMQ.Username,
 		config.RabbitMQ.Password,
 		host,
-		port,
+		config.RabbitMQ.Port,
 	)
 }
