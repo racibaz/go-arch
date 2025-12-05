@@ -109,15 +109,17 @@ To create a new module, follow these steps:
     2. Using the `cmd/migrate` CLI application provided in the project.
        The Command example:
         - make migrate
+    3. If you want use air (live reload), you can change the `entrypoint.sh` file in the root directory.
+        - change the command `make run` to `exec air` or `exec air -d` 
 
 
-### Run with Docker (air for live reload)
+### Run with Docker
 ```bash
 git clone https://github.com/racibaz/go-arch.git
 
 cd go-arch
 
-mv .env.example .env
+cp .env.example .env
 
 docker compose up --build
 ```
@@ -128,6 +130,7 @@ docker exec -it Blog-app sh
 To run database migrations using Makefile commands inside the container shell:
 ```bash
 make db_migrate_up
+make seed
 ```
 Elasticsearch Enrollment Token & Kibana Verification Code:
 ```bash
@@ -417,7 +420,10 @@ go vet ./...
 ```
 
 ## Test
-
+For testing, change the APP_ENV variable to "test" in the .env file.
+```bash 
+APP_ENV="test" 
+```
 ```bash
 go test -v ./...
 ```
