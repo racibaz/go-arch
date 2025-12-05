@@ -1,0 +1,28 @@
+name: "Continuous Integration"
+on:
+  push:
+    branches:
+      - main
+      - 'release/*'
+  pull_request:
+    branches:
+      - main
+jobs:
+    run_code_checks:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout repository code
+            uses: actions/checkout@v5
+          - name: Setup Go
+            uses: actions/setup-go@v6
+            with:
+              go-version-file: 'go.mod'
+          - run: go version
+          - name: Run Linting
+            run: |
+              go vet ./...
+          - name: Run Tests
+            run: |
+              go test -v ./...
+              go test -v -cover ./...
+
