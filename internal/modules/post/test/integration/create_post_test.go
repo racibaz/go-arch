@@ -33,6 +33,8 @@ var suite TestSuite
 func TestMain(m *testing.M) {
 	// ---- SETUP ----
 
+	os.Setenv("APP_ENV", "test")
+
 	// Config
 	config.Set("../../../../../config/", "../../../../../.env")
 
