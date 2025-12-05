@@ -12,7 +12,7 @@ import (
 )
 
 func Serve() {
-	config.Set()
+	config.Set("./config", "./.env")
 
 	database.Connect()
 

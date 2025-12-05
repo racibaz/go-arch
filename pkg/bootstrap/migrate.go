@@ -7,7 +7,7 @@ import (
 )
 
 func Migrate() {
-	config.Set()
+	config.Set("./config", "./.env")
 
 	database.Connect()
 
