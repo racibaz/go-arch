@@ -10,6 +10,15 @@ on:
 jobs:
     run_code_checks:
         runs-on: ubuntu-latest
+
+        services:
+          rabbitmq:
+            image: rabbitmq:3-management
+            ports:
+              - 5672:5672
+              - 15672:15672
+            options: --health-cmd "rabbitmqctl status" --health-interval 5s --health-timeout 10s
+
         steps:
           - name: Checkout repository code
             uses: actions/checkout@v5
