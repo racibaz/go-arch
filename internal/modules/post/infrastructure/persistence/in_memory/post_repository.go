@@ -10,22 +10,22 @@ import (
 	"sync"
 )
 
-// InMemoryPostRepository Secondary adapter: InMemory implementation
-type InMemoryPostRepository struct {
+// Repository Secondary adapter: InMemory implementation
+type Repository struct {
 	posts map[uuid.Uuid]*domain.Post
 	sync.Mutex
 }
 
-var _ ports.PostRepository = (*InMemoryPostRepository)(nil)
+var _ ports.PostRepository = (*Repository)(nil)
 
-func New() *InMemoryPostRepository {
-	return &InMemoryPostRepository{
+func New() *Repository {
+	return &Repository{
 		posts: make(map[uuid.Uuid]*domain.Post),
 	}
 }
 
 // TODO it should return mapper or aggregate root
-func (pr *InMemoryPostRepository) Save(ctx context.Context, post *domain.Post) error {
+func (pr *Repository) Save(ctx context.Context, post *domain.Post) error {
 	pr.Mutex.Lock()
 	defer pr.Mutex.Unlock()
 
@@ -50,7 +50,7 @@ func (pr *InMemoryPostRepository) Save(ctx context.Context, post *domain.Post) e
 	return nil
 }
 
-func (pr *InMemoryPostRepository) GetByID(ctx context.Context, id string) (*domain.Post, error) {
+func (pr *Repository) GetByID(ctx context.Context, id string) (*domain.Post, error) {
 
 	postID, err := uuid.Parse(id)
 	if err != nil {
@@ -60,7 +60,6 @@ func (pr *InMemoryPostRepository) GetByID(ctx context.Context, id string) (*doma
 	if id == "" {
 		return nil, errors.New("post ID cannot be nil")
 	}
-	//TODO post gelmiyor slice olabilir..
 
 	exists := pr.posts[postID]
 
@@ -71,22 +70,22 @@ func (pr *InMemoryPostRepository) GetByID(ctx context.Context, id string) (*doma
 	return exists, nil
 }
 
-func (pr *InMemoryPostRepository) Update(ctx context.Context, post *domain.Post) error {
+func (pr *Repository) Update(ctx context.Context, post *domain.Post) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (pr *InMemoryPostRepository) Delete(ctx context.Context, id string) error {
+func (pr *Repository) Delete(ctx context.Context, id string) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (pr *InMemoryPostRepository) List(ctx context.Context) ([]*domain.Post, error) {
+func (pr *Repository) List(ctx context.Context) ([]*domain.Post, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (repo *InMemoryPostRepository) IsExists(ctx context.Context, title, description string) (bool, error) {
+func (repo *Repository) IsExists(ctx context.Context, title, description string) (bool, error) {
 
 	//TODO implement me
 	return false, nil

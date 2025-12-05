@@ -85,14 +85,18 @@ func (config *Config) RabbitMQUrl() string {
 	host := config.RabbitMQ.Host
 
 	switch config.App.Env {
+	case "test":
+		host = config.App.Local
 	case "local":
 		host = config.App.Local
 	}
 
-	return fmt.Sprintf("amqp://%s:%s@%s:%s/",
+	url := fmt.Sprintf("amqp://%s:%s@%s:%s/",
 		config.RabbitMQ.Username,
 		config.RabbitMQ.Password,
 		host,
 		config.RabbitMQ.Port,
 	)
+
+	return url
 }

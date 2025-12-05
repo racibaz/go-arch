@@ -196,5 +196,8 @@ func (r *RabbitMQ) publish(ctx context.Context, exchange, routingKey string, msg
 }
 
 func (r *RabbitMQ) Close() {
-	r.conn.Close()
+	err := r.conn.Close()
+	if err != nil {
+		return
+	}
 }
