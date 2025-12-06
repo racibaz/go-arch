@@ -8,6 +8,10 @@
   <img src="https://img.shields.io/docker/pulls/racibaz/go-arch" alt="Docker Image" />
   &nbsp;
   <img src="https://img.shields.io/github/license/racibaz/go-arch" alt="License" />
+
+  <img src="https://img.shields.io/github/repo-size/racibaz/go-arch" alt="Repo Size" />
+
+  <img src="https://img.shields.io/badge/Coverage-0%25-red" alt="Coverage" />
 </p>
 
 # Go-Arch
@@ -183,14 +187,13 @@ make seed
 make mock
 ```
 
-
 #### Generate gRPC Code
 ```bash
 make generate_proto
 ```
 
 ### Swagger Documentation UI
-`http://127.0.0.1:3001/swagger/index.html#`
+http://127.0.0.1:3001/swagger/index.html#
 
 #### Generate Swagger Documentation
 ```bash
@@ -201,7 +204,7 @@ make generate_proto
 
 
 ### RabbitMQ UI
-`http://localhost:15672/#/`
+http://localhost:15672/#/
 
 #### Username: guest
 #### Password: guest
@@ -211,13 +214,13 @@ make generate_proto
 
 
 ### Prometheus UI
-#### `http://localhost:9090/`
-#### `http://localhost:3001/metrics`
+#### http://localhost:9090/
+#### http://localhost:3001/metrics
 
 ![Prometheus UI](docs/images/prometheus.png)
 
 ### Grafana UI
-`http://localhost:3002/login`
+http://localhost:3002/login
 
 #### Username: admin
 #### Password: admin
@@ -226,16 +229,16 @@ make generate_proto
 
 ### Jaeger UI
 
-`http://localhost:16686/search`
+http://localhost:16686/search
 
 ![Jaeger UI](docs/images/jaeger.png)
 
 ### Elasticsearch
-`http://localhost:9200/`
+http://localhost:9200/
 
 
 ### Kibana UI
-`http://127.0.0.1:5601/app/home#/`
+http://127.0.0.1:5601/app/home#/
 
 
 ![Jaeger UI](docs/images/kibana.png)
@@ -382,6 +385,7 @@ Expanded Structure
 - [x] EFK Stack for logging
 - [x] Single environment (override config.yaml file with .env file)
 - [x] Alternative migration usage with cmd/migrate CLI app and golang-migrate package
+- [x] GitHub Actions Workflow for CI
 - [ ] Add more unit tests
 - [ ] Add more integration tests
 - [ ] Add more end-to-end tests
@@ -390,7 +394,6 @@ Expanded Structure
 - [ ] Add more gRPC services
 - [ ] MongoDB integration
 - [ ] Add correlationId support
-- [ ] GitHub Actions Workflow for CI/CD
 - [ ] Add Auth Module
 - [ ] Kubernetes deployment manifests
 - [ ] Helm charts for easy deployment
