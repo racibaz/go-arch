@@ -26,30 +26,24 @@ jobs:
             uses: actions/setup-go@v6
             with:
               go-version-file: 'go.mod'
-          - run: Go Version
-
+          - run: go version
           - name: Create .env for CI
             run: |
               echo "APP_ENV=test" >> .env
-
           - name: Run Linting
             run: |
               go vet ./...
-
           - name: Run Tests
             run: |
               go test -v ./...
               go test -v -cover ./...
-
           - name: Run Tests With Coverage
             run: |
               go test -v -coverprofile=coverage.out ./...
               go tool cover -func=coverage.out
-
           - name: Generate HTML Coverage Report
             run: |
               go tool cover -html=coverage.out -o coverage.html
-
           - name: Upload Coverage Artifacts
             uses: actions/upload-artifact@v4
             with:
@@ -57,4 +51,3 @@ jobs:
               path: |
                 coverage.out
                 coverage.html
-
