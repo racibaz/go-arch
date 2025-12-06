@@ -3,7 +3,7 @@ app:
   debug: "true"
   env: "dev" # local, dev, prod, test
   log_level: "debug"
-  version: "1.0.0"
+  version: "0.1.0"
   local: "localhost" # for local development
 
 server:

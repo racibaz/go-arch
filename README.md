@@ -138,6 +138,12 @@ docker exec -it elasticsearch bin/elasticsearch-create-enrollment-token --scope 
 docker exec -it kibana bin/kibana-verification-code
 ```
 
+### Running Modes
+You can set the application environment by changing the `APP_ENV` variable in the `.env` file.
+- "dev"
+- "local"
+- "test"
+- "prod"
 
 ### Makefile Commands
 ```bash
@@ -364,6 +370,12 @@ Expanded Structure
 
 ## 🛠 Roadmap / TODO
 
+- [x] Grafana & Prometheus integration
+- [x] OpenTelemetry & Jaeger integration
+- [x] Tracing with Jaeger
+- [x] EFK Stack for logging
+- [x] Single environment (override config.yaml file with .env file)
+- [x] Alternative migration usage with cmd/migrate CLI app and golang-migrate package
 - [ ] Add more unit tests
 - [ ] Add more integration tests
 - [ ] Add more end-to-end tests
@@ -371,15 +383,9 @@ Expanded Structure
 - [ ] Add GraphQL API
 - [ ] Add more gRPC services
 - [ ] MongoDB integration
-- [x] Grafana & Prometheus integration
-- [x] OpenTelemetry & Jaeger integration
-- [x] Tracing with Jaeger
 - [ ] Add correlationId support
 - [ ] GitHub Actions Workflow for CI/CD
-- [x] EFK Stack for logging
-- [x] Single environment (override config.yaml file with .env file)
-- [ ] Add Auth Module 
-- [x] Alternative migration usage with cmd/migrate CLI app and golang-migrate package
+- [ ] Add Auth Module
 - [ ] Kubernetes deployment manifests
 - [ ] Helm charts for easy deployment
 - [ ] Support for more notification channels (e.g., Email, Push Notifications)

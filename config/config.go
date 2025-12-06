@@ -1,6 +1,9 @@
 package config
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+)
 
 type Config struct {
 	App      App      `mapstructure:"app"`
@@ -99,4 +102,23 @@ func (config *Config) RabbitMQUrl() string {
 	)
 
 	return url
+}
+
+func (config *Config) GinMode() string {
+	var mode = gin.DebugMode
+
+	switch config.App.Env {
+	case "test":
+		mode = gin.TestMode
+	case "local":
+		mode = gin.DebugMode
+	case "prod":
+		mode = gin.ReleaseMode
+	case "debug":
+		mode = gin.DebugMode
+	default:
+		mode = gin.DebugMode
+	}
+
+	return mode
 }
