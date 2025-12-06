@@ -139,6 +139,9 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enrollment.enabled=true
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
     ports:
       - "9200:9200"
     networks:
@@ -180,6 +183,7 @@ services:
       - "5601:5601"
     environment:
       ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+      ELASTICSEARCH_SSL_VERIFICATIONMODE: none
     networks:
       - app-network
     depends_on:
