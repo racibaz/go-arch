@@ -138,12 +138,18 @@ docker exec -it elasticsearch bin/elasticsearch-create-enrollment-token --scope 
 docker exec -it kibana bin/kibana-verification-code
 ```
 
-### Running Modes
+### Application Runtime Modes
 You can set the application environment by changing the `APP_ENV` variable in the `.env` file.
-- "dev"
-- "local"
-- "test"
-- "prod"
+
+
+| **APP_ENV** | **Gin Mode** | **Description**                                                                |
+| ----------- | ------------ | ------------------------------------------------------------------------------ |
+| `local`     | `debug`      | Local development mode with full debug logs and detailed error output.         |
+| `dev`       | `debug`      | Development mode; debugging features and verbose logs are enabled.             |
+| `test`      | `test`       | Test mode with minimal logs, optimized for automated tests.                    |
+| `prod`      | `release`    | Production mode; highest performance with simplified logs and no debug output. |
+
+
 
 ### Makefile Commands
 ```bash
@@ -330,7 +336,7 @@ Expanded Structure
 │   │   │   │   ├── grpc
 │   │   │   │   │   └── proto
 │   │   │   │   ├── http
-│   │   │   │   │   ├── reponse_dtos
+│   │   │   │   │   ├── response_dtos
 │   │   │   │   │   └── request_dtos
 │   │   │   └── test
 │   │   │       └── integration
