@@ -52,14 +52,14 @@ jobs:
 
           - name: Generate HTML Coverage Report
             run: |
-              go tool cover -html=coverage.out -o coverage.html
+              go tool cover -html=coverage.txt -o coverage.html
 
           - name: Upload Coverage Artifacts
             uses: actions/upload-artifact@v4
             with:
               name: coverage-reports
               path: |
-                coverage.out
+                coverage.txt
                 coverage.html
 
           - name: Upload coverage reports to Codecov
