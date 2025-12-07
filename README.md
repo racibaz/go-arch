@@ -11,7 +11,10 @@
 
   <img src="https://img.shields.io/github/repo-size/racibaz/go-arch" alt="Repo Size" />
 
-  <img src="https://img.shields.io/badge/Coverage-0%25-red" alt="Coverage" />
+<a href="https://codecov.io/github/racibaz/go-arch" > 
+ <img src="https://codecov.io/github/racibaz/go-arch/graph/badge.svg?token=2YAP23FY1G"/> 
+ </a>
+
 </p>
 
 # Go-Arch
