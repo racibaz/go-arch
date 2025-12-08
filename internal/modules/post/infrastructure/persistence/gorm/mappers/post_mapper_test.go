@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func TestPostMapper_ToDomain(t *testing.T) {
+func Test_Post_PostMapper_ToDomain(t *testing.T) {
 
 	testCases := []struct {
 		name string
@@ -60,7 +60,7 @@ func TestPostMapper_ToDomain(t *testing.T) {
 	}
 }
 
-func TestPostMapper_ToPersistence(t *testing.T) {
+func Test_Post_PostMapper_ToPersistence(t *testing.T) {
 
 	testCases := []struct {
 		name string

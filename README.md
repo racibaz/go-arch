@@ -2,11 +2,11 @@
   <a href="https://goreportcard.com/report/github.com/racibaz/go-arch">
     <img src="https://goreportcard.com/badge/github.com/racibaz/go-arch" alt="Go Report Card" />
   </a>
-  &nbsp;
+
   <img src="https://img.shields.io/github/go-mod/go-version/racibaz/go-arch" alt="Go Version" />
-  &nbsp;
+
   <img src="https://img.shields.io/docker/pulls/racibaz/go-arch" alt="Docker Image" />
-  &nbsp;
+
   <img src="https://img.shields.io/github/license/racibaz/go-arch" alt="License" />
 
   <img src="https://img.shields.io/github/repo-size/racibaz/go-arch" alt="Repo Size" />
@@ -14,6 +14,7 @@
 <a href="https://codecov.io/github/racibaz/go-arch" > 
  <img src="https://codecov.io/github/racibaz/go-arch/graph/badge.svg?token=2YAP23FY1G"/> 
  </a>
+
 
 </p>
 

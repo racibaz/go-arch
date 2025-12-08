@@ -32,7 +32,6 @@ var suite TestSuite
 
 func TestMain(m *testing.M) {
 	// ---- SETUP ----
-
 	os.Setenv("APP_ENV", "test")
 
 	// Config
@@ -75,7 +74,7 @@ func TestMain(m *testing.M) {
 	os.Exit(code)
 }
 
-func TestCreatePostIntegration(t *testing.T) {
+func Test_Post_PostCreatePostIntegration(t *testing.T) {
 	// Arrange
 	uc := commands.NewCreatePostService(suite.Repo, suite.Logger, suite.MessagePublisher)
 
@@ -105,7 +104,7 @@ func TestCreatePostIntegration(t *testing.T) {
 	assert.Contains(t, w.Body.String(), "Post created successfully")
 }
 
-func TestCreatePostWithoutTitleIntegration(t *testing.T) {
+func Test_Post_PostCreatePostWithoutTitleIntegration(t *testing.T) {
 
 	// Arrange
 	uc := commands.NewCreatePostService(suite.Repo, suite.Logger, suite.MessagePublisher)
@@ -135,7 +134,7 @@ func TestCreatePostWithoutTitleIntegration(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
-func TestCreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
+func Test_Post_CreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
 
 	// Arrange
 	uc := commands.NewCreatePostService(suite.Repo, suite.Logger, suite.MessagePublisher)
@@ -166,7 +165,7 @@ func TestCreatePostWithTitleLessTenLettersIntegration(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
-func TestCreatePostWithTDescriptionLessTenLettersIntegration(t *testing.T) {
+func Test_Post_CreatePostWithTDescriptionLessTenLettersIntegration(t *testing.T) {
 
 	// Arrange
 	uc := commands.NewCreatePostService(suite.Repo, suite.Logger, suite.MessagePublisher)
@@ -196,7 +195,7 @@ func TestCreatePostWithTDescriptionLessTenLettersIntegration(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
-func TestCreatePostWithTContentLessTenLettersIntegration(t *testing.T) {
+func Test_Post_CreatePostWithTContentLessTenLettersIntegration(t *testing.T) {
 
 	// Arrange
 	uc := commands.NewCreatePostService(suite.Repo, suite.Logger, suite.MessagePublisher)

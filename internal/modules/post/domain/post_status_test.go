@@ -1,13 +1,14 @@
 package domain
 
 import (
+	"fmt"
 	"github.com/racibaz/go-arch/pkg/es"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
 
-func TestPostStatus_EqualTo(t *testing.T) {
+func Test_Post_PostStatus_EqualTo(t *testing.T) {
 
 	testCases := []struct {
 		name      string
@@ -81,7 +82,7 @@ func TestPostStatus_EqualTo(t *testing.T) {
 	}
 }
 
-func TestPostStatus_ToInt(t *testing.T) {
+func Test_Post_PostStatus_ToInt(t *testing.T) {
 
 	testCases := []struct {
 		name         string
@@ -185,7 +186,7 @@ func TestPostStatus_ToInt(t *testing.T) {
 	}
 }
 
-func TestPostStatus_String(t *testing.T) {
+func Test_Post_PostStatus_String(t *testing.T) {
 
 	testCases := []struct {
 		name   string
@@ -253,11 +254,28 @@ func TestPostStatus_String(t *testing.T) {
 			text:   "draft",
 			result: false,
 		},
+		{
+			name: "unknown post status",
+			post: Post{
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
+				Title:       "title with more than 10 characters",
+				Description: "Description",
+				Content:     "content content content",
+				Status:      -1,
+				CreatedAt:   time.Now(),
+				UpdatedAt:   time.Now(),
+			},
+			text:   "unknown",
+			result: true,
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 
 			text := tc.post.Status.String()
+
+			fmt.Printf("Post Status: %s\n", text)
 
 			if tc.result {
 				assert.Equal(t, text, tc.text)
@@ -268,7 +286,7 @@ func TestPostStatus_String(t *testing.T) {
 	}
 }
 
-func TestPostStatus(t *testing.T) {
+func Test_Post_PostStatus(t *testing.T) {
 
 	testCases := []struct {
 		name   string

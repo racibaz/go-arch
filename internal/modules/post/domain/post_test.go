@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func TestPost_Create(t *testing.T) {
+func Test_Post_Post_Create(t *testing.T) {
 
 	testCases := []struct {
 		name string
@@ -96,6 +96,19 @@ func TestPost_Create(t *testing.T) {
 				UpdatedAt:   time.Now(),
 			},
 			err: ErrInvalidStatus,
+		},
+		{
+			name: "without user id",
+			post: Post{
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				Title:       "title with more than 10 characters",
+				Description: "Description with more than 10 characters",
+				Content:     "content content content",
+				Status:      PostStatusPublished,
+				CreatedAt:   time.Now(),
+				UpdatedAt:   time.Now(),
+			},
+			err: ErrEmptyUserId,
 		},
 	}
 	for _, tc := range testCases {
