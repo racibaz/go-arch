@@ -2,6 +2,7 @@ package trace
 
 import (
 	"context"
+	"github.com/racibaz/go-arch/pkg/config"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/propagation"
@@ -11,10 +12,11 @@ import (
 )
 
 func InitTracer() (*trace.TracerProvider, error) {
+	config := config.Get()
 
 	exporter, err := otlptracehttp.New(
 		context.Background(),
-		otlptracehttp.WithEndpoint("jaeger:4318"),
+		otlptracehttp.WithEndpoint(config.JaegerUrl()),
 		otlptracehttp.WithURLPath("/v1/traces"),
 		otlptracehttp.WithInsecure(),
 	)

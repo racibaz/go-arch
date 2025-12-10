@@ -1,9 +1,5 @@
 package config
 
-import (
-	"github.com/racibaz/go-arch/config"
-)
-
-func Get() config.Config {
+func Get() Config {
 	return configurations
 }

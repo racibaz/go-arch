@@ -1,16 +1,19 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
-	"github.com/spf13/viper"
+	"fmt"
 	"log"
 	"strings"
+
+	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
 )
 
-func Set(configPath, envFilePath string) {
-
+func Set(configPath, envFilePath string) error {
 	// load .env before viper
-	godotenv.Load(envFilePath)
+	if err := godotenv.Load(envFilePath); err != nil {
+		log.Printf("Warning: unable to load .env file: %v", err)
+	}
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
@@ -21,11 +24,12 @@ func Set(configPath, envFilePath string) {
 	viper.SetEnvKeyReplacer(strings.NewReplacer(`.`, `_`))
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal("Error reading the configs")
+		return fmt.Errorf("error reading config: %w", err)
 	}
 
-	err := viper.Unmarshal(&configurations)
-	if err != nil {
-		log.Fatal("unable to decode into struct")
+	if err := viper.Unmarshal(&configurations); err != nil {
+		return fmt.Errorf("unable to decode into struct: %w", err)
 	}
+
+	return nil
 }

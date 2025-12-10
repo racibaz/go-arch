@@ -12,6 +12,7 @@ type Config struct {
 	Grpc     Grpc     `mapstructure:"grpc"`
 	Swagger  Swagger  `mapstructure:"swagger"`
 	RabbitMQ RabbitMQ `mapstructure:"rabbitmq"`
+	Jaeger   Jaeger   `mapstructure:"jaeger"`
 }
 
 type App struct {
@@ -58,6 +59,11 @@ type RabbitMQ struct {
 	TestPort        string `mapstructure:"test_port"`
 }
 
+type Jaeger struct {
+	Host string `mapstructure:"host"`
+	Port string `mapstructure:"port"`
+}
+
 func (config *Config) DatabaseUrl() string {
 
 	port := config.DB.Port
@@ -65,7 +71,8 @@ func (config *Config) DatabaseUrl() string {
 
 	switch config.App.Env {
 	case "test":
-		port = config.DB.TestPort
+		//todo use the test db
+		port = config.DB.Port
 		host = config.DB.Host
 	case "local":
 		port = config.DB.Port
@@ -99,6 +106,25 @@ func (config *Config) RabbitMQUrl() string {
 		config.RabbitMQ.Password,
 		host,
 		config.RabbitMQ.Port,
+	)
+
+	return url
+}
+
+func (config *Config) JaegerUrl() string {
+
+	host := config.Jaeger.Host
+
+	switch config.App.Env {
+	case "test":
+		host = config.App.Local
+	case "local":
+		host = config.App.Local
+	}
+
+	url := fmt.Sprintf("%s:%s",
+		host,
+		config.Jaeger.Port,
 	)
 
 	return url

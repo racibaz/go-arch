@@ -43,5 +43,8 @@ rabbitmq:
   test_port: "5672"
 
 
-
+jaeger:
+  host: "jaeger" # for docker development
+  #host: "localhost" # for local development
+  port: "4318"
 

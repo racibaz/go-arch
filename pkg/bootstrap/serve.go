@@ -14,14 +14,6 @@ import (
 func Serve() {
 	config.Set("./config", "./.env")
 
-	database.Connect()
-
-	rabbitmq.Connect()
-
-	routing.Init()
-
-	routing.RegisterRoutes()
-
 	// Initialize Tracer
 	tracerProvider, err := trace.InitTracer()
 	if err != nil {
@@ -34,6 +26,14 @@ func Serve() {
 	}()
 
 	log.Println("Tracer initialized")
+
+	database.Connect()
+
+	rabbitmq.Connect()
+
+	routing.Init()
+
+	routing.RegisterRoutes()
 
 	routing.Serve()
 

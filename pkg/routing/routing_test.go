@@ -27,6 +27,7 @@ func TestMain(m *testing.M) {
 
 	os.Exit(code)
 }
+
 func TestInit_SetsGinModeAndCreatesRouter(t *testing.T) {
 
 	// Act
