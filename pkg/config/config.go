@@ -73,7 +73,7 @@ func (config *Config) DatabaseUrl() string {
 	case "test":
 		//todo use the test db
 		port = config.DB.Port
-		host = config.App.Local
+		host = config.DB.Host
 	case "local":
 		port = config.DB.Port
 		host = config.App.Local
@@ -96,7 +96,7 @@ func (config *Config) RabbitMQUrl() string {
 
 	switch config.App.Env {
 	case "test":
-		host = config.App.Local
+		host = config.RabbitMQ.Host
 	case "local":
 		host = config.App.Local
 	}
