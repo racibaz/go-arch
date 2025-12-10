@@ -105,7 +105,7 @@ func (config *Config) RabbitMQConnectionString() string {
 
 	switch config.App.Env {
 	case "test":
-		host = config.RabbitMQ.Host
+		host = config.App.Local
 	case "local":
 		host = config.App.Local
 	}
