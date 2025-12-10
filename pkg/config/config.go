@@ -73,7 +73,7 @@ func (config *Config) DatabaseUrl() string {
 	case "test":
 		//todo use the test db
 		port = config.DB.Port
-		host = config.DB.Host
+		host = config.App.Local
 	case "local":
 		port = config.DB.Port
 		host = config.App.Local
