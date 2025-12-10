@@ -24,7 +24,13 @@ func getTestConfig() Config {
 			Password: "pass",
 			Host:     "localhost",
 			Port:     "9876",
-			TestPort: "9898",
+			Name:     "testdb",
+		},
+		TestDB: TestDB{
+			Username: "user",
+			Password: "pass",
+			Host:     "localhost",
+			Port:     "9877",
 			Name:     "testdb",
 		},
 		Grpc: Grpc{
@@ -54,49 +60,49 @@ func getTestConfig() Config {
 
 func TestConfig_DatabaseUrl(t *testing.T) {
 	cfg := getTestConfig()
-	dbUrl := cfg.DatabaseUrl()
+	dbUrl := cfg.DatabaseConnectionString()
 	if dbUrl == "" {
-		t.Fatalf("DatabaseUrl should not be empty")
+		t.Fatalf("DatabaseConnectionString should not be empty")
 	}
-	if !strings.Contains(dbUrl, cfg.DB.Port) {
-		t.Errorf("Expected port (%s) in DatabaseUrl, got: %s", cfg.DB.TestPort, dbUrl)
+	if !strings.Contains(dbUrl, cfg.TestDB.Port) {
+		t.Errorf("Expected port (%s) in DatabaseConnectionString, got: %s", cfg.TestDB.Port, dbUrl)
 	}
 	if !strings.Contains(dbUrl, cfg.DB.Username) {
-		t.Errorf("Expected username in DatabaseUrl, got: %s", dbUrl)
+		t.Errorf("Expected username in DatabaseConnectionString, got: %s", dbUrl)
 	}
 }
 
 func TestConfig_DatabaseUrl_LocalEnv(t *testing.T) {
 	cfg := getTestConfig()
 	cfg.App.Env = "local"
-	dbUrl := cfg.DatabaseUrl()
+	dbUrl := cfg.DatabaseConnectionString()
 	if !strings.Contains(dbUrl, cfg.App.Local) {
-		t.Errorf("Expected local host (%s) in DatabaseUrl, got: %s", cfg.App.Local, dbUrl)
+		t.Errorf("Expected local host (%s) in DatabaseConnectionString, got: %s", cfg.App.Local, dbUrl)
 	}
 }
 
 func TestConfig_RabbitMQUrl(t *testing.T) {
 	cfg := getTestConfig()
-	rmqUrl := cfg.RabbitMQUrl()
+	rmqUrl := cfg.RabbitMQConnectionString()
 	if rmqUrl == "" {
-		t.Fatalf("RabbitMQUrl should not be empty")
+		t.Fatalf("RabbitMQConnectionString should not be empty")
 	}
 	if !strings.Contains(rmqUrl, cfg.RabbitMQ.Username) || !strings.Contains(rmqUrl, cfg.RabbitMQ.Password) {
-		t.Errorf("User/pass not in RabbitMQUrl: %s", rmqUrl)
+		t.Errorf("User/pass not in RabbitMQConnectionString: %s", rmqUrl)
 	}
-	if !strings.Contains(rmqUrl, cfg.App.Local) {
+	if !strings.Contains(rmqUrl, cfg.RabbitMQ.Port) {
 		t.Errorf("Expected local host in test env, got: %s", rmqUrl)
 	}
 }
 
 func TestConfig_JaegerUrl(t *testing.T) {
 	cfg := getTestConfig()
-	jurl := cfg.JaegerUrl()
+	jurl := cfg.JaegerConnectionString()
 	if jurl == "" {
-		t.Fatalf("JaegerUrl should not be empty")
+		t.Fatalf("JaegerConnectionString should not be empty")
 	}
 	if !strings.Contains(jurl, cfg.Jaeger.Port) {
-		t.Errorf("Port not in JaegerUrl: %s", jurl)
+		t.Errorf("Port not in JaegerConnectionString: %s", jurl)
 	}
 	if !strings.Contains(jurl, cfg.App.Local) {
 		t.Errorf("Expected local host in test env, got: %s", jurl)

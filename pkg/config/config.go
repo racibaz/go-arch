@@ -13,6 +13,7 @@ type Config struct {
 	Swagger  Swagger  `mapstructure:"swagger"`
 	RabbitMQ RabbitMQ `mapstructure:"rabbitmq"`
 	Jaeger   Jaeger   `mapstructure:"jaeger"`
+	TestDB   TestDB   `mapstructure:"test_db"`
 }
 
 type App struct {
@@ -34,7 +35,14 @@ type DB struct {
 	Password string `mapstructure:"password"`
 	Host     string `mapstructure:"host"`
 	Port     string `mapstructure:"port"`
-	TestPort string `mapstructure:"test_port"`
+	Name     string `mapstructure:"name"`
+}
+
+type TestDB struct {
+	Username string `mapstructure:"username"`
+	Password string `mapstructure:"password"`
+	Host     string `mapstructure:"host"`
+	Port     string `mapstructure:"port"`
 	Name     string `mapstructure:"name"`
 }
 
@@ -64,16 +72,16 @@ type Jaeger struct {
 	Port string `mapstructure:"port"`
 }
 
-func (config *Config) DatabaseUrl() string {
+// DatabaseConnectionString constructs the database connection URL based on the environment.
+func (config *Config) DatabaseConnectionString() string {
 
 	port := config.DB.Port
 	host := config.DB.Host
 
 	switch config.App.Env {
 	case "test":
-		//todo use the test db
-		port = config.DB.Port
-		host = config.DB.Host
+		port = config.TestDB.Port
+		host = config.App.Local
 	case "local":
 		port = config.DB.Port
 		host = config.App.Local
@@ -90,7 +98,8 @@ func (config *Config) DatabaseUrl() string {
 	)
 }
 
-func (config *Config) RabbitMQUrl() string {
+// RabbitMQConnectionString constructs the RabbitMQ connection URL based on the environment.
+func (config *Config) RabbitMQConnectionString() string {
 
 	host := config.RabbitMQ.Host
 
@@ -101,17 +110,18 @@ func (config *Config) RabbitMQUrl() string {
 		host = config.App.Local
 	}
 
-	url := fmt.Sprintf("amqp://%s:%s@%s:%s/",
+	dsn := fmt.Sprintf("amqp://%s:%s@%s:%s/",
 		config.RabbitMQ.Username,
 		config.RabbitMQ.Password,
 		host,
 		config.RabbitMQ.Port,
 	)
 
-	return url
+	return dsn
 }
 
-func (config *Config) JaegerUrl() string {
+// JaegerConnectionString constructs the Jaeger connection URL based on the environment.
+func (config *Config) JaegerConnectionString() string {
 
 	host := config.Jaeger.Host
 
@@ -122,14 +132,15 @@ func (config *Config) JaegerUrl() string {
 		host = config.App.Local
 	}
 
-	url := fmt.Sprintf("%s:%s",
+	dsn := fmt.Sprintf("%s:%s",
 		host,
 		config.Jaeger.Port,
 	)
 
-	return url
+	return dsn
 }
 
+// GinMode returns the appropriate Gin mode based on the application environment.
 func (config *Config) GinMode() string {
 	var mode = gin.DebugMode
 

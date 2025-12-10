@@ -27,11 +27,11 @@ services:
     container_name: ${APP_NAME:-go-arch}-db-test
     restart: always
     ports:
-      - ${DB_TEST_PORT}:5433
+      - ${TEST_DB_PORT}:5433
     environment:
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASS}
-      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${TEST_DB_USER}
+      - POSTGRES_PASSWORD=${TEST_DB_PASS}
+      - POSTGRES_DB=${TEST_DB_NAME}
     networks:
       - app-network
 

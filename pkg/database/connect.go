@@ -11,7 +11,7 @@ import (
 func Connect() {
 	config := config.Get()
 
-	db, err := gorm.Open(postgres.Open(config.DatabaseUrl()), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(config.DatabaseConnectionString()), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal("Cannot connect to database", err)

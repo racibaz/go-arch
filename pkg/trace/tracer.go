@@ -16,7 +16,7 @@ func InitTracer() (*trace.TracerProvider, error) {
 
 	exporter, err := otlptracehttp.New(
 		context.Background(),
-		otlptracehttp.WithEndpoint(config.JaegerUrl()),
+		otlptracehttp.WithEndpoint(config.JaegerConnectionString()),
 		otlptracehttp.WithURLPath("/v1/traces"),
 		otlptracehttp.WithInsecure(),
 	)

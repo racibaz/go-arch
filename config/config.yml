@@ -19,6 +19,15 @@ db:
   password: "postgres"
   name: "go-arch"
 
+
+test_db:
+  host: "postgres-test" #for docker development
+  #host: "localhost" #for local development
+  port: "5433"
+  username: "postgres"
+  password: "postgres"
+  name: "go-arch"
+
 #It is separated from server configs maybe you want to use different host and port for swagger
 #in different directory such as cmd/swagger
 swagger:
