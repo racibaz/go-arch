@@ -407,6 +407,14 @@ Expanded Structure
 - [ ] Implement feature toggles
 
 
+## API Requests
+
+| Endpoint                    | HTTP Method |    Description    |
+|-----------------------------|:-----------:|:-----------------:|
+| `/api/v1/posts`             |   `POST`    |  `Create a post`  |
+| `/api/v1/posts/{{post_id}}` |    `GET`    |   `Get a post`    |
+| `/health`                   |    `GET`    | `Health endpoint` |
+| `/metrics`                  |    `GET`    |  `List metrics`   |
 
 ## 📬 Postman Collection
 [Download](docs/postman/baz-arch.postman_collection.json)
