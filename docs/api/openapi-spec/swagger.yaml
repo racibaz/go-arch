@@ -69,7 +69,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /health:
+  /api/health:
     get:
       consumes:
       - application/json

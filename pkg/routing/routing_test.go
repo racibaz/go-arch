@@ -49,7 +49,7 @@ func TestRegisterRoutes_CreatesRoutes(t *testing.T) {
 	RegisterRoutes()
 
 	// Act
-	req, _ := http.NewRequest("GET", "/health", nil)
+	req, _ := http.NewRequest("GET", "/api/health", nil)
 	w := httptest.NewRecorder()
 
 	GetRouter().ServeHTTP(w, req)

@@ -21,6 +21,7 @@
 # Go-Arch
 Go-Arch provides a full-featured template for building modern backend services in Go, combining:
 - Hexagonal (ports & adapters) architecture + Domain-Driven Design (DDD)
+- Modular structure
 - RESTful APIs and gRPC support
 - Database integration via Gorm + PostgreSQL + migrations
 - Message queue support (RabbitMQ) & async notifications
@@ -62,6 +63,7 @@ This project demonstrates clean architectural principles in Go, including:
 
 - **Hexagonal Architecture** for separation of concerns
 - **DDD** for domain modeling
+- **Modular Structure** for maintainability, etc
 - **TDD** for reliable, testable code
 - **RESTful APIs** 
 - **gRPC APIs**
@@ -413,7 +415,7 @@ Expanded Structure
 |-----------------------------|:-----------:|:-----------------:|
 | `/api/v1/posts`             |   `POST`    |  `Create a post`  |
 | `/api/v1/posts/{{post_id}}` |    `GET`    |   `Get a post`    |
-| `/health`                   |    `GET`    | `Health endpoint` |
+| `/api/health`               |    `GET`    | `Health endpoint` |
 | `/metrics`                  |    `GET`    |  `List metrics`   |
 
 ## 📬 Postman Collection
@@ -447,7 +449,7 @@ go vet ./...
 ```
 
 ## Test
-For testing, change the APP_ENV variable to "test" in the .env file.
+For testing, when you are working in you local, change the APP_ENV variable to "test" in the .env file.
 ```bash 
 APP_ENV="test" 
 ```

@@ -22,7 +22,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {string} ok
-// @Router /health [get]
+// @Router /api/health [get]
 func health(g *gin.Context) {
 	g.JSON(http.StatusOK, "ok")
 }
@@ -32,7 +32,7 @@ func Routes(router *gin.Engine) {
 	// Middleware to collect metrics
 	router.Use(prometheus.MetricsMiddleware)
 
-	// Prometheus metrics endpoint
+	// Prometheus' metrics endpoint
 	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	configs := config.Get()
@@ -47,5 +47,5 @@ func Routes(router *gin.Engine) {
 		ginSwagger.URL(url), // The url pointing to API definition
 		ginSwagger.DefaultModelsExpandDepth(-1))
 
-	router.GET("/health", health)
+	router.GET("/api/health", health)
 }
