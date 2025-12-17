@@ -3,6 +3,24 @@ export $(shell sed 's/=.*//' .env)
 
 DB_URL=postgresql://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=disable&search_path=public
 
+default: help
+
+help:
+	@echo "Makefile commands:"
+	@echo "  make run                   - Run the application"
+	@echo "  make migrate               - Run database migrations"
+	@echo "  make seed                  - Seed the database with initial data"
+	@echo "  make mock                  - Generate mocks using mockery"
+	@echo "  make generate_proto        - Generate gRPC protobuf code"
+	@echo "  make generate_swagger      - Generate Swagger documentation"
+	@echo "  make db_create_migration   - Create a new database migration"
+	@echo "  make db_migrate_up         - Apply all up database migrations"
+	@echo "  make db_migrate_down       - Apply all down database migrations"
+	@echo "  make db_migrate_drop       - Drop all database objects"
+	@echo "  make db_migrate_version    - Show current migration version"
+	@echo "  make db_migrate_force      - Force set migration version"
+
+
 run:
 	@go run main.go serve
 
