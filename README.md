@@ -206,7 +206,7 @@ http://127.0.0.1:3001/swagger/index.html#
   make generate_swagger
 ```
 
-![Swagger UI](docs/images/swagger_ui.png)
+![Swagger UI](https://github.com/user-attachments/assets/2fd68ccb-5e1e-406f-a30f-744aa51a836a)
 
 
 ### RabbitMQ UI
@@ -215,15 +215,15 @@ http://localhost:15672/#/
 #### Username: guest
 #### Password: guest
 
-![RabbitMQ UI](docs/images/rabbitmq1.png)
-![RabbitMQ UI](docs/images/rabbitmq2.png)
+![RabbitMQ UI](https://github.com/user-attachments/assets/76b78666-c44a-487b-91e9-a6d8fc72d980)
+![RabbitMQ UI](https://github.com/user-attachments/assets/6642d40c-dfa2-416d-a512-0069c05de376)
 
 
 ### Prometheus UI
 #### http://localhost:9090/
 #### http://localhost:3001/metrics
 
-![Prometheus UI](docs/images/prometheus.png)
+![Prometheus UI](https://github.com/user-attachments/assets/ca863e64-cb7f-4d2e-92bb-d64892ae3f37)
 
 ### Grafana UI
 http://localhost:3002/login
@@ -231,13 +231,13 @@ http://localhost:3002/login
 #### Username: admin
 #### Password: admin
 
-![Grafana UI](docs/images/grafana.png)
+![Grafana UI](https://github.com/user-attachments/assets/fa8d87e5-2257-4267-aba7-9823ecbc6774)
 
 ### Jaeger UI
 
 http://localhost:16686/search
 
-![Jaeger UI](docs/images/jaeger.png)
+![Jaeger UI](https://github.com/user-attachments/assets/74793b87-2adc-4974-abe2-d894c95e2e39)
 
 ### Elasticsearch
 http://localhost:9200/
@@ -247,7 +247,8 @@ http://localhost:9200/
 http://127.0.0.1:5601/app/home#/
 
 
-![Jaeger UI](docs/images/kibana.png)
+![Jaeger UI](https://github.com/user-attachments/assets/ffe97ba4-e9c1-49d2-98cd-94656bfe8cc9)
+
 
 
 
