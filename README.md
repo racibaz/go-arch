@@ -1,19 +1,26 @@
 <p align="center">
-  <a href="https://goreportcard.com/report/github.com/racibaz/go-arch">
+
+
+
+<a href="https://github.com/racibaz/go-arch/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/racibaz/go-arch/ci.yaml" alt="CI" />
+</a>
+
+<a href="https://goreportcard.com/report/github.com/racibaz/go-arch">
     <img src="https://goreportcard.com/badge/github.com/racibaz/go-arch" alt="Go Report Card" />
-  </a>
+</a>
 
-  <img src="https://img.shields.io/github/go-mod/go-version/racibaz/go-arch" alt="Go Version" />
+<img src="https://img.shields.io/github/go-mod/go-version/racibaz/go-arch" alt="Go Version" />
 
-  <img src="https://img.shields.io/docker/pulls/racibaz/go-arch" alt="Docker Image" />
+<img src="https://img.shields.io/docker/pulls/racibaz/go-arch" alt="Docker Image" />
 
-  <img src="https://img.shields.io/github/license/racibaz/go-arch" alt="License" />
+<img src="https://img.shields.io/github/license/racibaz/go-arch" alt="License" />
 
-  <img src="https://img.shields.io/github/repo-size/racibaz/go-arch" alt="Repo Size" />
+<img src="https://img.shields.io/github/languages/code-size/racibaz/go-arch" alt="Repo Size" />
 
 <a href="https://codecov.io/github/racibaz/go-arch" > 
- <img src="https://codecov.io/github/racibaz/go-arch/graph/badge.svg?token=2YAP23FY1G"/> 
- </a>
+    <img src="https://codecov.io/github/racibaz/go-arch/graph/badge.svg?token=2YAP23FY1G" alt="codecov"/> 
+</a>
 
 
 </p>
