@@ -28,7 +28,7 @@
 # Go-Arch
 Go-Arch provides a full-featured template for building modern backend services in Go, combining:
 - Hexagonal (ports & adapters) architecture + Domain-Driven Design (DDD)
-- Modular structure
+- Modular monolith structure
 - RESTful APIs and gRPC support
 - Database integration via Gorm + PostgreSQL + migrations
 - Message queue support (RabbitMQ) & async notifications
@@ -40,9 +40,12 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 ## 📚 Table of Contents
 
 - [📖 Overview](#-overview)
-- [🧩 Build Your First Module](#build-your-first-module)
 - [📝 Notes](#notes)
-- [🐳 Run with Docker (air for live reload)](#run-with-docker-air-for-live-reload)
+- [🔐 GitHub Secrets](#github-secrets)
+- [🐳 Run with Docker (air for live reload)](#run-with-docker)
+- [🧩 Build Your First Module](#build-your-first-module)
+- [⚙️ Application Runtime Modes](#application-runtime-modes)
+- [🚀 GitHub Actions CI Workflow](#-github-actions-ci-workflow)
 - [🔧 Makefile Commands](#makefile-commands)
 - [📂 Project Structure](#project-structure)
 - [⚙️ Generate gRPC Code](#generate-grpc-code)
@@ -93,26 +96,11 @@ This project demonstrates clean architectural principles in Go, including:
 - **Makefile** for common tasks
 - **Postman Collection** for API testing
 - **EFK Stack** for logging
+- CI with GitHub Actions
+- And more...
 
 
-
-## Build Your First Module
-To create a new module, follow these steps:
-1. Create a new folder under `internal/modules/` with your module name (e.g., `user`).
-2. Implement the necessary components in each subfolder following the existing module structure (e.g., `post` module).
-3. Inside the module folder, create the following subfolders:
-   - `application`: Contains commands, queries, handlers, ports, and DTOs.
-   - `domain`: Contains domain entities, value objects, and domain services.
-   - `infrastructure`: Contains persistence (e.g., Gorm repositories), messaging, and notification implementations.
-   - `presentation`: Contains HTTP handlers (request/response DTOs) and gRPC services (proto files).
-   - `test`: Contains integration tests for the module.
-   - `module.go`: The module's main entry point for registration.
-   - `docs/`: Documentation specific to the module.
-4. Call your routes in the main application registry located at `internal/providers/routers/router.go`.
-5. Update the Swagger documentation annotations with the "make generate_swagger" command.  
-   👉 [make generate_swagger](#generate-swagger-documentation)
-
-## Notes
+## 📝Notes
 - There are two config files that are .env and config.yaml. You can override config.yaml values with environment variables defined in the .env file.
 - You can use two ways to run database migrations:
     1. Using golang-migrate package via Makefile commands.
@@ -128,6 +116,15 @@ To create a new module, follow these steps:
         - make migrate
     3. If you want use air (live reload), you can change the `entrypoint.sh` file in the root directory.
         - change the command `make run` to `exec air` or `exec air -d` 
+
+
+### 🔐GitHub Secrets
+To enable automatic Docker image builds and pushes to Docker Hub via GitHub Actions, set the following secrets in your GitHub repository settings:
+- `DOCKERHUB_USERNAME`: Your Docker Hub username.
+- `DOCKERHUB_PASSWORD`: Your Docker Hub password or access token.
+- `DOCKERHUB_REPOSITORY`: The name of your Docker Hub repository (e.g., `racibaz/go-arch`).
+- `DOCKERHUB_IMAGE_TAG`: The tag for the Docker image (e.g., `latest` or a specific version).
+- `CODECOV_TOKEN`: Your Codecov token for code coverage reporting.
 
 
 ### Run with Docker
@@ -155,6 +152,25 @@ docker exec -it elasticsearch bin/elasticsearch-create-enrollment-token --scope 
 docker exec -it kibana bin/kibana-verification-code
 ```
 
+
+## Build Your First Module
+To create a new module, follow these steps:
+1. Create a new folder under `internal/modules/` with your module name (e.g., `user`).
+2. Implement the necessary components in each subfolder following the existing module structure (e.g., `post` module).
+3. Inside the module folder, create the following subfolders:
+    - `application`: Contains commands, queries, handlers, ports, and DTOs.
+    - `domain`: Contains domain entities, value objects, and domain services.
+    - `infrastructure`: Contains persistence (e.g., Gorm repositories), messaging, and notification implementations.
+    - `presentation`: Contains HTTP handlers (request/response DTOs) and gRPC services (proto files).
+    - `test`: Contains integration tests for the module.
+    - `module.go`: The module's main entry point for registration.
+    - `docs/`: Documentation specific to the module.
+4. Call your routes in the main application registry located at `internal/providers/routers/router.go`.
+5. Update the Swagger documentation annotations with the "make generate_swagger" command.  
+   👉 [make generate_swagger](#generate-swagger-documentation)
+
+
+
 ### Application Runtime Modes
 You can set the application environment by changing the `APP_ENV` variable in the `.env` file.
 
@@ -165,6 +181,18 @@ You can set the application environment by changing the `APP_ENV` variable in th
 | `dev`       | `debug`      | Development mode; debugging features and verbose logs are enabled.             |
 | `test`      | `test`       | Test mode with minimal logs, optimized for automated tests.                    |
 | `prod`      | `release`    | Production mode; highest performance with simplified logs and no debug output. |
+
+
+### 🚀 GitHub Actions CI Workflow
+The project includes a GitHub Actions workflow for continuous integration (CI). The workflow is defined in the `.github/workflows/ci.yaml` file and includes the following steps:
+- Checkout code
+- Set up Go environment
+- Install dependencies
+- Run linters
+- Run tests
+- Build the application
+- Build Docker image
+- Push Docker image to Docker Hub 
 
 
 
