@@ -7,12 +7,14 @@ import (
 	googleGrpc "google.golang.org/grpc"
 )
 
+// RegisterRoutes registers HTTP routes for different modules
 func RegisterRoutes(router *gin.Engine) {
 	postRoutes.Routes(router)
 	sharedRoutes.Routes(router)
 	// You can add more module routes here in the future
 }
 
+// RegisterGrpcRoutes registers gRPC routes for different modules
 func RegisterGrpcRoutes(server *googleGrpc.Server) {
 	postRoutes.GrpcRoutes(server)
 	// You can add more module routes here in the future

@@ -360,3 +360,71 @@ func Test_Post_PostStatus(t *testing.T) {
 		})
 	}
 }
+
+func Test_Post_NewPostStatus(t *testing.T) {
+
+	testCases := []struct {
+		name   string
+		post   Post
+		status PostStatus
+		result bool
+	}{
+		{
+			name: "is published",
+			post: Post{
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
+				Title:       "title with more than 10 characters",
+				Description: "Description",
+				Content:     "content content content",
+				Status:      PostStatusPublished,
+				CreatedAt:   time.Now(),
+				UpdatedAt:   time.Now(),
+			},
+			status: PostStatusPublished,
+			result: true,
+		},
+		{
+			name: "is draft",
+			post: Post{
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
+				Title:       "title with more than 10 characters",
+				Description: "Description",
+				Content:     "content content content",
+				Status:      PostStatusDraft,
+				CreatedAt:   time.Now(),
+				UpdatedAt:   time.Now(),
+			},
+			status: PostStatusDraft,
+			result: true,
+		},
+		{
+			name: "is archived",
+			post: Post{
+				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", PostAggregate),
+				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
+				Title:       "title with more than 10 characters",
+				Description: "Description",
+				Content:     "content content content",
+				Status:      PostStatusArchived,
+				CreatedAt:   time.Now(),
+				UpdatedAt:   time.Now(),
+			},
+			status: PostStatusArchived,
+			result: true,
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+
+			newStatus := NewPostStatus(tc.status)
+
+			if tc.result {
+				assert.Equal(t, newStatus, tc.status)
+			} else {
+				assert.NotEqual(t, newStatus, tc.status)
+			}
+		})
+	}
+}

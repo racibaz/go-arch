@@ -187,15 +187,18 @@ You can set the application environment by changing the `APP_ENV` variable in th
 
 ### 🚀 GitHub Actions CI Workflow
 The project includes a GitHub Actions workflow for continuous integration (CI). The workflow is defined in the `.github/workflows/ci.yaml` file and includes the following steps:
+#### Step 1 (push and release):
 - Checkout code
 - Set up Go environment
 - Install dependencies
 - Run linters
 - Run tests
+
+#### Step 2 - If you give tag to your repository, it will trigger the release job:
 - Build the application
 - Build Docker image
-- Push Docker image to Docker Hub 
-
+- Push Docker image to Docker Hub
+ 
 
 
 ### Makefile Commands
@@ -333,14 +336,14 @@ Minimal Structure
 │   │   ├── migration
 │   │   └── seeder
 │   ├── modules
-│   │   ├── post
+│   │   ├── post                          # Your module directory
 │   │   │   ├── application         # The application bussiness logics live here such as services, commands, queries, so on.
 │   │   │   ├── domain              # The core business logic and entities
 │   │   │   ├── infrastructure      # You can implemenet 3. party services integration here such as PostgreSQL and  Mysql implementation
 │   │   │   ├── module.go           # The module's main entry point for registration
 │   │   │   ├── presentation        # Handles HTTP and gRPC requests and responses
 │   │   │   └── test                # Integration tests for the module
-│   │   └── shared
+│   │   └── shared                        # Shared module for common functionalities across modules
 │   │       ├── domain
 │   │       ├── infrastructure
 │   │       └── presentation
