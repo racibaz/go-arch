@@ -59,6 +59,7 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🌐 Kibana UI](#kibana-ui)
 - [📦 Dependencies](#dependencies)
 - [🛠 Roadmap / TODO](#-roadmap--todo)
+- [🚪 API Requests](#api-requests)
 - [📬 Postman Collection](#-postman-collection)
 - [❌ Validation Error Example](#validation-error-example)
 - [✔️ Linters](#linters)
@@ -97,6 +98,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **Postman Collection** for API testing
 - **EFK Stack** for logging
 - CI with GitHub Actions
+- Build Docker Images and Push to Docker Hub
 - And more...
 
 
@@ -309,7 +311,7 @@ http://127.0.0.1:5601/app/home#/
 - open telemetry: `go.opentelemetry.io/otel`
 - jaeger: `go.opentelemetry.io/otel/exporters/jaeger`
 
-## Project Structure
+## 📂Project Structure
 
 Minimal Structure
 
@@ -332,17 +334,17 @@ Minimal Structure
 │   │   └── seeder
 │   ├── modules
 │   │   ├── post
-│   │   │   ├── application
-│   │   │   ├── domain
-│   │   │   ├── infrastructure
-│   │   │   ├── module.go
-│   │   │   ├── presentation
-│   │   │   └── test
+│   │   │   ├── application         # The application bussiness logics live here such as services, commands, queries, so on.
+│   │   │   ├── domain              # The core business logic and entities
+│   │   │   ├── infrastructure      # You can implemenet 3. party services integration here such as PostgreSQL and  Mysql implementation
+│   │   │   ├── module.go           # The module's main entry point for registration
+│   │   │   ├── presentation        # Handles HTTP and gRPC requests and responses
+│   │   │   └── test                # Integration tests for the module
 │   │   └── shared
 │   │       ├── domain
 │   │       ├── infrastructure
 │   │       └── presentation
-│   └── providers
+│   └── providers                                
 ├── main.go
 ├── migrations
 ├── pkg
@@ -421,6 +423,7 @@ Expanded Structure
 
 ## 🛠 Roadmap / TODO
 
+- [x] Push Docker Image to Docker Hub via GitHub Actions
 - [x] Grafana & Prometheus integration
 - [x] OpenTelemetry & Jaeger integration
 - [x] Tracing with Jaeger
@@ -445,7 +448,7 @@ Expanded Structure
 - [ ] Implement feature toggles
 
 
-## API Requests
+## 🚪API Requests
 
 | Endpoint                    | HTTP Method |    Description    |
 |-----------------------------|:-----------:|:-----------------:|
