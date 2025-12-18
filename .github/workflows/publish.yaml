@@ -5,6 +5,13 @@ on:
     workflows: ["Continuous Integration"]
     types:
       - completed
+    push:
+      tags:
+        - 'v*.*.*'
+        - 'v*.*.*-*'
+        - 'latest'
+        - 'release-*'
+        - 'stable'
 
 jobs:
   publish:
