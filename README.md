@@ -48,8 +48,9 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🚀 GitHub Actions CI Workflow](#-github-actions-ci-workflow)
 - [🔧 Makefile Commands](#makefile-commands)
 - [📂 Project Structure](#project-structure)
-- [⚙️ Generate gRPC Code](#generate-grpc-code)
-- [📑 Swagger Documentation UI](#swagger-documentation-ui)
+- [⚙️ Generate gRPC Code](#-generate-grpc-code)
+- [gRPC Client Example](#-grpc-client-example)
+- [📑 Swagger Documentation UI](#-swagger-documentation-ui)
     - [Generate Swagger Documentation](#generate-swagger-documentation)
 - [📬 RabbitMQ UI](#rabbitmq-ui)
 - [📡 Prometheus UI](#prometheus-ui)
@@ -57,13 +58,13 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🔎 Jaeger UI](#jaeger-ui)
 - [🗄️ Elasticsearch](#elasticsearch)
 - [🌐 Kibana UI](#kibana-ui)
-- [📦 Dependencies](#dependencies)
+- [📦 Dependencies](#-dependencies)
 - [🛠 Roadmap / TODO](#-roadmap--todo)
 - [🚪 API Requests](#api-requests)
 - [📬 Postman Collection](#-postman-collection)
 - [❌ Validation Error Example](#validation-error-example)
-- [✔️ Linters](#linters)
-- [🧪 Test](#test)
+- [✔️ Linters](#-linters)
+- [🧪 Test](#-tests)
 - [🤝 Code of Conduct](#code-of-conduct)
 - [👥 Contributing](#contributing)
 - [📜 License](#license)
@@ -242,15 +243,79 @@ make test
 make lint
 ```
 
-#### Generate gRPC Code
+#### 🛠️ Generate gRPC Code
 ```bash
 make generate_proto
 ```
 
-### Swagger Documentation UI
+#### 🧪 gRPC Client Example
+```   
+
+package main
+
+import (
+	"context"
+	"fmt"
+	"github.com/racibaz/go-arch/internal/modules/post/presentation/grpc/proto"
+	"github.com/racibaz/go-arch/pkg/config"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"log"
+)
+
+const (
+	PostAggregate = "posts.Post"
+)
+
+func main() {
+
+	config.Set("./../config", "./../.env")
+	config := config.Get()
+
+	addr := fmt.Sprintf("%s:%s", config.Grpc.Host, config.Grpc.Port)
+
+	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+
+	if err != nil {
+		log.Fatalf("Couldn't connect to grpc client: %v\n", err)
+	}
+
+	defer conn.Close()
+	c := proto.NewPostServiceClient(conn)
+
+	CreatePost(c)
+
+}
+
+// CreatePost creates a new post via gRPC client
+func CreatePost(c proto.PostServiceClient) string {
+
+	var payload = &proto.CreatePostInput{
+		UserID:      "7b3a4d03-bcb9-47ce-b721-a156edd406f0",
+		Title:       "test title title title grpc",
+		Description: "test description description grpc",
+		Content:     "test content content content grpc",
+	}
+
+	res, err := c.CreatePost(context.Background(), payload)
+
+	if err != nil {
+		log.Fatalf("Could not create post: %v\n", err)
+	}
+
+	log.Printf("Post has been created with ID: %s\n", res.GetId())
+
+	return res.GetId()
+}
+``` 
+
+### 📘 Swagger Documentation UI
 http://127.0.0.1:3001/swagger/index.html#
 
-#### Generate Swagger Documentation
+#### 🧬 Generate Swagger Documentation
 ```bash
   make generate_swagger
 ```
@@ -301,7 +366,7 @@ http://127.0.0.1:5601/app/home#/
 
 
 
-## Dependencies
+## 📦 Dependencies
 - uuid: `github.com/google/uuid`
 - cli: `github.com/spf13/cobra`
 - config: `github.com/spf13/viper`
@@ -494,12 +559,12 @@ When sending a POST request to create a post with invalid data, you might receiv
 ```
 
 
-## Linters
+## 🧹 Linters
 ```bash
 make lint
 ```
 
-## Test
+## 🧪 Tests
 For testing, when you are working in you local, change the APP_ENV variable to "test" in the .env file.
 ```bash 
 APP_ENV="test" 
