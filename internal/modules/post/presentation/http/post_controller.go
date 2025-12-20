@@ -5,8 +5,6 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
-	requestDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/request_dtos"
-	responseDto "github.com/racibaz/go-arch/internal/modules/post/presentation/http/response_dtos"
 	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	validator "github.com/racibaz/go-arch/pkg/validator"
@@ -18,6 +16,45 @@ import (
 	"net/http"
 	"time"
 )
+
+// CreatePostResponseDto
+// @Description CreatePostResponseDto is a data transfer object for reporting the details of a created post
+type CreatePostResponseDto struct {
+	// @Description Title is the title of the post
+	Title string `json:"title"`
+	// @Description Description is the description of the post
+	Description string `json:"description"`
+	// @Description Content is the content of the post
+	Content string `json:"content"`
+	// @Description Status is the status of the post
+	Status string `json:"status"`
+}
+
+// GetPostResponseDto
+// @Description GetPostResponseDto is a data transfer object for reporting the details of a post
+type GetPostResponseDto struct {
+	// @Description Title is the title of the post
+	Title string `json:"title"`
+	// @Description Description is the description of the post
+	Description string `json:"description"`
+	// @Description Content is the content of the post
+	Content string `json:"content"`
+	// @Description Status is the status of the post
+	Status string `json:"status"`
+}
+
+// CreatePostRequestDto
+// @Description CreatePostRequestDto is a data transfer object for creating a post
+type CreatePostRequestDto struct {
+	// @Description UserId is the ID of the user creating the post
+	UserId string `json:"user_id" validate:"required,uuid"`
+	// @Description Title is the title of the post
+	Title string `json:"title" validate:"required,min=10"`
+	// @Description Description is the description of the post
+	Description string `json:"description" validate:"required,min=10"`
+	// @Description Content is the content of the post
+	Content string `json:"content" validate:"required,min=10"`
+}
 
 type PostController struct {
 	Service ports.PostService
@@ -39,8 +76,8 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Tags			posts
 //	@Accept			json
 //	@Produce		json
-//	@Param			post	body		requestDto.CreatePostRequestDto	true	"Create Post Request DTO"
-//	@Success		201		{object}	responseDto.CreatePostResponseDto	"Post created successfully"
+//	@Param			post	body		CreatePostRequestDto	true	"Create Post Request DTO"
+//	@Success		201		{object}	CreatePostResponseDto	"Post created successfully"
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/posts [post]
 func (postController PostController) Store(c *gin.Context) {
@@ -49,7 +86,7 @@ func (postController PostController) Store(c *gin.Context) {
 	ctx, span := tracer.Start(c.Request.Context(), "PostModule - Restful - PostController - Store")
 	defer span.End()
 
-	createPostRequestDto, err := helper.Decode[requestDto.CreatePostRequestDto](c)
+	createPostRequestDto, err := helper.Decode[CreatePostRequestDto](c)
 
 	if err != nil {
 		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
@@ -89,7 +126,7 @@ func (postController PostController) Store(c *gin.Context) {
 		return
 	}
 
-	responseData := responseDto.CreatePostResponseDto{
+	responseData := CreatePostResponseDto{
 		Title:       createPostRequestDto.Title,
 		Description: createPostRequestDto.Description,
 		Content:     createPostRequestDto.Content,
@@ -110,7 +147,7 @@ func (postController PostController) Store(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		string		true	"Post ID"
-//	@Success		200	{object}	responseDto.GetPostResponseDto	"Post retrieved successfully"
+//	@Success		200	{object}	GetPostResponseDto	"Post retrieved successfully"
 //	@Failure		404	{object}	errors.AppError		"Page not found"
 //	@Router			/posts/{id} [get]
 func (postController PostController) Show(c *gin.Context) {
@@ -128,7 +165,7 @@ func (postController PostController) Show(c *gin.Context) {
 		return
 	}
 
-	responseData := responseDto.GetPostResponseDto{
+	responseData := GetPostResponseDto{
 		Title:       result.Title,
 		Description: result.Description,
 		Content:     result.Content,

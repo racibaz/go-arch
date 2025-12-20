@@ -460,8 +460,6 @@ Expanded Structure
 │   │   │   │   ├── grpc
 │   │   │   │   │   └── proto
 │   │   │   │   ├── http
-│   │   │   │   │   ├── response_dtos
-│   │   │   │   │   └── request_dtos
 │   │   │   └── test
 │   │   │       └── integration
 │   │   └── shared
