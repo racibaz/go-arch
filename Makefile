@@ -34,6 +34,18 @@ seed:
 mock:
 	mockery
 
+test:
+	go test -v ./...
+
+coverage:
+	go test -v -cover ./...
+	go test -v -coverprofile=coverage.txt ./...
+	go tool cover -func=coverage.txt
+	go tool cover -html=coverage.txt -o coverage.html
+
+lint:
+	go vet ./...
+
 #todo make it generic
 generate_proto:
 	protoc -Iinternal/modules/post/presentation/grpc/proto \

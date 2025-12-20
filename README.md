@@ -74,7 +74,7 @@ This project demonstrates clean architectural principles in Go, including:
 
 - **Hexagonal Architecture** for separation of concerns
 - **DDD** for domain modeling
-- **Modular Structure** for maintainability, etc
+- ***Modular Monolith Structure***
 - **TDD** for reliable, testable code
 - **RESTful APIs** 
 - **gRPC APIs**
@@ -187,7 +187,7 @@ You can set the application environment by changing the `APP_ENV` variable in th
 
 ### 🚀 GitHub Actions CI Workflow
 The project includes a GitHub Actions workflow for continuous integration (CI). The workflow is defined in the `.github/workflows/ci.yaml` file and includes the following steps:
-#### Step 1 (push and release):
+#### Step 1 - (push and release):
 - Checkout code
 - Set up Go environment
 - Install dependencies
@@ -231,6 +231,15 @@ make seed
 ```
 ```bash
 make mock
+```
+```bash
+make coverage
+```
+```bash
+make test
+```
+```bash
+make lint
 ```
 
 #### Generate gRPC Code
@@ -487,7 +496,7 @@ When sending a POST request to create a post with invalid data, you might receiv
 
 ## Linters
 ```bash
-go vet ./...
+make lint
 ```
 
 ## Test
@@ -496,10 +505,10 @@ For testing, when you are working in you local, change the APP_ENV variable to "
 APP_ENV="test" 
 ```
 ```bash
-go test -v ./...
+make test
 ```
 ```bash
-go test -v -cover ./...
+make coverage
 ```
 
 
