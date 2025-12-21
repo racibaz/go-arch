@@ -489,8 +489,7 @@ EOF
 
 
 
-for file in controller service repository validation; do
-cat > internal/modules/$CAMEL_MODULE_NAME/tests/${CAMEL_MODULE_NAME}_${file}_test.go << EOF
+cat > internal/modules/$CAMEL_MODULE_NAME/tests/${CAMEL_MODULE_NAME}_integration_test.go << EOF
 package tests
 
 import (
@@ -498,11 +497,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test${PASCAL_MODULE_NAME}$(echo $file | sed 's/.*/\u&/') (t *testing.T) {
+func Test${PASCAL_MODULE_NAME}Integration (t *testing.T) {
 	assert.True(t, true)
 }
 EOF
-done
+
 
 cat > internal/modules/$CAMEL_MODULE_NAME/module.go << EOF
 package module
@@ -513,13 +512,12 @@ import (
 	${CAMEL_MODULE_NAME}Ports "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/domain/ports"
   gorm${MODULE_NAME}Repo "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/infrastructure/persistence/gorm/repositories"
 	"github.com/racibaz/go-arch/pkg/logger"
-	"github.com/racibaz/go-arch/pkg/ddd"
 )
 
 type ${PASCAL_MODULE_NAME}Module struct {
 	repository ${CAMEL_MODULE_NAME}Ports.${PASCAL_MODULE_NAME}Repository
 	service    ${CAMEL_MODULE_NAME}Service.${PASCAL_MODULE_NAME}Service
-	log        logger.Logger
+	logger        logger.Logger
 }
 
 
