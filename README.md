@@ -566,6 +566,7 @@ Expanded Structure
 
 ## 🛠 Roadmap / TODO
 
+- [x] Module Code Generator
 - [x] Push Docker Image to Docker Hub via GitHub Actions
 - [x] Grafana & Prometheus integration
 - [x] OpenTelemetry & Jaeger integration

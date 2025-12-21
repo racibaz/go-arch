@@ -11,12 +11,12 @@ PASCAL_MODULE_NAME=$(echo "$MODULE_NAME" | awk -F'_' '{for(i=1;i<=NF;i++){ $i=to
 
 CAMEL_MODULE_NAME="$(tr '[:upper:]' '[:lower:]' <<< ${PASCAL_MODULE_NAME:0:1})${PASCAL_MODULE_NAME:1}"
 
-#MODULE_DIR="internal/modules/$MODULE_NAME"
-#
-#if [ -d "$MODULE_DIR" ]; then
-#    echo "❌ Module already exists: $MODULE_NAME"
-#    exit 1
-#fi
+MODULE_DIR="internal/modules/$MODULE_NAME"
+
+if [ -d "$MODULE_DIR" ]; then
+    echo "❌ Module already exists: $MODULE_NAME"
+    exit 1
+fi
 
 echo "🚀 Creating module: $MODULE_NAME -> $PASCAL_MODULE_NAME"
 echo "📌 PascalCase: $PASCAL_MODULE_NAME | camelCase: $CAMEL_MODULE_NAME"
