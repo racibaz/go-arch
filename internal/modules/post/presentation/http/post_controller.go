@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
@@ -106,10 +107,10 @@ func (postController PostController) Store(c *gin.Context) {
 		return
 	}
 
-	newUuid := uuid.NewID()
+	newID := uuid.NewID()
 
 	err = postController.Service.CreatePost(ctx, dto.CreatePostInput{
-		ID:          newUuid,
+		ID:          newID,
 		UserID:      createPostRequestDto.UserId,
 		Title:       createPostRequestDto.Title,
 		Description: createPostRequestDto.Description,
@@ -126,16 +127,25 @@ func (postController PostController) Store(c *gin.Context) {
 		return
 	}
 
-	responseData := CreatePostResponseDto{
-		Title:       createPostRequestDto.Title,
-		Description: createPostRequestDto.Description,
-		Content:     createPostRequestDto.Content,
-		Status:      postValueObject.PostStatusDraft.String(),
+	responsePayload := helper.HateoasResponse[CreatePostResponseDto]{
+		Data: CreatePostResponseDto{
+			Title:       createPostRequestDto.Title,
+			Description: createPostRequestDto.Description,
+			Content:     createPostRequestDto.Content,
+			Status:      postValueObject.PostStatusDraft.String(),
+		},
+		Links: []helper.Link{
+			{
+				Rel:  "self",
+				Href: fmt.Sprintf("/api/v1/posts/%s", newID),
+				Type: "GET",
+			},
+		},
 	}
 
-	span.SetAttributes(attribute.String("post.id", newUuid))
+	span.SetAttributes(attribute.String("post.id", newID))
 
-	helper.SuccessResponse(c, "Post created successfully", responseData, http.StatusCreated)
+	helper.SuccessResponse(c, "Post created successfully", responsePayload, http.StatusCreated)
 }
 
 // Show PostGetById Show is a method to retrieve a post by its ID
@@ -165,12 +175,21 @@ func (postController PostController) Show(c *gin.Context) {
 		return
 	}
 
-	responseData := GetPostResponseDto{
-		Title:       result.Title,
-		Description: result.Description,
-		Content:     result.Content,
-		Status:      result.Status.String(),
+	responsePayload := helper.HateoasResponse[GetPostResponseDto]{
+		Data: GetPostResponseDto{
+			Title:       result.Title,
+			Description: result.Description,
+			Content:     result.Content,
+			Status:      result.Status.String(),
+		},
+		Links: []helper.Link{
+			{
+				Rel:  "self",
+				Href: fmt.Sprintf("/api/v1/posts/%s", postID),
+				Type: "GET",
+			},
+		},
 	}
 
-	helper.SuccessResponse(c, "Show post", responseData, http.StatusOK)
+	helper.SuccessResponse(c, "Show post", responsePayload, http.StatusOK)
 }

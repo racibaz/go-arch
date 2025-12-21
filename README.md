@@ -29,6 +29,7 @@
 Go-Arch provides a full-featured template for building modern backend services in Go, combining:
 - Hexagonal (ports & adapters) architecture + Domain-Driven Design (DDD)
 - Modular monolith structure
+- Module code generator for rapid development
 - RESTful APIs and gRPC support
 - Database integration via Gorm + PostgreSQL + migrations
 - Message queue support (RabbitMQ) & async notifications
@@ -107,6 +108,7 @@ This project demonstrates clean architectural principles in Go, including:
 - CI with GitHub Actions
 - Build Docker Images and Push to Docker Hub
 - **Code Generator** for new modules
+- **Hateoas** for API responses
 - And more...
 
 
@@ -204,6 +206,11 @@ If your module introduces database changes, add your SQL migration files to:
 `migrations/`
 
 Make sure to follow the existing migration naming and versioning conventions.
+and run the migration commands to apply them:
+
+```bash
+make db_migrate_up
+``` 
 
 ### Step 4: Implement Module Logic
 
