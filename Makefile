@@ -19,6 +19,10 @@ help:
 	@echo "  make db_migrate_drop       - Drop all database objects"
 	@echo "  make db_migrate_version    - Show current migration version"
 	@echo "  make db_migrate_force      - Force set migration version"
+	@echo "  make test                  - Run unit tests"
+	@echo "  make coverage              - Run tests with coverage report"
+	@echo "  make lint                  - Run code linting"
+	@echo "  make module name=<name>    - Create a new module with the specified name"
 
 
 run:
@@ -74,3 +78,7 @@ db_migrate_version:
 
 db_migrate_force:
 	migrate -path migrations -database "$(DB_URL)" force $(version)
+
+module:
+	@if [ -z "$(name)" ]; then echo "Usage: make module name=<module_name>"; exit 1; fi
+	@bash ./create_module.sh $(name)

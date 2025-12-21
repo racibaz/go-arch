@@ -100,6 +100,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **EFK Stack** for logging
 - CI with GitHub Actions
 - Build Docker Images and Push to Docker Hub
+- **Code Generator** for new modules
 - And more...
 
 
@@ -156,21 +157,82 @@ docker exec -it kibana bin/kibana-verification-code
 ```
 
 
-## Build Your First Module
-To create a new module, follow these steps:
-1. Create a new folder under `internal/modules/` with your module name (e.g., `user`).
-2. Implement the necessary components in each subfolder following the existing module structure (e.g., `post` module).
-3. Inside the module folder, create the following subfolders:
-    - `application`: Contains commands, queries, handlers, ports, and DTOs.
-    - `domain`: Contains domain entities, value objects, and domain services.
-    - `infrastructure`: Contains persistence (e.g., Gorm repositories), messaging, and notification implementations.
-    - `presentation`: Contains HTTP handlers (request/response DTOs) and gRPC services (proto files).
-    - `test`: Contains integration tests for the module.
-    - `module.go`: The module's main entry point for registration.
-    - `docs/`: Documentation specific to the module.
-4. Call your routes in the main application registry located at `internal/providers/routers/router.go`.
-5. Update the Swagger documentation annotations with the "make generate_swagger" command.  
-   👉 [make generate_swagger](#generate-swagger-documentation)
+## Creating a New Module
+
+Follow the steps below to create and integrate a new module into the application.
+
+---
+
+### Step 1: Generate the Module
+
+Run the following command from the project root:
+
+```bash
+name=YourModuleName make module
+```
+
+This command generates the standard module skeleton under:
+
+`internal/modules/YourModuleName/`
+
+
+
+### Step 2: Register Routes
+
+Modules are not registered automatically.
+You must explicitly add their routes to the main router registry.
+
+Location:
+
+`internal/providers/routers/router.go`
+
+- Add HTTP routes to the RegisterRoutes function
+- Add gRPC routes (if any) to the RegisterGrpcRoutes function
+
+This keeps routing centralized and predictable.
+
+### Step 3: Add Database Migrations
+
+If your module introduces database changes, add your SQL migration files to:
+
+`migrations/`
+
+Make sure to follow the existing migration naming and versioning conventions.
+
+### Step 4: Implement Module Logic
+
+Implement your module inside the generated directory:
+
+`internal/modules/YourModuleName/`
+
+Follow the structure of existing modules (for example, the post module).
+
+Typical responsibilities include:
+
+- Controllers
+- Services (business logic)
+- Repositories and queries
+- DTOs and validation logic
+
+Step 5: Generate Swagger Documentation
+
+After adding or modifying API endpoints, update the Swagger documentation:
+
+`make generate_swagger`
+
+See [Generate Swagger Documentation](#generate-swagger-documentation) for details.
+
+### Module Creation Flow
+
+    Generate module
+        ↓
+    Register routes
+        ↓
+    Add migrations
+        ↓
+    Implement logic
+        ↓
+    Generate Swagger
 
 
 

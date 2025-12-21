@@ -9,13 +9,19 @@ import (
 
 // RegisterRoutes registers HTTP routes for different modules
 func RegisterRoutes(router *gin.Engine) {
-	postRoutes.Routes(router)
+	// Register shared routes first
+	// It needs to metrics, swagger, health check, etc.
 	sharedRoutes.Routes(router)
-	// You can add more module routes here in the future
+
+	// Register post module routes
+	postRoutes.Routes(router)
+
+	// You can add more restful routes of your modules
 }
 
 // RegisterGrpcRoutes registers gRPC routes for different modules
 func RegisterGrpcRoutes(server *googleGrpc.Server) {
 	postRoutes.GrpcRoutes(server)
-	// You can add more module routes here in the future
+
+	// You can add more gRPC routes of your modules
 }

@@ -29,6 +29,7 @@ func NewGetPostService(postRepository ports.PostRepository, logger logger.Logger
 	}
 }
 
+// GetPostByID retrieves a post by its unique identifier.
 func (postService GetPostService) GetPostByID(ctx context.Context, postInput GetPostInput) (*domain.Post, error) {
 
 	ctx, span := postService.tracer.Start(ctx, "GetById - Service")
