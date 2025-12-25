@@ -82,7 +82,7 @@ This project demonstrates clean architectural principles in Go, including:
 
 - **Hexagonal Architecture** for separation of concerns
 - **DDD** for domain modeling
-- ***Modular Monolith Structure***
+- **Modular Monolith Structure**
 - **TDD** for reliable, testable code
 - **RESTful APIs** 
 - **gRPC APIs**
@@ -107,8 +107,9 @@ This project demonstrates clean architectural principles in Go, including:
 - **EFK Stack** for logging
 - CI with GitHub Actions
 - Build Docker Images and Push to Docker Hub
-- **Code Generator** for new modules
+- **Module Generator** for rapid module creation
 - **Hateoas** for API responses
+- **CodeQL Analysis** for security
 - And more...
 
 
