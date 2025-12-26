@@ -1,0 +1,22 @@
+packages:
+  github.com/racibaz/go-arch/internal/modules/post/domain/ports:
+    config:
+      all: true
+      output: internal/modules/post/testing/mocks/domain/ports
+      case: snake
+      disable-version-string: true
+      outpkg: ports
+      filename: "{{ .InterfaceName }}_mock.go"
+      structname: "Mock{{ .InterfaceName }}"
+      template: testify
+
+  github.com/racibaz/go-arch/internal/modules/post/application/ports:
+    config:
+      all: true
+      output: internal/modules/post/application/ports
+      case: snake
+      disable-version-string: true
+      outpkg: ports
+      filename: "{{ .InterfaceName }}_mock.go"
+      structname: "Mock{{ .InterfaceName }}"
+      template: testify

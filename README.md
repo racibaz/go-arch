@@ -106,10 +106,11 @@ This project demonstrates clean architectural principles in Go, including:
 - **Postman Collection** for API testing
 - **EFK Stack** for logging
 - CI with GitHub Actions
-- Build Docker Images and Push to Docker Hub
+- **Build Docker Images** and **Push to Docker Hub**
 - **Module Generator** for rapid module creation
 - **Hateoas** for API responses
 - **CodeQL Analysis** for security
+- **Codecov** coverage reports 
 - And more...
 
 

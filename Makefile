@@ -11,6 +11,8 @@ help:
 	@echo "  make migrate               - Run database migrations"
 	@echo "  make seed                  - Seed the database with initial data"
 	@echo "  make mock                  - Generate mocks using mockery"
+	@echo "  make mock-install          - Install mockery tool"
+	@echo "  make mock-clean            - Remove all generated mocks"
 	@echo "  make generate_proto        - Generate gRPC protobuf code"
 	@echo "  make generate_swagger      - Generate Swagger documentation"
 	@echo "  make db_create_migration   - Create a new database migration"
@@ -36,7 +38,16 @@ seed:
 	@go run main.go seed
 
 mock:
-	mockery
+	@echo "Generating mocks using mockery..."
+	@go run github.com/vektra/mockery/v3 --config .mockery.yaml
+
+mock-install:
+	@echo "Installing mockery..."
+	@go install github.com/vektra/mockery/v3@latest
+
+mock-clean:
+	@echo "Cleaning generated mocks..."
+	@find internal/modules/post/testing/mocks -name "*_mock.go" -delete
 
 test:
 	go test -v ./...
