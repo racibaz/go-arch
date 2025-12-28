@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"github.com/racibaz/go-arch/internal/modules/shared/domain"
+	"github.com/racibaz/go-arch/internal/modules/shared/domain/ports"
 	"github.com/racibaz/go-arch/internal/modules/shared/infrastructure/persistence/gorm/entities"
 	eventMapper "github.com/racibaz/go-arch/internal/modules/shared/infrastructure/persistence/gorm/mappers"
 	"github.com/racibaz/go-arch/pkg/database"
@@ -15,7 +16,7 @@ type GormEventRepository struct {
 	sync.Mutex
 }
 
-var _ domain.EventRepository = (*GormEventRepository)(nil)
+var _ ports.EventRepository = (*GormEventRepository)(nil)
 
 func New() *GormEventRepository {
 	return &GormEventRepository{

@@ -11,9 +11,10 @@ testing/
 │   │   └── ports/              # Domain interface mocks (auto-generated)
 │   │       ├── notification_adapter_mock.go
 │   │       └── post_repository_mock.go
-│   └── infrastructure/         # Infrastructure mocks (manual/future auto-generated)
-│       ├── messaging/rabbitmq/
-│       └── notification/sms/
+│   └── infrastructure/         # Infrastructure interface mocks (auto-generated)
+│   │   └── ports/
+│   │       ├── get_post_service_mock.go
+│   │       ├── post_service_mock.go
 └── README.md
 ```
 
