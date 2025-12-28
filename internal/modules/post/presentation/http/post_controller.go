@@ -6,6 +6,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
+	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	validator "github.com/racibaz/go-arch/pkg/validator"
@@ -83,10 +84,14 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Router			/posts [post]
 func (postController PostController) Store(c *gin.Context) {
 
-	tracer := otel.Tracer("go-arch")
-	ctx, span := tracer.Start(c.Request.Context(), "PostModule - Restful - PostController - Store")
+	tracer := otel.Tracer(config.Get().App.Name) //go-arch
+	//"PostModule - Restful - PostController - Store"
+	path := fmt.Sprintf("PostModule - Restful - %s - %s", helper.StructName(postController), helper.CurrentFuncName())
+
+	ctx, span := tracer.Start(c.Request.Context(), path)
 	defer span.End()
 
+	// Decode the request body into CreatePostRequestDto
 	createPostRequestDto, err := helper.Decode[CreatePostRequestDto](c)
 
 	if err != nil {
@@ -123,6 +128,7 @@ func (postController PostController) Store(c *gin.Context) {
 	if err != nil {
 		span.SetAttributes(attribute.String("error", "Post create failed"))
 		span.SetStatus(codes.Error, "Post create failed")
+
 		helper.ErrorResponse(c, "post create failed", err, http.StatusInternalServerError)
 		return
 	}
@@ -163,15 +169,20 @@ func (postController PostController) Store(c *gin.Context) {
 func (postController PostController) Show(c *gin.Context) {
 
 	tracer := otel.Tracer("go-arch")
-	ctx, span := tracer.Start(c, "PostModule - Restful - PostController - Show")
+	path := fmt.Sprintf("PostModule - Restful - %s - %s", helper.StructName(postController), helper.CurrentFuncName())
+	ctx, span := tracer.Start(c, path)
 	defer span.End()
 
-	postID := c.Param("id")
-
-	result, err := postController.Service.GetById(ctx, postID)
-
+	id := c.Param("id")
+	postID, err := uuid.Parse(id)
 	if err != nil {
 		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
+		return
+	}
+	result, err := postController.Service.GetById(ctx, postID.ToString())
+
+	if err != nil {
+		helper.ErrorResponse(c, "Not found a post", err, http.StatusInternalServerError)
 		return
 	}
 

@@ -25,9 +25,9 @@ func NewPostModule() *PostModule {
 
 	domainDispatcher := ddd.NewEventDispatcher[ddd.AggregateEvent]()
 
-	//repo := in_memory.New()
-	repo := gormPostRepo.New()         // Use GORM repository for persistence
-	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
+	//repo := in_memory.NewGormPostRepository()
+	repo := gormPostRepo.NewGormPostRepository() // Use GORM repository for persistence
+	logger, _ := logger.NewZapLogger()           // Assuming NewZapLogger is a function that initializes a logger
 	rabbitmqConn := rabbitmqConn.Connection()
 
 	messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)

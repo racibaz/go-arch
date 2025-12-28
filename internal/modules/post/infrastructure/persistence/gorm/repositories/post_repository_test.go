@@ -35,17 +35,17 @@ func TestNew(t *testing.T) {
 	// For now, just test that it doesn't panic
 	defer func() {
 		if r := recover(); r != nil {
-			t.Errorf("New() panicked: %v", r)
+			t.Errorf("NewGormPostRepository() panicked: %v", r)
 		}
 	}()
 
-	repo := New()
+	repo := NewGormPostRepository()
 	assert.NotNil(t, repo)
 	// Note: DB might be nil if database is not connected in test environment
 }
 
 func TestGormPostRepository_Update_Panics(t *testing.T) {
-	repo := New()
+	repo := NewGormPostRepository()
 
 	post, err := createTestPost()
 	assert.NoError(t, err)
@@ -58,7 +58,7 @@ func TestGormPostRepository_Update_Panics(t *testing.T) {
 }
 
 func TestGormPostRepository_Delete_Panics(t *testing.T) {
-	repo := New()
+	repo := NewGormPostRepository()
 
 	ctx := context.Background()
 
@@ -68,7 +68,7 @@ func TestGormPostRepository_Delete_Panics(t *testing.T) {
 }
 
 func TestGormPostRepository_List_Panics(t *testing.T) {
-	repo := New()
+	repo := NewGormPostRepository()
 
 	ctx := context.Background()
 

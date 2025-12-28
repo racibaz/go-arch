@@ -2,10 +2,12 @@ package grpc
 
 import (
 	"context"
+	"fmt"
 	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	proto "github.com/racibaz/go-arch/internal/modules/post/presentation/grpc/proto"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	"go.opentelemetry.io/otel"
 	"google.golang.org/grpc"
@@ -29,7 +31,8 @@ func NewPostGrpcController(grpc *grpc.Server, postService ports.PostService) {
 func (controller *PostGrpcController) CreatePost(ctx context.Context, in *proto.CreatePostInput) (*proto.CreatePostResponse, error) {
 
 	tracer := otel.Tracer("go-arch")
-	ctx, span := tracer.Start(ctx, "PostModule - gRPC - PostController - Store")
+	path := fmt.Sprintf("PostModule - gRPC - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
+	ctx, span := tracer.Start(ctx, path)
 	defer span.End()
 
 	newUuid := uuid.NewID()
