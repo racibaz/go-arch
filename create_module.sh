@@ -41,7 +41,7 @@ mkdir -p internal/modules/$CAMEL_MODULE_NAME/presentation
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/presentation/http
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/presentation/routes
 
-mkdir -p internal/modules/$CAMEL_MODULE_NAME/tests
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/testing
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/query
 
 cat > internal/modules/$CAMEL_MODULE_NAME/presentation/http/${CAMEL_MODULE_NAME}_controller.go << EOF
@@ -489,8 +489,8 @@ EOF
 
 
 
-cat > internal/modules/$CAMEL_MODULE_NAME/tests/${CAMEL_MODULE_NAME}_integration_test.go << EOF
-package tests
+cat > internal/modules/$CAMEL_MODULE_NAME/testing/${CAMEL_MODULE_NAME}_integration_test.go << EOF
+package testing
 
 import (
 	"testing"

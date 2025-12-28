@@ -179,7 +179,7 @@ Follow the steps below to create and integrate a new module into the application
 Run the following command from the project root:
 
 ```bash
-name=YourModuleName make module
+make module name=YourModuleName
 ```
 
 This command generates the standard module skeleton under:
