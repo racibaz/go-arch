@@ -19,7 +19,7 @@ type GormPostRepository struct {
 
 var _ ports.PostRepository = (*GormPostRepository)(nil)
 
-func New() *GormPostRepository {
+func NewGormPostRepository() *GormPostRepository {
 	return &GormPostRepository{
 		DB: database.Connection(),
 	}
@@ -42,7 +42,9 @@ func (repo *GormPostRepository) GetByID(ctx context.Context, id string) (*domain
 
 	var post domain.Post
 
-	if err := repo.DB.WithContext(ctx).Where("id = ?", id).First(&post).Error; err != nil {
+	if err := repo.DB.WithContext(ctx).
+		Where("id = ?", id).
+		First(&post).Error; err != nil {
 		return nil, err
 	}
 
@@ -68,7 +70,17 @@ func (repo *GormPostRepository) IsExists(ctx context.Context, title, description
 
 	var post domain.Post
 
-	repo.DB.WithContext(ctx).Where("title = ?", title).Where("description = ?", description).First(&post)
+	if err := repo.DB.WithContext(ctx).
+		Where("title = ?", title).
+		Where("description = ?", description).
+		First(&post).Error; err != nil {
+
+		if err == gorm.ErrRecordNotFound {
+			return false, nil
+		}
+
+		return false, err
+	}
 
 	if post.ID() != "" {
 		return true, nil

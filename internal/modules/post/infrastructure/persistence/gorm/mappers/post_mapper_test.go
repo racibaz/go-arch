@@ -3,12 +3,23 @@ package mappers
 import (
 	domain "github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/pkg/es"
+	"github.com/racibaz/go-arch/pkg/uuid"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
 )
 
 func Test_Post_PostMapper_ToDomain(t *testing.T) {
+
+	id, err := uuid.Parse("acb863d4-07b4-4644-b598-7f5cc2494613")
+	if err != nil {
+		t.Fatalf("failed to parse uuid: %v", err)
+	}
+
+	userId, err := uuid.Parse("ed796bf3-6ff9-4b8f-9fdf-18358c2d9100")
+	if err != nil {
+		t.Fatalf("failed to parse uuid: %v", err)
+	}
 
 	testCases := []struct {
 		name string
@@ -18,8 +29,8 @@ func Test_Post_PostMapper_ToDomain(t *testing.T) {
 		{
 			name: "valid",
 			post: domain.Post{
-				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", domain.PostAggregate),
-				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
+				Aggregate:   es.NewAggregate(id.ToString(), domain.PostAggregate),
+				UserID:      userId.ToString(),
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -62,6 +73,16 @@ func Test_Post_PostMapper_ToDomain(t *testing.T) {
 
 func Test_Post_PostMapper_ToPersistence(t *testing.T) {
 
+	id, err := uuid.Parse("acb863d4-07b4-4644-b598-7f5cc2494613")
+	if err != nil {
+		t.Fatalf("failed to parse uuid: %v", err)
+	}
+
+	userId, err := uuid.Parse("ed796bf3-6ff9-4b8f-9fdf-18358c2d9100")
+	if err != nil {
+		t.Fatalf("failed to parse uuid: %v", err)
+	}
+
 	testCases := []struct {
 		name string
 		post domain.Post
@@ -70,8 +91,8 @@ func Test_Post_PostMapper_ToPersistence(t *testing.T) {
 		{
 			name: "valid",
 			post: domain.Post{
-				Aggregate:   es.NewAggregate("acb863d4-07b4-4644-b598-7f5cc2494613", domain.PostAggregate),
-				UserID:      "ed796bf3-6ff9-4b8f-9fdf-18358c2d9100",
+				Aggregate:   es.NewAggregate(id.ToString(), domain.PostAggregate),
+				UserID:      userId.ToString(),
 				Title:       "title with more than 10 characters",
 				Description: "Description",
 				Content:     "content content content",
@@ -84,6 +105,8 @@ func Test_Post_PostMapper_ToPersistence(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
+
+			t.Parallel()
 
 			postEntity := ToPersistence(tc.post)
 

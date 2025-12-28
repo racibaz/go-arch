@@ -6,6 +6,7 @@ import (
 	"github.com/racibaz/go-arch/pkg/es"
 )
 
+// ToDomain maps a persistence entity Post to a domain Post
 func ToDomain(postEntity entity.Post) domain.Post {
 
 	status := domain.PostStatus(postEntity.Status)
@@ -23,6 +24,7 @@ func ToDomain(postEntity entity.Post) domain.Post {
 
 }
 
+// ToPersistence maps a domain Post to a persistence entity Post
 func ToPersistence(post domain.Post) entity.Post {
 
 	return entity.Post{
