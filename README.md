@@ -110,7 +110,8 @@ This project demonstrates clean architectural principles in Go, including:
 - **Module Generator** for rapid module creation
 - **Hateoas** for API responses
 - **CodeQL Analysis** for security
-- **Codecov** coverage reports 
+- **Codecov** coverage reports
+- **Interface Assertions** for better type safety
 - And more...
 
 
