@@ -494,7 +494,7 @@ Minimal Structure
 │   │   │   ├── infrastructure      # You can implemenet 3. party services integration here such as PostgreSQL and  Mysql implementation
 │   │   │   ├── module.go           # The module's main entry point for registration
 │   │   │   ├── presentation        # Handles HTTP and gRPC requests and responses
-│   │   │   └── test                # Integration tests for the module
+│   │   │   └── testing             # Mocks and Integration tests for the module
 │   │   └── shared                        # Shared module for common functionalities across modules
 │   │       ├── domain
 │   │       ├── infrastructure
@@ -538,12 +538,14 @@ Expanded Structure
 │   │   │   │   ├── grpc
 │   │   │   │   │   └── proto
 │   │   │   │   ├── http
-│   │   │   └── test
+│   │   │   └── testing
+│   │   │       └── mocks
 │   │   │       └── integration
 │   │   └── shared
 │   │       ├── domain
 │   │       ├── infrastructure
 │   │       └── presentation
+│   │       └── mocks
 │   └── providers
 ├── main.go
 ├── migrations
