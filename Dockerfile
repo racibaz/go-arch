@@ -20,7 +20,7 @@ WORKDIR /app
 RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
 # Install mockery tool for generating mocks
-RUN go install github.com/vektra/mockery/v2@latest
+RUN go install github.com/vektra/mockery/v3@latest
 
 # Install swag tool for API documentation
 RUN go install github.com/swaggo/swag/cmd/swag@latest
