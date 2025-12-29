@@ -40,8 +40,8 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Tags			posts
 //	@Accept			json
 //	@Produce		json
-//	@Param			post	body		CreatePostRequestDto	true	"Create Post Request DTO"
-//	@Success		201		{object}	CreatePostResponseDto	"Post created successfully"
+//	@Param			post	body		presentation.CreatePostRequestDto	true	"Create Post Request DTO"
+//	@Success		201		{object}	presentation.CreatePostResponseDto	"Post created successfully"
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/posts [post]
 func (controller PostController) Store(c *gin.Context) {
@@ -127,7 +127,7 @@ func (controller PostController) Store(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			id	path		string		true	"Post ID"
-//	@Success		200	{object}	GetPostResponseDto	"Post retrieved successfully"
+//	@Success		200	{object}	presentation.GetPostResponseDto	"Post retrieved successfully"
 //	@Failure		404	{object}	errors.AppError		"Page not found"
 //	@Router			/posts/{id} [get]
 func (controller PostController) Show(c *gin.Context) {

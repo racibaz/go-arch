@@ -8,5 +8,5 @@ type Link struct {
 
 type Response[T any] struct {
 	Data  *T     `json:"data"`
-	Links []Link `json:"links"`
+	Links []Link `json:"_links"`
 }
