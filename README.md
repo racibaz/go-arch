@@ -499,6 +499,7 @@ Minimal Structure
 │   │       ├── domain
 │   │       ├── infrastructure
 │   │       └── presentation
+│   │       └── testing
 │   └── providers                                
 ├── main.go
 ├── migrations
@@ -545,7 +546,7 @@ Expanded Structure
 │   │       ├── domain
 │   │       ├── infrastructure
 │   │       └── presentation
-│   │       └── mocks
+│   │       └── testing
 │   └── providers
 ├── main.go
 ├── migrations

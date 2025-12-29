@@ -5,9 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
-	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
+	"github.com/racibaz/go-arch/internal/modules/post/domain"
+	"github.com/racibaz/go-arch/internal/modules/post/presentation"
 	"github.com/racibaz/go-arch/pkg/config"
-	"github.com/racibaz/go-arch/pkg/helper"
+	helper "github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	validator "github.com/racibaz/go-arch/pkg/validator"
 	_ "github.com/swaggo/files"
@@ -18,45 +19,6 @@ import (
 	"net/http"
 	"time"
 )
-
-// CreatePostResponseDto
-// @Description CreatePostResponseDto is a data transfer object for reporting the details of a created post
-type CreatePostResponseDto struct {
-	// @Description Title is the title of the post
-	Title string `json:"title"`
-	// @Description Description is the description of the post
-	Description string `json:"description"`
-	// @Description Content is the content of the post
-	Content string `json:"content"`
-	// @Description Status is the status of the post
-	Status string `json:"status"`
-}
-
-// GetPostResponseDto
-// @Description GetPostResponseDto is a data transfer object for reporting the details of a post
-type GetPostResponseDto struct {
-	// @Description Title is the title of the post
-	Title string `json:"title"`
-	// @Description Description is the description of the post
-	Description string `json:"description"`
-	// @Description Content is the content of the post
-	Content string `json:"content"`
-	// @Description Status is the status of the post
-	Status string `json:"status"`
-}
-
-// CreatePostRequestDto
-// @Description CreatePostRequestDto is a data transfer object for creating a post
-type CreatePostRequestDto struct {
-	// @Description UserId is the ID of the user creating the post
-	UserId string `json:"user_id" validate:"required,uuid"`
-	// @Description Title is the title of the post
-	Title string `json:"title" validate:"required,min=10"`
-	// @Description Description is the description of the post
-	Description string `json:"description" validate:"required,min=10"`
-	// @Description Content is the content of the post
-	Content string `json:"content" validate:"required,min=10"`
-}
 
 type PostController struct {
 	Service ports.PostService
@@ -82,17 +44,17 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Success		201		{object}	CreatePostResponseDto	"Post created successfully"
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/posts [post]
-func (postController PostController) Store(c *gin.Context) {
+func (controller PostController) Store(c *gin.Context) {
 
 	tracer := otel.Tracer(config.Get().App.Name) //go-arch
 	//"PostModule - Restful - PostController - Store"
-	path := fmt.Sprintf("PostModule - Restful - %s - %s", helper.StructName(postController), helper.CurrentFuncName())
+	path := fmt.Sprintf("PostModule - Restful - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
 
 	ctx, span := tracer.Start(c.Request.Context(), path)
 	defer span.End()
 
 	// Decode the request body into CreatePostRequestDto
-	createPostRequestDto, err := helper.Decode[CreatePostRequestDto](c)
+	createPostRequestDto, err := helper.Decode[presentation.CreatePostRequestDto](c)
 
 	if err != nil {
 		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
@@ -114,13 +76,13 @@ func (postController PostController) Store(c *gin.Context) {
 
 	newID := uuid.NewID()
 
-	err = postController.Service.CreatePost(ctx, dto.CreatePostInput{
+	err = controller.Service.CreatePost(ctx, dto.CreatePostInput{
 		ID:          newID,
 		UserID:      createPostRequestDto.UserId,
 		Title:       createPostRequestDto.Title,
 		Description: createPostRequestDto.Description,
 		Content:     createPostRequestDto.Content,
-		Status:      postValueObject.PostStatusDraft,
+		Status:      domain.PostStatusDraft,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
 	})
@@ -133,12 +95,14 @@ func (postController PostController) Store(c *gin.Context) {
 		return
 	}
 
-	responsePayload := helper.HateoasResponse[CreatePostResponseDto]{
-		Data: CreatePostResponseDto{
-			Title:       createPostRequestDto.Title,
-			Description: createPostRequestDto.Description,
-			Content:     createPostRequestDto.Content,
-			Status:      postValueObject.PostStatusDraft.String(),
+	responsePayload := helper.Response[presentation.CreatePostResponseDto]{
+		Data: &presentation.CreatePostResponseDto{
+			Post: &presentation.Post{
+				Title:       createPostRequestDto.Title,
+				Description: createPostRequestDto.Description,
+				Content:     createPostRequestDto.Content,
+				Status:      domain.PostStatusDraft.String(),
+			},
 		},
 		Links: []helper.Link{
 			{
@@ -166,10 +130,10 @@ func (postController PostController) Store(c *gin.Context) {
 //	@Success		200	{object}	GetPostResponseDto	"Post retrieved successfully"
 //	@Failure		404	{object}	errors.AppError		"Page not found"
 //	@Router			/posts/{id} [get]
-func (postController PostController) Show(c *gin.Context) {
+func (controller PostController) Show(c *gin.Context) {
 
-	tracer := otel.Tracer("go-arch")
-	path := fmt.Sprintf("PostModule - Restful - %s - %s", helper.StructName(postController), helper.CurrentFuncName())
+	tracer := otel.Tracer(config.Get().App.Name)
+	path := fmt.Sprintf("PostModule - Restful - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
 	ctx, span := tracer.Start(c, path)
 	defer span.End()
 
@@ -179,19 +143,16 @@ func (postController PostController) Show(c *gin.Context) {
 		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
 		return
 	}
-	result, err := postController.Service.GetById(ctx, postID.ToString())
+	result, err := controller.Service.GetById(ctx, postID.ToString())
 
 	if err != nil {
 		helper.ErrorResponse(c, "Not found a post", err, http.StatusInternalServerError)
 		return
 	}
 
-	responsePayload := helper.HateoasResponse[GetPostResponseDto]{
-		Data: GetPostResponseDto{
-			Title:       result.Title,
-			Description: result.Description,
-			Content:     result.Content,
-			Status:      result.Status.String(),
+	responsePayload := helper.Response[presentation.GetPostResponseDto]{
+		Data: &presentation.GetPostResponseDto{
+			Post: presentation.FromPostCoreToHTTP(result),
 		},
 		Links: []helper.Link{
 			{
