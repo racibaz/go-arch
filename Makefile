@@ -92,4 +92,4 @@ db_migrate_force:
 
 module:
 	@if [ -z "$(name)" ]; then echo "Usage: make module name=<module_name>"; exit 1; fi
-	@bash ./create_module.sh $(name)
+	@bash ./scripts/create_module.sh $(name)

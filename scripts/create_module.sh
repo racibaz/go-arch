@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-    echo "Usage: ./create_module.sh <module_name>"
+    echo "Usage: ./scripts/create_module.sh <module_name>"
     exit 1
 fi
 
@@ -54,6 +54,7 @@ import (
 	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	validator "github.com/racibaz/go-arch/pkg/validator"
+	"github.com/racibaz/go-arch/pkg/config"
 
 	_ "github.com/swaggo/files"
 	_ "github.com/swaggo/gin-swagger"
@@ -61,6 +62,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"net/http"
+	"fmt"
 )
 
 // Create${PASCAL_MODULE_NAME}ResponseDto
@@ -111,10 +113,11 @@ func New${PASCAL_MODULE_NAME}Controller(service ports.${PASCAL_MODULE_NAME}Servi
 //	@Success		201		{object}	Create${PASCAL_MODULE_NAME}ResponseDto	"${PASCAL_MODULE_NAME} created successfully"
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/${CAMEL_MODULE_NAME}s [post]
-func (${CAMEL_MODULE_NAME}Controller ${PASCAL_MODULE_NAME}Controller) Store(c *gin.Context) {
+func (controller *${PASCAL_MODULE_NAME}Controller) Store(c *gin.Context) {
 
-	tracer := otel.Tracer("go-arch")
-	ctx, span := tracer.Start(c.Request.Context(), "${PASCAL_MODULE_NAME}Module - Restful - ${PASCAL_MODULE_NAME}Controller - Store")
+	tracer := otel.Tracer(config.Get().App.Name)
+  path := fmt.Sprintf("${PASCAL_MODULE_NAME}Module - Restful - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
+	ctx, span := tracer.Start(c.Request.Context(), path)
 	defer span.End()
 
 	create${PASCAL_MODULE_NAME}RequestDto, err := helper.Decode[Create${PASCAL_MODULE_NAME}RequestDto](c)
@@ -139,7 +142,7 @@ func (${CAMEL_MODULE_NAME}Controller ${PASCAL_MODULE_NAME}Controller) Store(c *g
 
 	newUuid := uuid.NewID()
 
-	err = ${CAMEL_MODULE_NAME}Controller.Service.Create${PASCAL_MODULE_NAME}(ctx, dto.Create${PASCAL_MODULE_NAME}Input{
+	err = controller.Service.Create${PASCAL_MODULE_NAME}(ctx, dto.Create${PASCAL_MODULE_NAME}Input{
 		ID:          newUuid,
 	})
 
@@ -171,15 +174,16 @@ func (${CAMEL_MODULE_NAME}Controller ${PASCAL_MODULE_NAME}Controller) Store(c *g
 //	@Success		200	{object}	Get${PASCAL_MODULE_NAME}ResponseDto	"${PASCAL_MODULE_NAME} retrieved successfully"
 //	@Failure		404	{object}	errors.AppError		"Page not found"
 //	@Router			/${CAMEL_MODULE_NAME}s/{id} [get]
-func (${CAMEL_MODULE_NAME}Controller ${PASCAL_MODULE_NAME}Controller) Show(c *gin.Context) {
+func (controller ${PASCAL_MODULE_NAME}Controller) Show(c *gin.Context) {
 
-	tracer := otel.Tracer("go-arch")
-	ctx, span := tracer.Start(c, "${PASCAL_MODULE_NAME}Module - Restful - ${PASCAL_MODULE_NAME}Controller - Show")
+	tracer := otel.Tracer(config.Get().App.Name)
+  path := fmt.Sprintf("${PASCAL_MODULE_NAME}Module - Restful - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
+	ctx, span := tracer.Start(c.Request.Context(), path)
 	defer span.End()
 
 	${CAMEL_MODULE_NAME}ID := c.Param("id")
 
-	result, err := ${CAMEL_MODULE_NAME}Controller.Service.GetById(ctx, ${CAMEL_MODULE_NAME}ID)
+	result, err := controller.Service.GetById(ctx, ${CAMEL_MODULE_NAME}ID)
 
 	if err != nil {
 		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
