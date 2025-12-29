@@ -41,23 +41,23 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 ## 📚 Table of Contents
 
 - [📖 Overview](#-overview)
-- [📝 Notes](#notes)
-- [🔐 GitHub Secrets](#github-secrets)
-- [🐳 Run with Docker (air for live reload)](#run-with-docker)
-- [🧩 Build Your First Module](#creating-a-new-module)
+- [📝 Notes](#-notes)
+- [🔐 GitHub Secrets](#-github-secrets)
+- [🐳 Run with Docker (air for live reload)](#-run-with-docker)
+- [🧩 Create Your First Module](#-create-your-first-module)
     - [Step 1: Generate the Module](#step-1-generate-the-module)
     - [Step 2: Register Routes](#step-2-register-routes)
     - [Step 3: Add Database Migrations](#step-3-add-database-migrations)
     - [Step 4: Implement Module Logic](#step-4-implement-module-logic)
     - [Step 5: Generate Swagger Documentation](#step-5-generate-swagger-documentation)
     - [Module Creation Flow](#module-creation-flow)
-- [⚙️ Application Runtime Modes](#--application-runtime-modes)
-- [🪲 Debugging Mode](#-debugging-mode)
+- [⚙️ Application Runtime Modes](#-application-runtime-modes)
+- [🪲 Local Debugging Mode](#-local-debugging-mode)
 - [🚀 GitHub Actions CI Workflow](#-github-actions-ci-workflow)
-- [🔧 Makefile Commands](#makefile-commands)
-- [📂 Project Structure](#project-structure)
+- [🔧 Makefile Commands](#-makefile-commands)
+- [📂 Project Structure](#-project-structure)
 - [⚙️ Generate gRPC Code](#-generate-grpc-code)
-- [gRPC Client Example](#-grpc-client-example)
+    - [ gRPC Client Example](#-grpc-client-example)
 - [📑 Swagger Documentation UI](#-swagger-documentation-ui)
     - [Generate Swagger Documentation](#generate-swagger-documentation)
 - [📬 RabbitMQ UI](#rabbitmq-ui)
@@ -68,14 +68,14 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🌐 Kibana UI](#kibana-ui)
 - [📦 Dependencies](#-dependencies)
 - [🛠 Roadmap / TODO](#-roadmap--todo)
-- [🚪 API Requests](#api-requests)
+- [🚪 API Requests](#-api-requests)
 - [📬 Postman Collection](#-postman-collection)
-- [❌ Validation Error Example](#validation-error-example)
+- [❌ Validation Error Example](#-validation-error-example)
 - [✔️ Linters](#-linters)
 - [🧪 Test](#-tests)
-- [🤝 Code of Conduct](#code-of-conduct)
-- [👥 Contributing](#contributing)
-- [📜 License](#license)
+- [🤝 Code of Conduct](#-code-of-conduct)
+- [👥 Contributing](#-contributing)
+- [📜 License](#-license)
 
 
 ## 📖 Overview
@@ -116,7 +116,7 @@ This project demonstrates clean architectural principles in Go, including:
 - And more...
 
 
-## 📝Notes
+## 📝 Notes
 - There are two config files that are .env and config.yaml. You can override config.yaml values with environment variables defined in the .env file.
 - You can use two ways to run database migrations:
     1. Using golang-migrate package via Makefile commands.
@@ -134,7 +134,7 @@ This project demonstrates clean architectural principles in Go, including:
         - change the command `make run` to `exec air` or `exec air -d` 
 
 
-### 🔐GitHub Secrets
+### 🔐 GitHub Secrets
 To enable automatic Docker image builds and pushes to Docker Hub via GitHub Actions, set the following secrets in your GitHub repository settings:
 - `DOCKERHUB_USERNAME`: Your Docker Hub username.
 - `DOCKERHUB_PASSWORD`: Your Docker Hub password or access token.
@@ -143,7 +143,7 @@ To enable automatic Docker image builds and pushes to Docker Hub via GitHub Acti
 - `CODECOV_TOKEN`: Your Codecov token for code coverage reporting.
 
 
-### Run with Docker
+### 🐳 Run with Docker
 ```bash
 git clone https://github.com/racibaz/go-arch.git
 
@@ -169,7 +169,7 @@ docker exec -it kibana bin/kibana-verification-code
 ```
 
 
-## Creating a New Module
+## 🧩 Create Your First Module
 
 Follow the steps below to create and integrate a new module into the application.
 
@@ -253,7 +253,7 @@ See [Generate Swagger Documentation](#generate-swagger-documentation) for detail
 
 
 
-###⚙️ Application Runtime Modes
+### ⚙️ Application Runtime Modes
 You can set the application environment by changing the `APP_ENV` variable in the `.env` file.
 
 
@@ -265,14 +265,16 @@ You can set the application environment by changing the `APP_ENV` variable in th
 | `prod`      | `release`    | Production mode; highest performance with simplified logs and no debug output. |
 
 
-### 🪲 Debugging Mode
+### 🪲 Local Debugging Mode
+
+If you want to debug the application locally with your IDE or command line, follow these steps:
 
 - Stop the app container if it's running.
 - Edit the `.env` file to set `APP_ENV` to `local`.
 - In the main.go file, uncomment the following line:
 ```go
 	//cmd.Execute() // if you want  use  cobra cli
-    bootstrap.Serve() //uncomment this line, if you want to local debugging 
+        bootstrap.Serve() //uncomment this line, if you want to local debugging 
 ```
 - Debug it with your IDE or command line.
 
@@ -295,7 +297,7 @@ The project includes a GitHub Actions workflow for continuous integration (CI). 
  
 
 
-### Makefile Commands
+### 🔧 Makefile Commands
 ```bash
 make run
 ```
@@ -481,7 +483,7 @@ http://127.0.0.1:5601/app/home#/
 - open telemetry: `go.opentelemetry.io/otel`
 - jaeger: `go.opentelemetry.io/otel/exporters/jaeger`
 
-## 📂Project Structure
+## 📂 Project Structure
 
 Minimal Structure
 
@@ -620,7 +622,7 @@ Expanded Structure
 - [ ] Implement feature toggles
 
 
-## 🚪API Requests
+## 🚪 API Requests
 
 | Endpoint                    | HTTP Method |    Description    |
 |-----------------------------|:-----------:|:-----------------:|
@@ -632,7 +634,7 @@ Expanded Structure
 ## 📬 Postman Collection
 [Download](docs/postman/baz-arch.postman_collection.json)
 
-## Validation Error Example
+## ❌ Validation Error Example
 When sending a POST request to create a post with invalid data, you might receive a validation error response like this:
 ```
 {
@@ -672,14 +674,14 @@ make coverage
 ```
 
 
-## Code of Conduct
+## 🤝 Code of Conduct
 
 Please note that this project is governed by a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
-## Contributing
+## 👥 Contributing
 
 Please see the [CONTRIBUTING](CONTRIBUTING.md) file.
 
-## License
+## 📜 License
 
 This project is licensed under the Apache 2.0 License. For further details, please see the [LICENSE](LICENSE) file.
