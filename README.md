@@ -51,7 +51,8 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
     - [Step 4: Implement Module Logic](#step-4-implement-module-logic)
     - [Step 5: Generate Swagger Documentation](#step-5-generate-swagger-documentation)
     - [Module Creation Flow](#module-creation-flow)
-- [⚙️ Application Runtime Modes](#application-runtime-modes)
+- [⚙️ Application Runtime Modes](#--application-runtime-modes)
+- [🪲 Debugging Mode](#-debugging-mode)
 - [🚀 GitHub Actions CI Workflow](#-github-actions-ci-workflow)
 - [🔧 Makefile Commands](#makefile-commands)
 - [📂 Project Structure](#project-structure)
@@ -252,7 +253,7 @@ See [Generate Swagger Documentation](#generate-swagger-documentation) for detail
 
 
 
-### Application Runtime Modes
+###⚙️ Application Runtime Modes
 You can set the application environment by changing the `APP_ENV` variable in the `.env` file.
 
 
@@ -264,7 +265,7 @@ You can set the application environment by changing the `APP_ENV` variable in th
 | `prod`      | `release`    | Production mode; highest performance with simplified logs and no debug output. |
 
 
-### Debugging mode
+### 🪲 Debugging Mode
 
 - Stop the app container if it's running.
 - Edit the `.env` file to set `APP_ENV` to `local`.
