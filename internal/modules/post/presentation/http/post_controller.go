@@ -8,7 +8,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/presentation"
 	"github.com/racibaz/go-arch/pkg/config"
-	helper "github.com/racibaz/go-arch/pkg/helper"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	validator "github.com/racibaz/go-arch/pkg/validator"
 	_ "github.com/swaggo/files"
