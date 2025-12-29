@@ -264,6 +264,20 @@ You can set the application environment by changing the `APP_ENV` variable in th
 | `prod`      | `release`    | Production mode; highest performance with simplified logs and no debug output. |
 
 
+### Debugging mode
+
+- Stop the app container if it's running.
+- Edit the `.env` file to set `APP_ENV` to `local`.
+- In the main.go file, uncomment the following line:
+```go
+	//cmd.Execute() // if you want  use  cobra cli
+    bootstrap.Serve() //uncomment this line, if you want to local debugging 
+```
+- Debug it with your IDE or command line.
+
+
+
+
 ### 🚀 GitHub Actions CI Workflow
 The project includes a GitHub Actions workflow for continuous integration (CI). The workflow is defined in the `.github/workflows/ci.yaml` file and includes the following steps:
 #### Step 1 - (push and release):
