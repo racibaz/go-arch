@@ -1,0 +1,133 @@
+definitions:
+  errors.AppError:
+    properties:
+      cause:
+        type: string
+      message:
+        type: string
+      type:
+        type: string
+    type: object
+  presentation.CreatePostRequestDto:
+    description: CreatePostRequestDto is a data transfer object for creating a post
+    properties:
+      content:
+        description: '@Description Content is the content of the post'
+        minLength: 10
+        type: string
+      description:
+        description: '@Description Description is the description of the post'
+        minLength: 10
+        type: string
+      title:
+        description: '@Description Title is the title of the post'
+        minLength: 10
+        type: string
+      user_id:
+        description: '@Description UserId is the ID of the user creating the post'
+        type: string
+    required:
+    - content
+    - description
+    - title
+    - user_id
+    type: object
+  presentation.CreatePostResponseDto:
+    description: CreatePostResponseDto is a data transfer object for reporting the
+      details of a created post
+    properties:
+      post:
+        $ref: '#/definitions/presentation.Post'
+    type: object
+  presentation.GetPostResponseDto:
+    description: GetPostResponseDto is a data transfer object for reporting the details
+      of a post
+    properties:
+      post:
+        $ref: '#/definitions/presentation.Post'
+    type: object
+  presentation.Post:
+    properties:
+      content:
+        description: '@Description Content is the content of the post'
+        type: string
+      description:
+        description: '@Description Description is the description of the post'
+        type: string
+      status:
+        description: '@Description Status is the status of the post'
+        type: string
+      title:
+        description: '@Description Title is the title of the post'
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/health:
+    get:
+      consumes:
+      - application/json
+      description: do health check
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: health
+      tags:
+      - health
+  /posts:
+    post:
+      consumes:
+      - application/json
+      description: It is a method to create a new post
+      parameters:
+      - description: Create Post Request DTO
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/presentation.CreatePostRequestDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Post created successfully
+          schema:
+            $ref: '#/definitions/presentation.CreatePostResponseDto'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/errors.AppError'
+      summary: post store
+      tags:
+      - posts
+  /posts/{id}:
+    get:
+      consumes:
+      - application/json
+      description: It is a method to retrieve a post by its ID
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Post retrieved successfully
+          schema:
+            $ref: '#/definitions/presentation.GetPostResponseDto'
+        "404":
+          description: Page not found
+          schema:
+            $ref: '#/definitions/errors.AppError'
+      summary: Get post by id
+      tags:
+      - posts
+swagger: "2.0"
