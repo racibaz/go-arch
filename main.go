@@ -1,12 +1,18 @@
 package main
 
-import "github.com/racibaz/go-arch/pkg/bootstrap"
+import (
+	"github.com/racibaz/go-arch/cmd"
+)
 
 func main() {
 	run()
 }
 
 func run() {
-	//cmd.Execute() // if you want  use  cobra cli
-	bootstrap.Serve() //if you want changed it for local debugging
+	// If you want to use  cobra cli
+	// Docker entry point run this
+	cmd.Execute()
+
+	// If you want to use local debugging without cobra cli, uncomment it.
+	//bootstrap.Serve()
 }

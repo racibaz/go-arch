@@ -8,19 +8,18 @@ default: help
 help:
 	@echo "Makefile commands:"
 	@echo "  make run                   - Run the application"
-	@echo "  make migrate               - Run database migrations"
-	@echo "  make seed                  - Seed the database with initial data"
-	@echo "  make mock                  - Generate mocks using mockery"
-	@echo "  make mock-install          - Install mockery tool"
-	@echo "  make mock-clean            - Remove all generated mocks"
-	@echo "  make generate_proto        - Generate gRPC protobuf code"
-	@echo "  make generate_swagger      - Generate Swagger documentation"
 	@echo "  make db_create_migration   - Create a new database migration"
 	@echo "  make db_migrate_up         - Apply all up database migrations"
 	@echo "  make db_migrate_down       - Apply all down database migrations"
 	@echo "  make db_migrate_drop       - Drop all database objects"
 	@echo "  make db_migrate_version    - Show current migration version"
 	@echo "  make db_migrate_force      - Force set migration version"
+	@echo "  make seed                  - Seed the database with initial data"
+	@echo "  make mock                  - Generate mocks using mockery"
+	@echo "  make mock-install          - Install mockery tool"
+	@echo "  make mock-clean            - Remove all generated mocks"
+	@echo "  make generate_proto        - Generate gRPC protobuf code"
+	@echo "  make generate_swagger      - Generate Swagger documentation"
 	@echo "  make test                  - Run unit tests"
 	@echo "  make coverage              - Run tests with coverage report"
 	@echo "  make lint                  - Run code linting"
@@ -30,8 +29,26 @@ help:
 run:
 	@go run main.go serve
 
-migrate:
-	@go run main.go migrate
+
+
+db_create_migration:
+	migrate create -ext sql -dir migrations -seq $(name)
+
+db_migrate_up:
+	migrate -path migrations -database "$(DB_URL)" up
+
+db_migrate_down:
+	migrate -path migrations -database "$(DB_URL)" down
+
+db_migrate_drop:
+	migrate -path migrations -database "$(DB_URL)" drop
+
+db_migrate_version:
+	migrate -path migrations -database "$(DB_URL)" version
+
+db_migrate_force:
+	migrate -path migrations -database "$(DB_URL)" force $(version)
+
 
 
 seed:
@@ -72,23 +89,6 @@ generate_proto:
 generate_swagger:
 	swag init -o docs/api/openapi-spec
 
-db_create_migration:
-	migrate create -ext sql -dir migrations -seq $(name)
-
-db_migrate_up:
-	migrate -path migrations -database "$(DB_URL)" up
-
-db_migrate_down:
-	migrate -path migrations -database "$(DB_URL)" down
-
-db_migrate_drop:
-	migrate -path migrations -database "$(DB_URL)" drop
-
-db_migrate_version:
-	migrate -path migrations -database "$(DB_URL)" version
-
-db_migrate_force:
-	migrate -path migrations -database "$(DB_URL)" force $(version)
 
 module:
 	@if [ -z "$(name)" ]; then echo "Usage: make module name=<module_name>"; exit 1; fi
