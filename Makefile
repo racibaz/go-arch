@@ -70,7 +70,7 @@ generate_proto:
 		--go-grpc_opt=module=github.com/racibaz/go-arch  internal/modules/post/presentation/grpc/proto/*.proto
 
 generate_swagger:
-	swag init -o api/openapi-spec
+	swag init -o docs/api/openapi-spec
 
 db_create_migration:
 	migrate create -ext sql -dir migrations -seq $(name)

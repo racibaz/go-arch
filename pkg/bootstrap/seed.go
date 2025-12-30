@@ -1,7 +1,7 @@
 package bootstrap
 
 import (
-	"github.com/racibaz/go-arch/internal/database/seeder"
+	"github.com/racibaz/go-arch/internal/providers"
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/database"
 )
@@ -11,5 +11,5 @@ func Seed() {
 
 	database.Connect()
 
-	seeder.Seed()
+	providers.RegisterSeeders()
 }

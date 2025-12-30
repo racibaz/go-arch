@@ -118,7 +118,7 @@ This project demonstrates clean architectural principles in Go, including:
 
 ## 📝 Notes
 - There are two config files that are .env and config.yaml. You can override config.yaml values with environment variables defined in the .env file.
-- You can use two ways to run database migrations:
+
     1. Using golang-migrate package via Makefile commands.
        The Command examples:
         - name=init_schema make db_create_migration
@@ -127,11 +127,9 @@ This project demonstrates clean architectural principles in Go, including:
         - make db_migrate_force
         - make db_migrate_drop
         - make db_migrate_version
-    2. Using the `cmd/migrate` CLI application provided in the project.
-       The Command example:
-        - make migrate
-    3. If you want use air (live reload), you can change the `entrypoint.sh` file in the root directory.
-        - change the command `make run` to `exec air` or `exec air -d` 
+       
+    2. If you want to use air (live reload), you can change the `entrypoint.sh` file in the root directory.
+          - change the command `make run` to `exec air` or `exec air -d` 
 
 
 ### 🔐 GitHub Secrets
@@ -277,6 +275,8 @@ If you want to debug the application locally with your IDE or command line, foll
         bootstrap.Serve() //uncomment this line, if you want to local debugging 
 ```
 - Debug it with your IDE or command line.
+- Use the url `localhost:3000` instead of `localhost:3001`.
+- Such as: `localhost:3000/api/v1/posts`
 
 
 
@@ -300,9 +300,6 @@ The project includes a GitHub Actions workflow for continuous integration (CI). 
 ### 🔧 Makefile Commands
 ```bash
 make run
-```
-```bash
-make migrate
 ```
 ```bash
 name=init_schema make db_create_migration
@@ -569,7 +566,6 @@ Expanded Structure
 ├── migrations
 ├── pkg
 │   ├── bootstrap
-│   │   ├── migrate.go
 │   │   ├── seed.go
 │   │   └── serve.go
 │   ├── config

@@ -1,4 +1,4 @@
-package seeder
+package module
 
 import (
 	postDomain "github.com/racibaz/go-arch/internal/modules/post/domain"
@@ -9,9 +9,12 @@ import (
 	"time"
 )
 
+// Seed seeds the database with initial data for the post module.
 func Seed() {
+	// Get database connection
 	db := database.Connection()
 
+	// Implement module-specific seeding logic here
 	log.Println("Seeding database...")
 
 	post, err := postDomain.Create(
@@ -32,5 +35,5 @@ func Seed() {
 
 	db.Create(&postEntity) // pass pointer of data to Create
 
-	log.Println("Seeder done ..")
+	log.Println("Post Seeder Done ..")
 }
