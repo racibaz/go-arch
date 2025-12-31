@@ -14,7 +14,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3001/api/v1/posts/48dea945-2d76-4353-878f-0b86d76dabf4",
+							"raw": "localhost:3001/api/v1/posts/2d86263a-eebf-4e7d-867a-0115569d6a3a",
 							"host": [
 								"localhost"
 							],
@@ -23,7 +23,7 @@
 								"api",
 								"v1",
 								"posts",
-								"48dea945-2d76-4353-878f-0b86d76dabf4"
+								"2d86263a-eebf-4e7d-867a-0115569d6a3a"
 							]
 						}
 					},
