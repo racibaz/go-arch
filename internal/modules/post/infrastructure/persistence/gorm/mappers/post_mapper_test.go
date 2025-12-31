@@ -44,7 +44,8 @@ func Test_Post_PostMapper_ToDomain(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 
-			postEntity := ToPersistence(tc.post)
+			postEntity, err := ToPersistence(&tc.post)
+			require.NoError(t, err)
 
 			require.NotEmpty(t, postEntity.ID)
 			require.NotEmpty(t, postEntity.Title)
@@ -52,7 +53,8 @@ func Test_Post_PostMapper_ToDomain(t *testing.T) {
 			require.NotEmpty(t, postEntity.Content)
 			require.NotEmpty(t, postEntity.Status)
 
-			postModel := ToDomain(postEntity)
+			postModel, err := ToDomain(postEntity)
+			require.NoError(t, err)
 
 			require.NotEmpty(t, postModel.ID())
 			require.NotEmpty(t, postModel.Title)
@@ -108,7 +110,8 @@ func Test_Post_PostMapper_ToPersistence(t *testing.T) {
 
 			t.Parallel()
 
-			postEntity := ToPersistence(tc.post)
+			postEntity, err := ToPersistence(&tc.post)
+			require.NoError(t, err)
 
 			require.NotEmpty(t, postEntity.ID)
 			require.NotEmpty(t, postEntity.Title)
@@ -116,7 +119,8 @@ func Test_Post_PostMapper_ToPersistence(t *testing.T) {
 			require.NotEmpty(t, postEntity.Content)
 			require.NotEmpty(t, postEntity.Status)
 
-			postModel := ToDomain(postEntity)
+			postModel, err := ToDomain(postEntity)
+			require.NoError(t, err)
 
 			require.NotEmpty(t, postModel.ID())
 			require.NotEmpty(t, postModel.Title)

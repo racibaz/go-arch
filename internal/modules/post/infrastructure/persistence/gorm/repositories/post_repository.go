@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"fmt"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/entities"
@@ -28,11 +29,14 @@ func NewGormPostRepository() *GormPostRepository {
 func (repo *GormPostRepository) Save(ctx context.Context, post *domain.Post) error {
 	var newPost entities.Post
 
-	persistenceModel := postMapper.ToPersistence(*post)
+	persistenceModel, persistenceErr := postMapper.ToPersistence(post)
+	if persistenceErr != nil {
+		return fmt.Errorf("failed to map post to persistence model: %w", persistenceErr)
+	}
 
 	err := repo.DB.WithContext(ctx).Create(&persistenceModel).Scan(&newPost).Error
 	if err != nil {
-		return err
+		return fmt.Errorf("new post creation is failed: %w", err)
 	}
 
 	return nil

@@ -83,10 +83,12 @@ func TestPostMapperRoundTrip(t *testing.T) {
 	assert.NoError(t, err)
 
 	// Convert to persistence model
-	persistenceModel := postMapper.ToPersistence(*post)
+	persistenceModel, err := postMapper.ToPersistence(post)
+	assert.NoError(t, err)
 
 	// Convert back to domain model
-	domainModel := postMapper.ToDomain(persistenceModel)
+	domainModel, err := postMapper.ToDomain(persistenceModel)
+	assert.NoError(t, err)
 
 	// Verify the round-trip conversion
 	assert.Equal(t, post.ID(), domainModel.ID())
@@ -103,7 +105,8 @@ func TestPostMapperToPersistence(t *testing.T) {
 	post, err := createTestPost()
 	assert.NoError(t, err)
 
-	entity := postMapper.ToPersistence(*post)
+	entity, err := postMapper.ToPersistence(post)
+	assert.NoError(t, err)
 
 	assert.Equal(t, post.ID(), entity.ID)
 	assert.Equal(t, post.UserID, entity.UserID)
@@ -125,7 +128,8 @@ func TestPostMapperToDomain(t *testing.T) {
 		UpdatedAt:   time.Now(),
 	}
 
-	domainPost := postMapper.ToDomain(entity)
+	domainPost, err := postMapper.ToDomain(&entity)
+	assert.NoError(t, err)
 
 	assert.Equal(t, entity.ID, domainPost.ID())
 	assert.Equal(t, entity.UserID, domainPost.UserID)
