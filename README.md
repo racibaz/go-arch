@@ -113,6 +113,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **CodeQL Analysis** for security
 - **Codecov** coverage reports
 - **Interface Assertions** for better type safety
+- **Migration** and **Seeder** mechanisms
 - And more...
 
 
@@ -616,6 +617,8 @@ Expanded Structure
 - [ ] Implement rate limiting
 - [ ] Implement API versioning
 - [ ] Implement feature toggles
+- [ ] Implement vertical slice architecture
+- [ ] Implement state-change pattern
 
 
 ## 🚪 API Requests
