@@ -78,6 +78,9 @@ coverage:
 lint:
 	go vet ./...
 
+ci-lint:
+	golangci-lint run --config .golangci.yaml
+
 #todo make it generic
 generate_proto:
 	protoc -Iinternal/modules/post/presentation/grpc/proto \

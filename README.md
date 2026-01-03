@@ -114,6 +114,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **Codecov** coverage reports
 - **Interface Assertions** for better type safety
 - **Migration** and **Seeder** mechanisms
+- **Golangci-lint** for more linters
 - And more...
 
 
@@ -334,6 +335,9 @@ make test
 ```
 ```bash
 make lint
+```
+```bash
+make ci-lint
 ```
 
 #### 🛠️ Generate gRPC Code
