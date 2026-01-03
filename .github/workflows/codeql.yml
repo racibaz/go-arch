@@ -20,6 +20,7 @@ on:
     - cron: '36 22 * * 5'
 
 jobs:
+  needs: golangci
   analyze:
     name: Analyze (${{ matrix.language }})
     # Runner size impacts CodeQL analysis time. To learn more, please see:
