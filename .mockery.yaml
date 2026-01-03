@@ -9,6 +9,16 @@ require-template-schema-exists: true
 template: testify
 template-schema: '{{.Template}}.schema.json'
 packages:
+  #-----------pkg Mocks-----------#
+
+  # Logger interface
+  github.com/racibaz/go-arch/pkg/logger:
+    config:
+      all: true
+      # Make use of the template variables to place the mock in the same
+      # directory as the original interface.
+      dir: "pkg/logger"
+
   #-----------Shared Module Mocks-----------#
   # Shared domain interfaces
   github.com/racibaz/go-arch/internal/modules/shared/domain/ports:
@@ -16,7 +26,8 @@ packages:
       all: true
       # Make use of the template variables to place the mock in the same
       # directory as the original interface.
-      dir: "internal/modules/shared/testing/domain/ports"
+      dir: "internal/modules/shared/testing/mocks/domain/ports"
+
 
   #-----------Post Module Mocks-----------#
   # Post domain interfaces
@@ -25,7 +36,7 @@ packages:
       all: true
       # Make use of the template variables to place the mock in the same
       # directory as the original interface.
-      dir: "internal/modules/post/testing/domain/ports"
+      dir: "internal/modules/post/testing/mocks/domain/ports"
 
   # Post application interfaces
   github.com/racibaz/go-arch/internal/modules/post/application/ports:
@@ -33,6 +44,6 @@ packages:
       all: true
       # Make use of the template variables to place the mock in the same
       # directory as the original interface.
-      dir: "internal/modules/post/testing/application/ports"
+      dir: "internal/modules/post/testing/mocks/application/ports"
 
 

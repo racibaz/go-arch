@@ -1,58 +1,34 @@
 package module
 
 import (
-	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
-	"github.com/racibaz/go-arch/internal/modules/post/application/handlers"
 	postService "github.com/racibaz/go-arch/internal/modules/post/application/ports"
-	postPorts "github.com/racibaz/go-arch/internal/modules/post/domain/ports"
-	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/messaging/rabbitmq"
-	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/notification/sms"
-	gormPostRepo "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/repositories"
-	"github.com/racibaz/go-arch/internal/modules/post/logging"
-	"github.com/racibaz/go-arch/pkg/ddd"
+	postDomainPorts "github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
-	rabbitmqConn "github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
 )
 
 type PostModule struct {
-	repository postPorts.PostRepository
+	repository postDomainPorts.PostRepository
 	service    postService.PostService
 	logger     logger.Logger
-	notifier   postPorts.NotificationAdapter
+	notifier   postDomainPorts.NotificationAdapter
 }
 
-func NewPostModule() *PostModule {
-	domainDispatcher := ddd.NewEventDispatcher[ddd.AggregateEvent]()
-
-	// repo := in_memory.NewGormPostRepository()
-	repo := gormPostRepo.NewGormPostRepository() // Use GORM repository for persistence
-	logger, _ := logger.NewZapLogger()           // Assuming NewZapLogger is a function that initializes a logger
-	rabbitmqConn := rabbitmqConn.Connection()
-
-	messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)
-	/* todo we need to use processor in services to publish events after transaction is committed
-	for now we will use directly the publisher in the service
-	*/
-	createPostService := commands.NewCreatePostService(repo, logger, messagePublisher)
-
-	notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
-
-	notificationHandlers := logging.LogEventHandlerAccess[ddd.AggregateEvent](
-		handlers.NewNotificationHandlers(notificationAdapter),
-		"Notification", logger,
-	)
-
-	handlers.RegisterNotificationHandlers(notificationHandlers, domainDispatcher)
+func NewPostModule(
+	repository postDomainPorts.PostRepository,
+	service postService.PostService,
+	logger logger.Logger,
+	notifier postDomainPorts.NotificationAdapter,
+) *PostModule {
 
 	return &PostModule{
-		repository: repo,
-		service:    createPostService,
+		repository: repository,
+		service:    service,
 		logger:     logger,
-		notifier:   notificationAdapter,
+		notifier:   notifier,
 	}
 }
 
-func (m PostModule) Repository() postPorts.PostRepository {
+func (m PostModule) Repository() postDomainPorts.PostRepository {
 	return m.repository
 }
 
@@ -60,7 +36,7 @@ func (m PostModule) Service() postService.PostService {
 	return m.service
 }
 
-func (m PostModule) Notifier() postPorts.NotificationAdapter {
+func (m PostModule) Notifier() postDomainPorts.NotificationAdapter {
 	return m.notifier
 }
 

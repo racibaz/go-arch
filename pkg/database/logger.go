@@ -20,7 +20,7 @@ func gormLogger() logger.Interface {
 			LogLevel:                  logger.Silent, // Log level
 			IgnoreRecordNotFoundError: true,          // Ignore ErrRecordNotFound error for logger
 			ParameterizedQueries:      true,          // Don't include params in the SQL log
-			Colorful:                  false,         // Disable color
+			Colorful:                  true,          // Disable color
 		},
 	)
 
