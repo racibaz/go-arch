@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/racibaz/go-arch/internal/modules/shared/domain"
@@ -28,11 +29,14 @@ func New() *GormEventRepository {
 func (repo *GormEventRepository) Save(event *domain.Event) error {
 	var newEvent entities.Event
 
-	persistenceModel := eventMapper.ToPersistence(*event)
+	persistenceModel, mapperErr := eventMapper.ToPersistence(event)
+	if mapperErr != nil {
+		return fmt.Errorf("failed to map event to persistence model: %w", mapperErr)
+	}
 
 	err := repo.DB.Create(&persistenceModel).Scan(&newEvent).Error
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to save event: %w", err)
 	}
 
 	return nil
