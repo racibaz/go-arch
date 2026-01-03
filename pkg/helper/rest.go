@@ -10,3 +10,11 @@ type Response[T any] struct {
 	Data  *T     `json:"data"`
 	Links []Link `json:"_links"`
 }
+
+func AddHateoas(rel, href, linkType string) Link {
+	return Link{
+		Rel:  rel,
+		Href: href,
+		Type: linkType,
+	}
+}

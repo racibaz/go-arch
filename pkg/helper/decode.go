@@ -1,10 +1,9 @@
 package helper
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	errors "github.com/racibaz/go-arch/pkg/error"
+	"net/http"
 )
 
 func Decode[T any](c *gin.Context) (T, error) {
@@ -20,22 +19,4 @@ func Decode[T any](c *gin.Context) (T, error) {
 	}
 
 	return v, nil
-}
-
-func ErrorResponse(c *gin.Context, message string, err error, status int) {
-	c.JSON(
-		status,
-		errors.NewInValidError(
-			message,
-			err.Error(),
-		))
-
-	return
-}
-
-func SuccessResponse(c *gin.Context, message string, data any, status int) {
-	c.JSON(status, gin.H{
-		"message": message,
-		"data":    data,
-	})
 }

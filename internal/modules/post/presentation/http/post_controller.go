@@ -21,6 +21,8 @@ import (
 	"go.opentelemetry.io/otel/codes"
 )
 
+const routePath = "/api/v1/posts"
+
 type PostController struct {
 	Service ports.PostService
 }
@@ -107,11 +109,10 @@ func (controller PostController) Store(c *gin.Context) {
 			},
 		},
 		Links: []helper.Link{
-			{
-				Rel:  "self",
-				Href: fmt.Sprintf("/api/v1/posts/%s", newID),
-				Type: "GET",
-			},
+			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, newID), "GET"),
+			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), "POST"),
+			helper.AddHateoas("update", fmt.Sprintf("%s/%s", routePath, newID), "PUT"),
+			helper.AddHateoas("delete", fmt.Sprintf("%s/%s", routePath, newID), "DELETE"),
 		},
 	}
 
@@ -159,11 +160,10 @@ func (controller PostController) Show(c *gin.Context) {
 			Post: presentation.FromPostCoreToHTTP(result),
 		},
 		Links: []helper.Link{
-			{
-				Rel:  "self",
-				Href: fmt.Sprintf("/api/v1/posts/%s", postID),
-				Type: "GET",
-			},
+			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, postID), "GET"),
+			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), "POST"),
+			helper.AddHateoas("update", fmt.Sprintf("%s/%s", routePath, postID), "PUT"),
+			helper.AddHateoas("delete", fmt.Sprintf("%s/%s", routePath, postID), "DELETE"),
 		},
 	}
 
