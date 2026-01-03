@@ -19,7 +19,6 @@ func NewPostModule(
 	logger logger.Logger,
 	notifier postDomainPorts.NotificationAdapter,
 ) *PostModule {
-
 	return &PostModule{
 		repository: repository,
 		service:    service,

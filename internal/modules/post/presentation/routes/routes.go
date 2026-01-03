@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"sync"
+
 	"github.com/gin-gonic/gin"
 	postModule "github.com/racibaz/go-arch/internal/modules/post"
 	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
@@ -15,7 +17,6 @@ import (
 	"github.com/racibaz/go-arch/pkg/logger"
 	rabbitmqConn "github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
 	googleGrpc "google.golang.org/grpc"
-	"sync"
 )
 
 var (
