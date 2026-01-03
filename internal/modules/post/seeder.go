@@ -1,6 +1,7 @@
 package module
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -13,7 +14,7 @@ import (
 )
 
 // Seed seeds the database with initial data for the post module.
-func Seed() {
+func Seed() error {
 	// Implement module-specific seeding logic here
 	log.Println("Post Module Seeder Start ..")
 
@@ -21,7 +22,7 @@ func Seed() {
 	db := database.Connection()
 
 	if db == nil {
-		log.Fatal("Database connection is nil")
+		return errors.New("database connection is nil")
 	}
 
 	posts := []*postDomain.Post{
@@ -82,26 +83,22 @@ func Seed() {
 			post.UpdatedAt,
 		)
 		if err != nil {
-			log.Fatalf("Error creating post: %v", err)
+			return err
 		}
 
 		if p == nil {
-			log.Fatalf("Error creating post is nil")
-		}
-
-		if err != nil {
-			log.Fatalf("Error mapping post to persistence: %v", err)
+			return errors.New("created post is nil")
 		}
 
 		postEntity, err := mappers.ToPersistence(post)
 		if err != nil {
-			log.Fatalf("Error mapping post to persistence: %v", err)
+			return errors.New("error mapping post to persistence: " + err.Error())
 		}
 
 		log.Println("Post Entity:", postEntity.ID)
 
 		if postEntity.ID == "" {
-			log.Fatalf("Error creating post is nil")
+			return errors.New("post entity ID is empty")
 		}
 		db.Create(postEntity)
 
@@ -109,4 +106,6 @@ func Seed() {
 	}
 
 	log.Println("Post Module Seeder Finish..")
+
+	return nil
 }

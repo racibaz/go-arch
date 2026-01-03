@@ -8,10 +8,16 @@ import (
 // RegisterSeeders registers seeders for different modules
 func RegisterSeeders() {
 	// Register shared module seeder last
-	shared.Seed()
+	sharedErr := shared.Seed()
+	if sharedErr != nil {
+		panic(sharedErr)
+	}
 
 	// You can add seeders of your modules here
-	postModule.Seed()
+	postErr := postModule.Seed()
+	if postErr != nil {
+		panic(postErr)
+	}
 
 	// Add more module seeders as needed
 }
