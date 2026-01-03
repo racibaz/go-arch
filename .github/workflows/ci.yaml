@@ -1,5 +1,9 @@
 name: "Continuous Integration"
 on:
+  workflow_run:
+    workflows: [ "golangci-lint" ]
+    types:
+      - completed
   push:
     branches:
       - main
@@ -15,8 +19,8 @@ permissions:
 
 jobs:
     run_code_checks:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
-        needs: golangci
 
         services:
           rabbitmq:
