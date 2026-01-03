@@ -109,10 +109,10 @@ func (controller PostController) Store(c *gin.Context) {
 			},
 		},
 		Links: []helper.Link{
-			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, newID), "GET"),
-			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), "POST"),
-			helper.AddHateoas("update", fmt.Sprintf("%s/%s", routePath, newID), "PUT"),
-			helper.AddHateoas("delete", fmt.Sprintf("%s/%s", routePath, newID), "DELETE"),
+			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, newID), http.MethodGet),
+			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), http.MethodPost),
+			helper.AddHateoas("update", fmt.Sprintf("%s/%s", routePath, newID), http.MethodPut),
+			helper.AddHateoas("delete", fmt.Sprintf("%s/%s", routePath, newID), http.MethodDelete),
 		},
 	}
 
@@ -160,10 +160,10 @@ func (controller PostController) Show(c *gin.Context) {
 			Post: presentation.FromPostCoreToHTTP(result),
 		},
 		Links: []helper.Link{
-			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, postID), "GET"),
-			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), "POST"),
-			helper.AddHateoas("update", fmt.Sprintf("%s/%s", routePath, postID), "PUT"),
-			helper.AddHateoas("delete", fmt.Sprintf("%s/%s", routePath, postID), "DELETE"),
+			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, postID), http.MethodGet),
+			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), http.MethodPost),
+			helper.AddHateoas("update", fmt.Sprintf("%s/%s", routePath, postID), http.MethodPut),
+			helper.AddHateoas("delete", fmt.Sprintf("%s/%s", routePath, postID), http.MethodDelete),
 		},
 	}
 
