@@ -13,7 +13,7 @@ name: "CodeQL Advanced"
 
 on:
   workflow_run:
-    workflows: [ "golangci-lint" ]
+    workflows: [ "GolangCI Lint" ]
     types:
       - completed
   push:

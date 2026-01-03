@@ -1,7 +1,7 @@
 name: "Continuous Integration"
 on:
   workflow_run:
-    workflows: [ "golangci-lint" ]
+    workflows: [ "GolangCI Lint" ]
     types:
       - completed
   push:
