@@ -2,6 +2,7 @@ package queries
 
 import (
 	"context"
+
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
@@ -30,8 +31,10 @@ func NewGetPostService(postRepository ports.PostRepository, logger logger.Logger
 }
 
 // GetPostByID retrieves a post by its unique identifier.
-func (postService GetPostService) GetPostByID(ctx context.Context, postInput GetPostInput) (*domain.Post, error) {
-
+func (postService GetPostService) GetPostByID(
+	ctx context.Context,
+	postInput GetPostInput,
+) (*domain.Post, error) {
 	ctx, span := postService.tracer.Start(ctx, "GetById - Service")
 	defer span.End()
 

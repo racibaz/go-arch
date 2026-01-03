@@ -26,8 +26,8 @@ func TestRoutes(t *testing.T) {
 
 	// Should have at least 2 routes: GET /api/v1/posts/:id and POST /api/v1/posts/
 	expectedRoutes := map[string]string{
-		"GET":    "/api/v1/posts/:id",
-		"POST":   "/api/v1/posts/",
+		"GET":  "/api/v1/posts/:id",
+		"POST": "/api/v1/posts/",
 	}
 
 	foundRoutes := make(map[string]string)

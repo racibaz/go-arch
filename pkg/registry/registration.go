@@ -22,7 +22,14 @@ func Register(reg Registry, v Registrable, s Serializer, d Deserializer, os []Bu
 	return RegisterKey(reg, key, v, s, d, os)
 }
 
-func RegisterKey(reg Registry, key string, v interface{}, s Serializer, d Deserializer, os []BuildOption) error {
+func RegisterKey(
+	reg Registry,
+	key string,
+	v interface{},
+	s Serializer,
+	d Deserializer,
+	os []BuildOption,
+) error {
 	t := reflect.TypeOf(v)
 
 	if t.Kind() == reflect.Ptr {

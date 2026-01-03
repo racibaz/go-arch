@@ -49,6 +49,10 @@ func TestMetricsMiddleware_ActiveConnectionsGauge(t *testing.T) {
 
 	final := testutil.ToFloat64(activeConnections)
 	if final != initial {
-		t.Errorf("Expected activeConnections to equal initial value after request, got initial=%v final=%v", initial, final)
+		t.Errorf(
+			"Expected activeConnections to equal initial value after request, got initial=%v final=%v",
+			initial,
+			final,
+		)
 	}
 }

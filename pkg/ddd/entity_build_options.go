@@ -2,6 +2,7 @@ package ddd
 
 import (
 	"fmt"
+
 	"github.com/racibaz/go-arch/pkg/registry"
 )
 

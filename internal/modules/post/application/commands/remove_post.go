@@ -15,10 +15,13 @@ type RemovePostService struct {
 	logger         logger.Logger
 }
 
-//var _ applicationPorts.PostService = (*RemovePostService)(nil)
+// var _ applicationPorts.PostService = (*RemovePostService)(nil)
 
 // NewRemovePostService initializes a new CreatePostService with the provided PostRepository.
-func NewRemovePostService(postRepository ports.PostRepository, logger logger.Logger) *RemovePostService {
+func NewRemovePostService(
+	postRepository ports.PostRepository,
+	logger logger.Logger,
+) *RemovePostService {
 	return &RemovePostService{
 		PostRepository: postRepository,
 		logger:         logger,
@@ -26,7 +29,6 @@ func NewRemovePostService(postRepository ports.PostRepository, logger logger.Log
 }
 
 func (postService CreatePostService) Remove(postInput RemovePostInput) error {
-
 	// todo implement me
 
 	return nil

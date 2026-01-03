@@ -2,12 +2,11 @@ package validator
 
 import (
 	"errors"
+
 	"github.com/go-playground/validator/v10"
 )
 
-var (
-	ErrValidation = errors.New("validation error")
-)
+var ErrValidation = errors.New("validation error")
 
 func Get() *validator.Validate {
 	return validator.New(validator.WithRequiredStructEnabled())
@@ -32,7 +31,6 @@ func NewValidationError(message string, cause map[string][]string) *AppValidatio
 }
 
 func ShowRegularValidationErrors(err error) *ValidationErrors {
-
 	validationErrors := make(map[string][]string)
 	for _, err := range err.(validator.ValidationErrors) {
 		fieldName := err.Field()

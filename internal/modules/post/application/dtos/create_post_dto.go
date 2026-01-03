@@ -1,8 +1,9 @@
 package dto
 
 import (
-	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"time"
+
+	"github.com/racibaz/go-arch/internal/modules/post/domain"
 )
 
 type CreatePostInput struct {

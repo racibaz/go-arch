@@ -6,7 +6,6 @@ import (
 )
 
 func ToDomain(eventEntity entity.Event) domain.Event {
-
 	return domain.Event{
 		StreamID:      eventEntity.StreamID,
 		StreamName:    eventEntity.StreamName,
@@ -16,11 +15,9 @@ func ToDomain(eventEntity entity.Event) domain.Event {
 		EventData:     eventEntity.EventData,
 		OccurredAt:    eventEntity.OccurredAt,
 	}
-
 }
 
 func ToPersistence(event domain.Event) entity.Event {
-
 	return entity.Event{
 		StreamID:      event.StreamID,
 		StreamName:    event.StreamName,

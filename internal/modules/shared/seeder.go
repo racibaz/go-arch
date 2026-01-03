@@ -6,7 +6,6 @@ import (
 
 // Seed seeds the database with initial data for the shared module.
 func Seed() {
-
 	log.Println("Shared Module Seeder Start ..")
 
 	//..

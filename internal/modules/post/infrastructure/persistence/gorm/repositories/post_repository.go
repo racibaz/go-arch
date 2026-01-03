@@ -3,13 +3,14 @@ package repositories
 import (
 	"context"
 	"fmt"
+	"sync"
+
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/entities"
 	postMapper "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/mappers"
 	"github.com/racibaz/go-arch/pkg/database"
 	"gorm.io/gorm"
-	"sync"
 )
 
 // GormPostRepository Secondary adapter: PostgreSQL implementation
@@ -43,7 +44,6 @@ func (repo *GormPostRepository) Save(ctx context.Context, post *domain.Post) err
 }
 
 func (repo *GormPostRepository) GetByID(ctx context.Context, id string) (*domain.Post, error) {
-
 	var post domain.Post
 
 	if err := repo.DB.WithContext(ctx).
@@ -56,22 +56,24 @@ func (repo *GormPostRepository) GetByID(ctx context.Context, id string) (*domain
 }
 
 func (repo *GormPostRepository) Update(ctx context.Context, post *domain.Post) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (repo *GormPostRepository) Delete(ctx context.Context, id string) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (repo *GormPostRepository) List(ctx context.Context) ([]*domain.Post, error) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
-func (repo *GormPostRepository) IsExists(ctx context.Context, title, description string) (bool, error) {
-
+func (repo *GormPostRepository) IsExists(
+	ctx context.Context,
+	title, description string,
+) (bool, error) {
 	var post domain.Post
 
 	if err := repo.DB.WithContext(ctx).

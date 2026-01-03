@@ -9,8 +9,7 @@ import (
 )
 
 func Routes(router *gin.Engine) {
-
-	//todo it should be singleton
+	// todo it should be singleton
 	module := postModule.NewPostModule()
 	newPostController := postController.NewPostController(module.Service())
 
@@ -25,8 +24,7 @@ func Routes(router *gin.Engine) {
 }
 
 func GrpcRoutes(grpcServer *googleGrpc.Server) {
-
-	//todo it should be singleton
+	// todo it should be singleton
 	module := postModule.NewPostModule()
 
 	postGrpcController.NewPostGrpcController(grpcServer, module.Service())

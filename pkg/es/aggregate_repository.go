@@ -3,6 +3,7 @@ package es
 import (
 	"context"
 	"fmt"
+
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/registry"
 )
@@ -13,7 +14,11 @@ type AggregateRepository[T EventSourcedAggregate] struct {
 	store         AggregateStore
 }
 
-func NewAggregateRepository[T EventSourcedAggregate](aggregateName string, registry registry.Registry, store AggregateStore) AggregateRepository[T] {
+func NewAggregateRepository[T EventSourcedAggregate](
+	aggregateName string,
+	registry registry.Registry,
+	store AggregateStore,
+) AggregateRepository[T] {
 	return AggregateRepository[T]{
 		aggregateName: aggregateName,
 		registry:      registry,

@@ -2,8 +2,11 @@ package http
 
 import (
 	"fmt"
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
-	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
+	dto "github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/presentation"
@@ -16,8 +19,6 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
-	"net/http"
-	"time"
 )
 
 type PostController struct {
@@ -42,20 +43,22 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Produce		json
 //	@Param			post	body		presentation.CreatePostRequestDto	true	"Create Post Request DTO"
 //	@Success		201		{object}	presentation.CreatePostResponseDto	"Post created successfully"
-//	@Failure		400		{object}	errors.AppError					"Invalid request body"
+//	@Failure		400		{object}	errors.AppError						"Invalid request body"
 //	@Router			/posts [post]
 func (controller PostController) Store(c *gin.Context) {
-
-	tracer := otel.Tracer(config.Get().App.Name) //go-arch
+	tracer := otel.Tracer(config.Get().App.Name) // go-arch
 	//"PostModule - Restful - PostController - Store"
-	path := fmt.Sprintf("PostModule - Restful - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
+	path := fmt.Sprintf(
+		"PostModule - Restful - %s - %s",
+		helper.StructName(controller),
+		helper.CurrentFuncName(),
+	)
 
 	ctx, span := tracer.Start(c.Request.Context(), path)
 	defer span.End()
 
 	// Decode the request body into CreatePostRequestDto
 	createPostRequestDto, err := helper.Decode[presentation.CreatePostRequestDto](c)
-
 	if err != nil {
 		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
 		return
@@ -86,7 +89,6 @@ func (controller PostController) Store(c *gin.Context) {
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
 	})
-
 	if err != nil {
 		span.SetAttributes(attribute.String("error", "Post create failed"))
 		span.SetStatus(codes.Error, "Post create failed")
@@ -126,14 +128,17 @@ func (controller PostController) Store(c *gin.Context) {
 //	@Tags			posts
 //	@Accept			json
 //	@Produce		json
-//	@Param			id	path		string		true	"Post ID"
+//	@Param			id	path		string							true	"Post ID"
 //	@Success		200	{object}	presentation.GetPostResponseDto	"Post retrieved successfully"
-//	@Failure		404	{object}	errors.AppError		"Page not found"
+//	@Failure		404	{object}	errors.AppError					"Page not found"
 //	@Router			/posts/{id} [get]
 func (controller PostController) Show(c *gin.Context) {
-
 	tracer := otel.Tracer(config.Get().App.Name)
-	path := fmt.Sprintf("PostModule - Restful - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
+	path := fmt.Sprintf(
+		"PostModule - Restful - %s - %s",
+		helper.StructName(controller),
+		helper.CurrentFuncName(),
+	)
 	ctx, span := tracer.Start(c, path)
 	defer span.End()
 
@@ -144,7 +149,6 @@ func (controller PostController) Show(c *gin.Context) {
 		return
 	}
 	result, err := controller.Service.GetById(ctx, postID.ToString())
-
 	if err != nil {
 		helper.ErrorResponse(c, "Not found a post", err, http.StatusInternalServerError)
 		return

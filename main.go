@@ -9,7 +9,7 @@ func main() {
 func run() {
 	// If you want to use  cobra cli
 	// Docker entry point run this command
-	//cmd.Execute()
+	// cmd.Execute()
 
 	// If you want to use local debugging without cobra cli
 	bootstrap.Serve()

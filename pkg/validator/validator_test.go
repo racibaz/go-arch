@@ -2,8 +2,9 @@ package validator_test
 
 import (
 	"errors"
-	myvalidator "github.com/racibaz/go-arch/pkg/validator"
 	"testing"
+
+	myvalidator "github.com/racibaz/go-arch/pkg/validator"
 )
 
 type TestUser struct {

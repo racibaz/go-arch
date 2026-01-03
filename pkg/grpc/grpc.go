@@ -3,14 +3,15 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"github.com/racibaz/go-arch/internal/providers/routes"
-	"github.com/racibaz/go-arch/pkg/config"
-	"google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/racibaz/go-arch/internal/providers/routes"
+	"github.com/racibaz/go-arch/pkg/config"
+	"google.golang.org/grpc"
 )
 
 type gRPCServer struct {
@@ -22,7 +23,6 @@ func NewGRPCServer(addr string) *gRPCServer {
 }
 
 func (s *gRPCServer) Run() {
-
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -34,7 +34,6 @@ func (s *gRPCServer) Run() {
 	}()
 
 	lis, err := net.Listen("tcp", s.addr)
-
 	if err != nil {
 		log.Fatalf("Failed to listen: %v\n", err)
 	}
@@ -56,7 +55,6 @@ func (s *gRPCServer) Run() {
 	<-ctx.Done()
 	log.Println("Shutting down the server...")
 	grpcServer.GracefulStop()
-
 }
 
 func Serve() {

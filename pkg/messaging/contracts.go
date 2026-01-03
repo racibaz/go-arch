@@ -2,6 +2,7 @@ package messaging
 
 import (
 	"context"
+
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 )
 

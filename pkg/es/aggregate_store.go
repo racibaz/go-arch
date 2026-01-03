@@ -2,6 +2,7 @@ package es
 
 import (
 	"context"
+
 	"github.com/racibaz/go-arch/pkg/ddd"
 )
 
@@ -21,7 +22,10 @@ type AggregateStore interface {
 	Save(ctx context.Context, aggregate EventSourcedAggregate) error
 }
 
-func AggregateStoreWithMiddleware(store AggregateStore, mws ...AggregateStoreMiddleware) AggregateStore {
+func AggregateStoreWithMiddleware(
+	store AggregateStore,
+	mws ...AggregateStoreMiddleware,
+) AggregateStore {
 	//	var s AggregateStore
 	s := store
 	// middleware are applied in reverse; this makes the first middleware

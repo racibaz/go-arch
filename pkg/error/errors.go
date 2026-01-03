@@ -60,4 +60,4 @@ func NewUnauthorizedError(message string, cause string) *AppError {
 	}
 }
 
-//if you want to add more general error types, you can do so here
+// if you want to add more general error types, you can do so here

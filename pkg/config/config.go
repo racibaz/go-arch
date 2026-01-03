@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -74,7 +75,6 @@ type Jaeger struct {
 
 // DatabaseConnectionString constructs the database connection URL based on the environment.
 func (config *Config) DatabaseConnectionString() string {
-
 	port := config.DB.Port
 	host := config.DB.Host
 
@@ -89,7 +89,8 @@ func (config *Config) DatabaseConnectionString() string {
 		port = config.DB.Port
 	}
 
-	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
+	return fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
 		host,
 		config.DB.Username,
 		config.DB.Password,
@@ -100,7 +101,6 @@ func (config *Config) DatabaseConnectionString() string {
 
 // RabbitMQConnectionString constructs the RabbitMQ connection URL based on the environment.
 func (config *Config) RabbitMQConnectionString() string {
-
 	host := config.RabbitMQ.Host
 
 	switch config.App.Env {
@@ -122,7 +122,6 @@ func (config *Config) RabbitMQConnectionString() string {
 
 // JaegerConnectionString constructs the Jaeger connection URL based on the environment.
 func (config *Config) JaegerConnectionString() string {
-
 	host := config.Jaeger.Host
 
 	switch config.App.Env {
@@ -142,7 +141,7 @@ func (config *Config) JaegerConnectionString() string {
 
 // GinMode returns the appropriate Gin mode based on the application environment.
 func (config *Config) GinMode() string {
-	var mode = gin.DebugMode
+	mode := gin.DebugMode
 
 	switch config.App.Env {
 	case "test":

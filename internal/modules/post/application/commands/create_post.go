@@ -3,7 +3,9 @@ package commands
 import (
 	"context"
 	"fmt"
-	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
+	"time"
+
+	dto "github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	applicationPorts "github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
@@ -11,7 +13,6 @@ import (
 	"github.com/racibaz/go-arch/pkg/messaging"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
-	"time"
 )
 
 type CreatePostService struct {
@@ -24,7 +25,11 @@ type CreatePostService struct {
 var _ applicationPorts.PostService = (*CreatePostService)(nil)
 
 // NewCreatePostService initializes a new CreatePostService with the provided PostRepository.
-func NewCreatePostService(postRepository ports.PostRepository, logger logger.Logger, messagePublisher messaging.MessagePublisher) *CreatePostService {
+func NewCreatePostService(
+	postRepository ports.PostRepository,
+	logger logger.Logger,
+	messagePublisher messaging.MessagePublisher,
+) *CreatePostService {
 	return &CreatePostService{
 		PostRepository:   postRepository,
 		logger:           logger,
@@ -33,8 +38,10 @@ func NewCreatePostService(postRepository ports.PostRepository, logger logger.Log
 	}
 }
 
-func (postService CreatePostService) CreatePost(ctx context.Context, postInput dto.CreatePostInput) error {
-
+func (postService CreatePostService) CreatePost(
+	ctx context.Context,
+	postInput dto.CreatePostInput,
+) error {
 	ctx, span := postService.tracer.Start(ctx, "CreatePost - Service")
 	defer span.End()
 
@@ -50,18 +57,21 @@ func (postService CreatePostService) CreatePost(ctx context.Context, postInput d
 		time.Now(),
 	)
 
-	//todo the err msg have to come from this function
+	// todo the err msg have to come from this function
 	// check is the post exists in db?
 	isExists, err := postService.PostRepository.IsExists(ctx, post.Title, post.Description)
-
-	//todo when the check, we can check bool and err together
+	// todo when the check, we can check bool and err together
 	if err != nil {
 		return err
 	}
-	//todo when the check, we can check bool and err together
+	// todo when the check, we can check bool and err together
 	// If the post already exists, return an error
 	if isExists {
-		postService.logger.Info("Post already exists with title: %s and description: %s", post.Title, post.Description)
+		postService.logger.Info(
+			"Post already exists with title: %s and description: %s",
+			post.Title,
+			post.Description,
+		)
 		return domain.ErrAlreadyExists
 	}
 
@@ -82,7 +92,6 @@ func (postService CreatePostService) CreatePost(ctx context.Context, postInput d
 }
 
 func (postService CreatePostService) GetById(ctx context.Context, id string) (*domain.Post, error) {
-
 	ctx, span := postService.tracer.Start(ctx, "GetById - Service")
 	defer span.End()
 

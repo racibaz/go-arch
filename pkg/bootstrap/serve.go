@@ -2,13 +2,14 @@ package bootstrap
 
 import (
 	"context"
+	"log"
+
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/grpc"
 	"github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
 	"github.com/racibaz/go-arch/pkg/routing"
 	"github.com/racibaz/go-arch/pkg/trace"
-	"log"
 )
 
 func Serve() {
@@ -38,5 +39,4 @@ func Serve() {
 	routing.Serve()
 
 	grpc.Serve()
-
 }

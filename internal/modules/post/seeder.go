@@ -2,18 +2,18 @@ package module
 
 import (
 	"fmt"
+	"log"
+	"time"
+
 	postDomain "github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/mappers"
 	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/es"
 	"github.com/racibaz/go-arch/pkg/uuid"
-	"log"
-	"time"
 )
 
 // Seed seeds the database with initial data for the post module.
 func Seed() {
-
 	// Implement module-specific seeding logic here
 	log.Println("Post Module Seeder Start ..")
 
@@ -26,7 +26,10 @@ func Seed() {
 
 	posts := []*postDomain.Post{
 		{
-			Aggregate:   es.NewAggregate("2d86263a-eebf-4e7d-867a-0115569d6a3a", postDomain.PostAggregate),
+			Aggregate: es.NewAggregate(
+				"2d86263a-eebf-4e7d-867a-0115569d6a3a",
+				postDomain.PostAggregate,
+			),
 			UserID:      uuid.NewID(),
 			Title:       "test title title title",
 			Description: "test description description",
@@ -78,7 +81,6 @@ func Seed() {
 			post.CreatedAt,
 			post.UpdatedAt,
 		)
-
 		if err != nil {
 			log.Fatalf("Error creating post: %v", err)
 		}

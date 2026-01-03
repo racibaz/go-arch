@@ -1,16 +1,16 @@
 package mappers
 
 import (
+	"testing"
+	"time"
+
 	domain "github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/pkg/es"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	"github.com/stretchr/testify/require"
-	"testing"
-	"time"
 )
 
 func Test_Post_PostMapper_ToDomain(t *testing.T) {
-
 	id, err := uuid.Parse("acb863d4-07b4-4644-b598-7f5cc2494613")
 	if err != nil {
 		t.Fatalf("failed to parse uuid: %v", err)
@@ -43,7 +43,6 @@ func Test_Post_PostMapper_ToDomain(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			postEntity, err := ToPersistence(&tc.post)
 			require.NoError(t, err)
 
@@ -74,7 +73,6 @@ func Test_Post_PostMapper_ToDomain(t *testing.T) {
 }
 
 func Test_Post_PostMapper_ToPersistence(t *testing.T) {
-
 	id, err := uuid.Parse("acb863d4-07b4-4644-b598-7f5cc2494613")
 	if err != nil {
 		t.Fatalf("failed to parse uuid: %v", err)
@@ -107,7 +105,6 @@ func Test_Post_PostMapper_ToPersistence(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			t.Parallel()
 
 			postEntity, err := ToPersistence(&tc.post)

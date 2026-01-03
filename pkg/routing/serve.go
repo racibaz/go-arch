@@ -3,17 +3,17 @@ package routing
 import (
 	"context"
 	"fmt"
-	"github.com/racibaz/go-arch/pkg/config"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/racibaz/go-arch/pkg/config"
 )
 
 func Serve() {
-
 	configs := config.Get()
 
 	srv := &http.Server{

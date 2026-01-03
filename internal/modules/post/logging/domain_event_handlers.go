@@ -2,6 +2,7 @@ package logging
 
 import (
 	"context"
+
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/logger"
 )
@@ -14,7 +15,11 @@ type EventHandlers[T ddd.Event] struct {
 
 var _ ddd.EventHandler[ddd.Event] = (*EventHandlers[ddd.Event])(nil)
 
-func LogEventHandlerAccess[T ddd.Event](handlers ddd.EventHandler[T], label string, logger logger.Logger) EventHandlers[T] {
+func LogEventHandlerAccess[T ddd.Event](
+	handlers ddd.EventHandler[T],
+	label string,
+	logger logger.Logger,
+) EventHandlers[T] {
 	return EventHandlers[T]{
 		EventHandler: handlers,
 		label:        label,

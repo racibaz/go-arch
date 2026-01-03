@@ -2,7 +2,8 @@ package ports
 
 import (
 	"context"
-	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
+
+	dto "github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 )
 
@@ -10,5 +11,5 @@ import (
 type PostService interface {
 	CreatePost(ctx context.Context, postDto dto.CreatePostInput) error
 	GetById(ctx context.Context, id string) (*domain.Post, error)
-	//Remove(postID string, userID string) (*domain.Post, error)
+	// Remove(postID string, userID string) (*domain.Post, error)
 }

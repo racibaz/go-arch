@@ -339,6 +339,9 @@ make lint
 ```bash
 make ci-lint
 ```
+```bash
+make fmt
+```
 
 #### 🛠️ Generate gRPC Code
 ```bash
@@ -484,6 +487,7 @@ http://127.0.0.1:5601/app/home#/
 - prometheus: `github.com/prometheus/client_golang`
 - open telemetry: `go.opentelemetry.io/otel`
 - jaeger: `go.opentelemetry.io/otel/exporters/jaeger`
+- golangci-lint: `github.com/golangci/golangci-lint/cmd/golangci-lint`
 
 ## 📂 Project Structure
 

@@ -1,13 +1,13 @@
 package routing
 
 import (
-	"github.com/racibaz/go-arch/pkg/config"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -29,7 +29,6 @@ func TestMain(m *testing.M) {
 }
 
 func TestInit_SetsGinModeAndCreatesRouter(t *testing.T) {
-
 	// Act
 	Init()
 

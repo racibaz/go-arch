@@ -5,9 +5,10 @@ package domain
 import (
 	"errors"
 	"fmt"
-	"github.com/racibaz/go-arch/pkg/es"
 	"strings"
 	"time"
+
+	"github.com/racibaz/go-arch/pkg/es"
 )
 
 const (
@@ -21,14 +22,20 @@ var (
 )
 
 var (
-	ErrNotFound             = errors.New("the post was not found")
-	ErrAlreadyExists        = errors.New("the post already exists")
-	ErrEmptyId              = errors.New("id cannot be empty")
-	ErrEmptyUserId          = errors.New("user id cannot be empty")
-	ErrMinTitleLength       = errors.New(fmt.Sprintf("title must be at least %d characters long", TitleMinLength))
-	ErrMinDescriptionLength = errors.New(fmt.Sprintf("description must be at least %d characters long", DescriptionMinLength))
-	ErrMinContentLength     = errors.New(fmt.Sprintf("content must be at least %d characters long", ContentMinLength))
-	ErrInvalidStatus        = errors.New("status is not valid")
+	ErrNotFound       = errors.New("the post was not found")
+	ErrAlreadyExists  = errors.New("the post already exists")
+	ErrEmptyId        = errors.New("id cannot be empty")
+	ErrEmptyUserId    = errors.New("user id cannot be empty")
+	ErrMinTitleLength = errors.New(
+		fmt.Sprintf("title must be at least %d characters long", TitleMinLength),
+	)
+	ErrMinDescriptionLength = errors.New(
+		fmt.Sprintf("description must be at least %d characters long", DescriptionMinLength),
+	)
+	ErrMinContentLength = errors.New(
+		fmt.Sprintf("content must be at least %d characters long", ContentMinLength),
+	)
+	ErrInvalidStatus = errors.New("status is not valid")
 )
 
 type Post struct {
@@ -43,8 +50,11 @@ type Post struct {
 }
 
 // Create This factory method creates a new Post with default values if you want.
-func Create(id, userID, title, description, content string, status PostStatus, createdAt, updatedAt time.Time) (*Post, error) {
-
+func Create(
+	id, userID, title, description, content string,
+	status PostStatus,
+	createdAt, updatedAt time.Time,
+) (*Post, error) {
 	post := &Post{
 		Aggregate:   es.NewAggregate(id, PostAggregate),
 		UserID:      userID,
@@ -56,7 +66,7 @@ func Create(id, userID, title, description, content string, status PostStatus, c
 		UpdatedAt:   updatedAt,
 	}
 
-	//validate the post before returning it
+	// validate the post before returning it
 	err := post.validate()
 	if err != nil {
 		return nil, err
@@ -66,11 +76,10 @@ func Create(id, userID, title, description, content string, status PostStatus, c
 }
 
 func (p *Post) Delete() {
-	//todo implement me
+	// todo implement me
 }
 
 func (p *Post) sanitize() {
-
 	// Trim whitespace from the input parameters
 	p.UserID = strings.TrimSpace(p.UserID)
 	p.Title = strings.TrimSpace(p.Title)
@@ -80,7 +89,6 @@ func (p *Post) sanitize() {
 
 // Validate checks if the Post fields are valid.
 func (p *Post) validate() error {
-
 	// Sanitize the input parameters
 	p.sanitize()
 

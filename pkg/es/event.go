@@ -2,6 +2,7 @@ package es
 
 import (
 	"fmt"
+
 	"github.com/racibaz/go-arch/pkg/ddd"
 )
 

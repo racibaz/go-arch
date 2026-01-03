@@ -30,7 +30,7 @@ spec:
                 name: go-arch-secrets
           readinessProbe:
             httpGet:
-              path: /health
+              path: /api/health
               port: 3000
             initialDelaySeconds: 30
             periodSeconds: 10

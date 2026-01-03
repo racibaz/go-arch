@@ -1,14 +1,14 @@
 package domain
 
 import (
-	"github.com/racibaz/go-arch/pkg/es"
-	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
+
+	"github.com/racibaz/go-arch/pkg/es"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_Post_Post_Create(t *testing.T) {
-
 	testCases := []struct {
 		name string
 		post Post
@@ -113,7 +113,6 @@ func Test_Post_Post_Create(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			_, err := Create(
 				tc.post.ID(),
 				tc.post.UserID,

@@ -11,11 +11,11 @@ type BuildOption func(v interface{}) error
 //
 // Pass interfaces using "(*I)(nil)", like in this example:
 //
-//   type MyInterface interface {
-//       MyMethod(int) bool
-//   }
+//	type MyInterface interface {
+//	    MyMethod(int) bool
+//	}
 //
-//   ValidateImplements((*MyInterface)(nil))
+//	ValidateImplements((*MyInterface)(nil))
 //
 // You will only be able to validate interfaces with exported methods, you will not be
 // able to validate any that have one or more unexported methods.

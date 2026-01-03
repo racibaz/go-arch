@@ -88,7 +88,6 @@ func TestEventHandlers_HandleEvent_Success(t *testing.T) {
 
 	event := newMockEvent()
 	err := loggedHandler.HandleEvent(context.Background(), event)
-
 	if err != nil {
 		t.Errorf("Expected no error, got %v", err)
 	}

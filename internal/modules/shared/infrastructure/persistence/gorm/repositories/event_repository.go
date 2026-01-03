@@ -1,13 +1,14 @@
 package repositories
 
 import (
+	"sync"
+
 	"github.com/racibaz/go-arch/internal/modules/shared/domain"
 	"github.com/racibaz/go-arch/internal/modules/shared/domain/ports"
 	"github.com/racibaz/go-arch/internal/modules/shared/infrastructure/persistence/gorm/entities"
 	eventMapper "github.com/racibaz/go-arch/internal/modules/shared/infrastructure/persistence/gorm/mappers"
 	"github.com/racibaz/go-arch/pkg/database"
 	"gorm.io/gorm"
-	"sync"
 )
 
 // GormEventRepository Secondary adapter: postgreSQL implementation
@@ -38,7 +39,6 @@ func (repo *GormEventRepository) Save(event *domain.Event) error {
 }
 
 func (repo *GormEventRepository) GetByID(streamID string) (*domain.Event, error) {
-
 	var event domain.Event
 
 	if err := repo.DB.Where("stream_id = ?", streamID).First(&event).Error; err != nil {
@@ -49,21 +49,21 @@ func (repo *GormEventRepository) GetByID(streamID string) (*domain.Event, error)
 }
 
 func (repo *GormEventRepository) Update(event *domain.Event) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (repo *GormEventRepository) Delete(id string) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (repo *GormEventRepository) List() ([]*domain.Event, error) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (repo *GormEventRepository) IsExists(title, description string) (bool, error) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }

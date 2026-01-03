@@ -2,6 +2,7 @@ package mappers
 
 import (
 	"errors"
+
 	domain "github.com/racibaz/go-arch/internal/modules/post/domain"
 	entity "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/entities"
 	"github.com/racibaz/go-arch/pkg/es"
@@ -25,7 +26,6 @@ func ToDomain(postEntity *entity.Post) (*domain.Post, error) {
 		CreatedAt:   postEntity.CreatedAt,
 		UpdatedAt:   postEntity.UpdatedAt,
 	}, nil
-
 }
 
 // ToPersistence maps a domain Post to a persistence entity Post
@@ -44,5 +44,4 @@ func ToPersistence(post *domain.Post) (*entity.Post, error) {
 		CreatedAt:   post.CreatedAt,
 		UpdatedAt:   post.UpdatedAt,
 	}, nil
-
 }

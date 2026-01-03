@@ -2,6 +2,7 @@ package trace
 
 import (
 	"context"
+
 	"github.com/racibaz/go-arch/pkg/config"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"

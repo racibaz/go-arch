@@ -1,8 +1,9 @@
 package sms
 
 import (
-	openapi "github.com/twilio/twilio-go/rest/api/v2010"
 	"os"
+
+	openapi "github.com/twilio/twilio-go/rest/api/v2010"
 )
 
 func TwilioInit() *openapi.CreateMessageParams {

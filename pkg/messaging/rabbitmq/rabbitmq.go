@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
+
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/messaging"
-	"log"
 )
 
 type RabbitMQ struct {
@@ -46,7 +47,6 @@ func (r *RabbitMQ) Connect() *amqp.Connection {
 	config := config.Get()
 
 	conn, err := amqp.Dial(config.RabbitMQConnectionString())
-
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to RabbitMQ : %v", err))
 	}
@@ -82,8 +82,7 @@ func (r *RabbitMQ) Connection() *amqp.Connection {
 }
 
 func (r *RabbitMQ) setupExchangesAndQueues() error {
-
-	//todo we need to check DLQ exchange and queue
+	// todo we need to check DLQ exchange and queue
 
 	err := r.Channel.ExchangeDeclare(
 		messaging.DefaultExchange, // name
@@ -114,7 +113,11 @@ func (r *RabbitMQ) setupExchangesAndQueues() error {
 	return nil
 }
 
-func (r *RabbitMQ) declareAndBindQueue(queueName string, messageTypes []string, exchange string) error {
+func (r *RabbitMQ) declareAndBindQueue(
+	queueName string,
+	messageTypes []string,
+	exchange string,
+) error {
 	// Add dead letter configuration
 	args := amqp.Table{
 		"x-dead-letter-exchange": messaging.DeadLetterExchange,
@@ -167,8 +170,11 @@ func (r *RabbitMQ) GetChannel() *amqp.Channel {
 	return channel
 }
 
-func (r *RabbitMQ) PublishMessage(ctx context.Context, routingKey string, message messaging.MessagePayload) error {
-
+func (r *RabbitMQ) PublishMessage(
+	ctx context.Context,
+	routingKey string,
+	message messaging.MessagePayload,
+) error {
 	log.Printf("Publishing message with routing key: %s", routingKey)
 
 	jsonMsg, err := json.Marshal(message)
@@ -181,11 +187,15 @@ func (r *RabbitMQ) PublishMessage(ctx context.Context, routingKey string, messag
 		ContentType:  "application/json",
 		Body:         jsonMsg,
 	}
-	//todo add tracing here if needed
+	// todo add tracing here if needed
 	return r.publish(ctx, messaging.DefaultExchange, routingKey, msg)
 }
 
-func (r *RabbitMQ) publish(ctx context.Context, exchange, routingKey string, msg amqp.Publishing) error {
+func (r *RabbitMQ) publish(
+	ctx context.Context,
+	exchange, routingKey string,
+	msg amqp.Publishing,
+) error {
 	return r.Channel.PublishWithContext(ctx,
 		exchange,   // exchange
 		routingKey, // routing key

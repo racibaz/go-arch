@@ -11,7 +11,7 @@ type ZapLogger struct {
 
 func NewZapLogger() (*ZapLogger, error) {
 	// todo modify this to use production config in production environment
-	//config := zap.NewProductionConfig()
+	// config := zap.NewProductionConfig()
 	config := zap.NewDevelopmentConfig()
 	config.EncoderConfig.TimeKey = "timestamp"
 	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
@@ -34,6 +34,7 @@ func (l *ZapLogger) Debug(msg string, args ...interface{}) {
 func (l *ZapLogger) Info(msg string, args ...interface{}) {
 	l.logger.Infof(msg, args...)
 }
+
 func (l *ZapLogger) Warn(msg string, args ...interface{}) {
 	l.logger.Warnf(msg, args...)
 }

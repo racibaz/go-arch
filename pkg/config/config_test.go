@@ -77,7 +77,11 @@ func TestConfig_DatabaseUrl_LocalEnv(t *testing.T) {
 	cfg.App.Env = "local"
 	dbUrl := cfg.DatabaseConnectionString()
 	if !strings.Contains(dbUrl, cfg.App.Local) {
-		t.Errorf("Expected local host (%s) in DatabaseConnectionString, got: %s", cfg.App.Local, dbUrl)
+		t.Errorf(
+			"Expected local host (%s) in DatabaseConnectionString, got: %s",
+			cfg.App.Local,
+			dbUrl,
+		)
 	}
 }
 
@@ -87,7 +91,8 @@ func TestConfig_RabbitMQUrl(t *testing.T) {
 	if rmqUrl == "" {
 		t.Fatalf("RabbitMQConnectionString should not be empty")
 	}
-	if !strings.Contains(rmqUrl, cfg.RabbitMQ.Username) || !strings.Contains(rmqUrl, cfg.RabbitMQ.Password) {
+	if !strings.Contains(rmqUrl, cfg.RabbitMQ.Username) ||
+		!strings.Contains(rmqUrl, cfg.RabbitMQ.Password) {
 		t.Errorf("User/pass not in RabbitMQConnectionString: %s", rmqUrl)
 	}
 	if !strings.Contains(rmqUrl, cfg.RabbitMQ.Port) {

@@ -3,6 +3,7 @@ package rabbitmq
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/pkg/logger"
 	"github.com/racibaz/go-arch/pkg/messaging"
@@ -14,7 +15,10 @@ type PostMessagePublisher struct {
 	logger   logger.Logger
 }
 
-func NewPostMessagePublisher(rabbitmq *rabbitmq.RabbitMQ, logger logger.Logger) *PostMessagePublisher {
+func NewPostMessagePublisher(
+	rabbitmq *rabbitmq.RabbitMQ,
+	logger logger.Logger,
+) *PostMessagePublisher {
 	return &PostMessagePublisher{
 		rabbitmq: rabbitmq,
 		logger:   logger,
@@ -22,7 +26,6 @@ func NewPostMessagePublisher(rabbitmq *rabbitmq.RabbitMQ, logger logger.Logger) 
 }
 
 func (p *PostMessagePublisher) PublishPostCreated(ctx context.Context, payload *domain.Post) error {
-
 	/*
 		todo : change to post event data and it can be change as grpc proto model
 	*/

@@ -30,7 +30,6 @@ var stringToPostStatus = map[string]PostStatus{
 }
 
 func NewPostStatus(status PostStatus) PostStatus {
-
 	isValidPostStatus := IsValidPostStatus(status)
 	if !isValidPostStatus {
 		panic(fmt.Sprintf("Invalid post status: %s", status))

@@ -3,7 +3,9 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
+	"time"
+
+	dto "github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	proto "github.com/racibaz/go-arch/internal/modules/post/presentation/grpc/proto"
@@ -12,11 +14,10 @@ import (
 	"github.com/racibaz/go-arch/pkg/uuid"
 	"go.opentelemetry.io/otel"
 	"google.golang.org/grpc"
-	"time"
 )
 
 type PostGrpcController struct {
-	Service ports.PostService //todo Service name will be changed to PostService and it should be camelCase
+	Service ports.PostService // todo Service name will be changed to PostService and it should be camelCase
 	proto.UnimplementedPostServiceServer
 }
 
@@ -29,18 +30,24 @@ func NewPostGrpcController(grpc *grpc.Server, postService ports.PostService) {
 	proto.RegisterPostServiceServer(grpc, gRPController)
 }
 
-func (controller *PostGrpcController) CreatePost(ctx context.Context, in *proto.CreatePostInput) (*proto.CreatePostResponse, error) {
-
+func (controller *PostGrpcController) CreatePost(
+	ctx context.Context,
+	in *proto.CreatePostInput,
+) (*proto.CreatePostResponse, error) {
 	tracer := otel.Tracer(config.Get().App.Name)
-	path := fmt.Sprintf("PostModule - gRPC - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
+	path := fmt.Sprintf(
+		"PostModule - gRPC - %s - %s",
+		helper.StructName(controller),
+		helper.CurrentFuncName(),
+	)
 	ctx, span := tracer.Start(ctx, path)
 	defer span.End()
 
 	newUuid := uuid.NewID()
 
 	input := dto.CreatePostInput{
-		ID:          newUuid,   //todo it should be value object
-		UserID:      in.UserID, //todo it should be value object
+		ID:          newUuid,   // todo it should be value object
+		UserID:      in.UserID, // todo it should be value object
 		Title:       in.Title,
 		Description: in.Description,
 		Content:     in.Content,

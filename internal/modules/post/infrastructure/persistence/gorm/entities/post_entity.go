@@ -10,7 +10,7 @@ type Post struct {
 	Title       string    `gorm:"type:varchar(191);not null"`
 	Description string    `gorm:"type:varchar(191);not null"`
 	Content     string    `gorm:"type:text;not null"`
-	Status      int       `gorm:"type:int;not null"` //todo use value object instead of int
+	Status      int       `gorm:"type:int;not null"` // todo use value object instead of int
 	CreatedAt   time.Time `gorm:"autoCreateTime:true"`
 	UpdatedAt   time.Time `gorm:"autoUpdateTime:true"`
 }

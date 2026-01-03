@@ -1,11 +1,12 @@
 package database
 
 import (
+	"log"
+
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/uptrace/opentelemetry-go-extra/otelgorm"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
 )
 
 func Connect() {
@@ -14,7 +15,6 @@ func Connect() {
 	db, err := gorm.Open(postgres.Open(config.DatabaseConnectionString()), &gorm.Config{
 		Logger: gormLogger(),
 	})
-
 	if err != nil {
 		log.Fatal("Cannot connect to database", err)
 		return

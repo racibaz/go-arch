@@ -2,14 +2,14 @@ package domain
 
 import (
 	"fmt"
-	"github.com/racibaz/go-arch/pkg/es"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/racibaz/go-arch/pkg/es"
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_Post_PostStatus_EqualTo(t *testing.T) {
-
 	testCases := []struct {
 		name      string
 		post      Post
@@ -68,7 +68,6 @@ func Test_Post_PostStatus_EqualTo(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			postStatus := tc.post.Status
 			otherPostStatus := tc.otherPost.Status
 
@@ -83,7 +82,6 @@ func Test_Post_PostStatus_EqualTo(t *testing.T) {
 }
 
 func Test_Post_PostStatus_ToInt(t *testing.T) {
-
 	testCases := []struct {
 		name         string
 		post         Post
@@ -168,15 +166,13 @@ func Test_Post_PostStatus_ToInt(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			toInt, err := tc.post.Status.ToInt()
-
 			if err != nil {
 				assert.Equal(t, -1, toInt)
 				assert.Contains(t, err, "invalid post status:")
 			}
 
-			var boolResult = int(toInt) == tc.statusNumber
+			boolResult := int(toInt) == tc.statusNumber
 			if boolResult {
 				assert.True(t, boolResult)
 			} else {
@@ -187,7 +183,6 @@ func Test_Post_PostStatus_ToInt(t *testing.T) {
 }
 
 func Test_Post_PostStatus_String(t *testing.T) {
-
 	testCases := []struct {
 		name   string
 		post   Post
@@ -272,7 +267,6 @@ func Test_Post_PostStatus_String(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			text := tc.post.Status.String()
 
 			fmt.Printf("Post Status: %s\n", text)
@@ -287,7 +281,6 @@ func Test_Post_PostStatus_String(t *testing.T) {
 }
 
 func Test_Post_PostStatus(t *testing.T) {
-
 	testCases := []struct {
 		name   string
 		post   Post
@@ -342,7 +335,6 @@ func Test_Post_PostStatus(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			switch tc.status {
 			case PostStatusPublished:
 				assert.True(t, tc.post.Status.IsPublished())
@@ -362,7 +354,6 @@ func Test_Post_PostStatus(t *testing.T) {
 }
 
 func Test_Post_NewPostStatus(t *testing.T) {
-
 	testCases := []struct {
 		name   string
 		post   Post
@@ -417,7 +408,6 @@ func Test_Post_NewPostStatus(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-
 			newStatus := NewPostStatus(tc.status)
 
 			if tc.result {

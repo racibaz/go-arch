@@ -1,8 +1,9 @@
 package rabbitmq
 
 import (
-	"github.com/racibaz/go-arch/pkg/config"
 	"log"
+
+	"github.com/racibaz/go-arch/pkg/config"
 )
 
 func Connect() {

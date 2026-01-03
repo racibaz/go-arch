@@ -24,7 +24,11 @@ func (c JsonSerde) RegisterKey(key string, v interface{}, options ...registry.Bu
 	return registry.RegisterKey(c.r, key, v, c.serialize, c.deserialize, options)
 }
 
-func (c JsonSerde) RegisterFactory(key string, fn func() interface{}, options ...registry.BuildOption) error {
+func (c JsonSerde) RegisterFactory(
+	key string,
+	fn func() interface{},
+	options ...registry.BuildOption,
+) error {
 	return registry.RegisterFactory(c.r, key, fn, c.serialize, c.deserialize, options)
 }
 

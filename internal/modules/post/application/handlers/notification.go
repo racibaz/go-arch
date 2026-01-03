@@ -5,6 +5,9 @@ import (
 	"github.com/racibaz/go-arch/pkg/ddd"
 )
 
-func RegisterNotificationHandlers(notificationHandlers ddd.EventHandler[ddd.AggregateEvent], domainSubscriber ddd.EventSubscriber[ddd.AggregateEvent]) {
+func RegisterNotificationHandlers(
+	notificationHandlers ddd.EventHandler[ddd.AggregateEvent],
+	domainSubscriber ddd.EventSubscriber[ddd.AggregateEvent],
+) {
 	domainSubscriber.Subscribe(domain.PostCreatedEvent, notificationHandlers)
 }

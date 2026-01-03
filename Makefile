@@ -81,6 +81,9 @@ lint:
 ci-lint:
 	golangci-lint run --config .golangci.yaml
 
+fmt:
+	golangci-lint fmt --config .golangci.yaml
+
 #todo make it generic
 generate_proto:
 	protoc -Iinternal/modules/post/presentation/grpc/proto \

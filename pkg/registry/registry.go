@@ -16,7 +16,13 @@ type (
 		Serialize(key string, v interface{}) ([]byte, error)
 		Build(key string, options ...BuildOption) (interface{}, error)
 		Deserialize(key string, data []byte, options ...BuildOption) (interface{}, error)
-		register(key string, fn func() interface{}, s Serializer, d Deserializer, o []BuildOption) error
+		register(
+			key string,
+			fn func() interface{},
+			s Serializer,
+			d Deserializer,
+			o []BuildOption,
+		) error
 	}
 )
 
@@ -46,7 +52,11 @@ func (r *registry) Serialize(key string, v interface{}) ([]byte, error) {
 	return reg.serializer(v)
 }
 
-func (r *registry) Deserialize(key string, data []byte, options ...BuildOption) (interface{}, error) {
+func (r *registry) Deserialize(
+	key string,
+	data []byte,
+	options ...BuildOption,
+) (interface{}, error) {
 	v, err := r.Build(key, options...)
 	if err != nil {
 		return nil, err
@@ -79,7 +89,13 @@ func (r *registry) Build(key string, options ...BuildOption) (interface{}, error
 	return v, nil
 }
 
-func (r *registry) register(key string, fn func() interface{}, s Serializer, d Deserializer, o []BuildOption) error {
+func (r *registry) register(
+	key string,
+	fn func() interface{},
+	s Serializer,
+	d Deserializer,
+	o []BuildOption,
+) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 

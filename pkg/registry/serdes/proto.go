@@ -2,17 +2,20 @@ package serdes
 
 import (
 	"fmt"
+	"reflect"
+
 	"github.com/racibaz/go-arch/pkg/registry"
 	"google.golang.org/protobuf/proto"
-	"reflect"
 )
 
 type ProtoSerde struct {
 	r registry.Registry
 }
 
-var _ registry.Serde = (*ProtoSerde)(nil)
-var protoT = reflect.TypeOf((*proto.Message)(nil)).Elem()
+var (
+	_      registry.Serde = (*ProtoSerde)(nil)
+	protoT                = reflect.TypeOf((*proto.Message)(nil)).Elem()
+)
 
 func NewProtoSerde(r registry.Registry) *ProtoSerde {
 	return &ProtoSerde{r: r}
@@ -32,7 +35,11 @@ func (c ProtoSerde) RegisterKey(key string, v interface{}, options ...registry.B
 	return registry.RegisterKey(c.r, key, v, c.serialize, c.deserialize, options)
 }
 
-func (c ProtoSerde) RegisterFactory(key string, fn func() interface{}, options ...registry.BuildOption) error {
+func (c ProtoSerde) RegisterFactory(
+	key string,
+	fn func() interface{},
+	options ...registry.BuildOption,
+) error {
 	if v := fn(); v == nil {
 		return fmt.Errorf("%s factory returns a nil value", key)
 	} else if _, ok := v.(proto.Message); !ok {
