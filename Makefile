@@ -1,35 +1,44 @@
 include .env
 export $(shell sed 's/=.*//' .env)
 
+MODULE := github.com/racibaz/go-arch
+GO_OUT := .
+
 DB_URL=postgresql://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=disable&search_path=public
 
 default: help
 
 help:
 	@echo "Makefile commands:"
-	@echo "  make run                   - Run the application"
-	@echo "  make db_create_migration   - Create a new database migration"
-	@echo "  make db_migrate_up         - Apply all up database migrations"
-	@echo "  make db_migrate_down       - Apply all down database migrations"
-	@echo "  make db_migrate_drop       - Drop all database objects"
-	@echo "  make db_migrate_version    - Show current migration version"
-	@echo "  make db_migrate_force      - Force set migration version"
-	@echo "  make seed                  - Seed the database with initial data"
-	@echo "  make mock                  - Generate mocks using mockery"
-	@echo "  make mock-install          - Install mockery tool"
-	@echo "  make mock-clean            - Remove all generated mocks"
-	@echo "  make generate_proto        - Generate gRPC protobuf code"
-	@echo "  make generate_swagger      - Generate Swagger documentation"
-	@echo "  make test                  - Run unit tests"
-	@echo "  make coverage              - Run tests with coverage report"
-	@echo "  make lint                  - Run code linting"
-	@echo "  make module name=<name>    - Create a new module with the specified name"
+	@echo "  make run                   		- Run the application"
+	@echo "  make db_create_migration   		- Create a new database migration"
+	@echo "  make db_migrate_up         		- Apply all up database migrations"
+	@echo "  make db_migrate_down       		- Apply all down database migrations"
+	@echo "  make db_migrate_drop       		- Drop all database objects"
+	@echo "  make db_migrate_version    		- Show current migration version"
+	@echo "  make db_migrate_force      		- Force set migration version"
+	@echo "  make seed                  		- Seed the database with initial data"
+	@echo "  make mock                  		- Generate mocks using mockery"
+	@echo "  make mock-install          		- Install mockery tool"
+	@echo "  make mock-clean            		- Remove all generated mocks"
+	@echo "  make generate_proto DIR=<dir>		- Generate gRPC protobuf code"
+	@echo "  "
+	@echo "  		Example Usage For Post Module : "
+	@echo "  "
+	@echo "  		make generate_proto DIR=internal/modules/post/presentation/grpc/proto"
+	@echo "  "
+	@echo "  "
+	@echo "  make generate_swagger      		- Generate Swagger documentation"
+	@echo "  make test                  		- Run unit tests"
+	@echo "  make coverage              		- Run tests with coverage report"
+	@echo "  make lint                  		- Run code linting"
+	@echo "  make ci-lint               		- Run golangci-lint for CI"
+	@echo "  make fmt                   		- Format the code using golangci-lint"
+	@echo "  make module name=<name>    		- Create a new module with the specified name"
 
 
 run:
 	@go run main.go serve
-
-
 
 db_create_migration:
 	migrate create -ext sql -dir migrations -seq $(name)
@@ -84,18 +93,25 @@ ci-lint:
 fmt:
 	golangci-lint fmt --config .golangci.yaml
 
-#todo make it generic
+.PHONY: generate_proto
 generate_proto:
-	protoc -Iinternal/modules/post/presentation/grpc/proto \
-		--go_out=. \
-		--go_opt=module=github.com/racibaz/go-arch \
-		--go-grpc_out=.  \
-		--go-grpc_opt=module=github.com/racibaz/go-arch  internal/modules/post/presentation/grpc/proto/*.proto
+	@echo "Generating proto for $(DIR)"
+	protoc \
+		--proto_path=$(DIR) \
+		--go_out=$(GO_OUT) \
+		--go_opt=module=$(MODULE) \
+		--go-grpc_out=$(GO_OUT) \
+		--go-grpc_opt=module=$(MODULE) \
+		$$(find $(DIR) -name "*.proto")
+
+
 
 generate_swagger:
 	swag init -o docs/api/openapi-spec
 
 
+
 module:
 	@if [ -z "$(name)" ]; then echo "Usage: make module name=<module_name>"; exit 1; fi
 	@bash ./scripts/create_module.sh $(name)
+	@echo "Module '$(name)' created successfully."
