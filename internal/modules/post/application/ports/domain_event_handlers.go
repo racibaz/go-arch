@@ -1,4 +1,4 @@
-package handlers
+package ports
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"github.com/racibaz/go-arch/pkg/ddd"
 )
 
-// DomainEventHandlers todo this interface should be in ports
+// DomainEventHandlers defines the interface for handling domain events related to posts.
 type DomainEventHandlers interface {
 	OnPostCreated(ctx context.Context, event ddd.Event) error
 	OnPostReadied(ctx context.Context, event ddd.Event) error
