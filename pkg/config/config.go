@@ -158,3 +158,10 @@ func (config *Config) GinMode() string {
 
 	return mode
 }
+
+func (config *Config) IsProduction() bool {
+	if "prod" == config.App.Env {
+		return true
+	}
+	return false
+}

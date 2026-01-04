@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"github.com/racibaz/go-arch/pkg/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -10,9 +11,14 @@ type ZapLogger struct {
 }
 
 func NewZapLogger() (*ZapLogger, error) {
-	// todo modify this to use production config in production environment
-	// config := zap.NewProductionConfig()
+
+	cfg := config.Get()
 	config := zap.NewDevelopmentConfig()
+
+	if cfg.IsProduction() {
+		config = zap.NewProductionConfig()
+	}
+
 	config.EncoderConfig.TimeKey = "timestamp"
 	config.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	config.EncoderConfig.StacktraceKey = ""
