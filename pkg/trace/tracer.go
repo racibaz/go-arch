@@ -29,7 +29,7 @@ func InitTracer() (*trace.TracerProvider, error) {
 		resource.Default(),
 		resource.NewWithAttributes(
 			semconv.SchemaURL,
-			semconv.ServiceNameKey.String("go-arch"),
+			semconv.ServiceNameKey.String(config.App.Name),
 		),
 	)
 
