@@ -132,7 +132,7 @@ func TestSeed_PostMapping(t *testing.T) {
 		assert.Equal(t, post.Title, entity.Title)
 		assert.Equal(t, post.Description, entity.Description)
 		assert.Equal(t, post.Content, entity.Content)
-		assert.Equal(t, int(post.Status), entity.Status)
+		assert.Equal(t, post.Status, entity.Status)
 		assert.NotZero(t, entity.CreatedAt)
 		assert.NotZero(t, entity.UpdatedAt)
 	})
@@ -359,7 +359,7 @@ func TestSeed_MapperErrors(t *testing.T) {
 		assert.Equal(t, post.ID(), entity.ID)
 		assert.Equal(t, post.UserID, entity.UserID)
 		assert.Equal(t, post.Title, entity.Title)
-		assert.Equal(t, int(post.Status), entity.Status)
+		assert.Equal(t, post.Status, entity.Status)
 	})
 }
 

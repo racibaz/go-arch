@@ -113,7 +113,7 @@ func TestPostMapperToPersistence(t *testing.T) {
 	assert.Equal(t, post.Title, entity.Title)
 	assert.Equal(t, post.Description, entity.Description)
 	assert.Equal(t, post.Content, entity.Content)
-	assert.Equal(t, int(post.Status), entity.Status)
+	assert.Equal(t, post.Status, entity.Status)
 }
 
 func TestPostMapperToDomain(t *testing.T) {
@@ -123,7 +123,7 @@ func TestPostMapperToDomain(t *testing.T) {
 		Title:       "Test Title",
 		Description: "Test Description",
 		Content:     "Test Content",
-		Status:      int(domain.PostStatusPublished),
+		Status:      domain.PostStatusPublished,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
 	}

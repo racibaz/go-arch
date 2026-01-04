@@ -40,7 +40,7 @@ func ToPersistence(post *domain.Post) (*entity.Post, error) {
 		Title:       post.Title,
 		Description: post.Description,
 		Content:     post.Content,
-		Status:      int(post.Status),
+		Status:      post.Status,
 		CreatedAt:   post.CreatedAt,
 		UpdatedAt:   post.UpdatedAt,
 	}, nil

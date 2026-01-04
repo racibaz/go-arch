@@ -57,14 +57,13 @@ func (postService CreatePostService) CreatePost(
 		time.Now(),
 	)
 
-	// todo the err msg have to come from this function
 	// check is the post exists in db?
 	isExists, err := postService.PostRepository.IsExists(ctx, post.Title, post.Description)
-	// todo when the check, we can check bool and err together
 	if err != nil {
-		return err
+		postService.logger.Error("Error saving post: %v", err.Error())
+		return fmt.Errorf("error checking if post exists: %v", err)
 	}
-	// todo when the check, we can check bool and err together
+
 	// If the post already exists, return an error
 	if isExists {
 		postService.logger.Info(
@@ -75,12 +74,14 @@ func (postService CreatePostService) CreatePost(
 		return domain.ErrAlreadyExists
 	}
 
+	// Save the new post to the repository
 	savingErr := postService.PostRepository.Save(ctx, post)
 
 	if savingErr != nil {
 		postService.logger.Error("Error saving post: %v", savingErr)
 		return savingErr
 	}
+
 	// Publish an event indicating that a new post has been created
 	if messageErr := postService.messagePublisher.PublishPostCreated(ctx, post); messageErr != nil {
 		return fmt.Errorf("failed to publish the post created event: %v", messageErr)
