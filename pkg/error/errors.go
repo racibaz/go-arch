@@ -3,11 +3,15 @@ package errors
 import (
 	"errors"
 	"fmt"
+	"net/http"
+
+	"github.com/go-playground/validator/v10"
 )
 
 var (
 	ErrValidation   = errors.New("validation error")
 	ErrInValid      = errors.New("invalid error")
+	ErrInDecode     = errors.New("invalid error")
 	ErrNotFound     = errors.New("resource not found")
 	ErrExistFound   = errors.New("exist found")
 	ErrConflict     = errors.New("resource conflict")
@@ -16,48 +20,93 @@ var (
 	ErrInternal     = errors.New("internal error")
 )
 
-type AppError struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
-	Cause   string `json:"cause"`
+// appError represents a structured application error
+type appError struct {
+	Status  int                 `json:"status"`
+	Type    string              `json:"type"`
+	Message string              `json:"message"`
+	Cause   map[string][]string `json:"cause"`
 }
 
-func (e *AppError) Error() string {
-	if e.Cause != "" {
+// ValidationErrors represents validation errors
+type ValidationErrors struct {
+	Errors map[string][]string `json:"errors"`
+}
+
+// Error implements the error interface for appError
+func (e *appError) Error() string {
+	if len(e.Cause) > 0 {
 		return fmt.Sprintf("%s: %s (cause: %v)", e.Type, e.Message, e.Cause)
 	}
 	return fmt.Sprintf("%s: %s", e.Type, e.Message)
 }
 
-func NewInValidError(message string, cause string) *AppError {
-	return &AppError{
+// NewValidationError creates a new validation error
+func NewValidationError(message string, cause map[string][]string) *appError {
+	return &appError{
+		Status:  http.StatusUnprocessableEntity,
+		Type:    ErrValidation.Error(),
+		Message: message,
+		Cause:   cause,
+	}
+}
+
+// ShowRegularValidationErrors formats validation errors from the validator package
+func ShowRegularValidationErrors(err error) *ValidationErrors {
+	validationErrors := make(map[string][]string)
+	for _, err := range err.(validator.ValidationErrors) {
+		fieldName := err.Field()
+		validationErrors[fieldName] = append(validationErrors[fieldName], err.Tag())
+	}
+
+	return &ValidationErrors{Errors: validationErrors}
+}
+
+// NewDecodeError creates a new decode error
+func NewDecodeError(message string) *appError {
+	return &appError{
+		Status:  http.StatusBadRequest,
+		Type:    ErrInValid.Error(),
+		Message: message,
+		Cause:   make(map[string][]string),
+	}
+}
+
+// NewInValidError creates a new invalid error
+func NewInValidError(message string, cause map[string][]string) *appError {
+	return &appError{
+		Status:  http.StatusBadRequest,
 		Type:    ErrInValid.Error(),
 		Message: message,
 		Cause:   cause,
 	}
 }
 
-func NewErrExistFoundError(message string, cause string) *AppError {
-	return &AppError{
+// NewErrExistFoundError creates a new exist found error
+func NewErrExistFoundError(message string, cause map[string][]string) *appError {
+	return &appError{
+		Status:  http.StatusConflict,
 		Type:    ErrExistFound.Error(),
 		Message: message,
 		Cause:   cause,
 	}
 }
 
-func NewNotFoundError(message string) *AppError {
-	return &AppError{
+// NewNotFoundError creates a new not found error
+func NewNotFoundError(message string) *appError {
+	return &appError{
+		Status:  http.StatusNotFound,
 		Type:    ErrNotFound.Error(),
 		Message: message,
 	}
 }
 
-func NewUnauthorizedError(message string, cause string) *AppError {
-	return &AppError{
+// NewConflictError creates a new conflict error
+func NewUnauthorizedError(message string, cause map[string][]string) *appError {
+	return &appError{
+		Status:  http.StatusUnauthorized,
 		Type:    ErrUnauthorized.Error(),
 		Message: message,
 		Cause:   cause,
 	}
 }
-
-// if you want to add more general error types, you can do so here
