@@ -650,17 +650,15 @@ Expanded Structure
 When sending a POST request to create a post with invalid data, you might receive a validation error response like this:
 ```
 {
+    "status": 422,
     "type": "validation error",
     "message": "post validation request body does not validate",
     "cause": {
-        "Content": [
-            "min"
-        ],
         "Description": [
-            "min"
+            "required"
         ],
         "Title": [
-            "min"
+            "required"
         ]
     }
 }
