@@ -11,7 +11,6 @@ type ZapLogger struct {
 }
 
 func NewZapLogger() (*ZapLogger, error) {
-
 	cfg := config.Get()
 	config := zap.NewDevelopmentConfig()
 

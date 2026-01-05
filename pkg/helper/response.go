@@ -1,9 +1,10 @@
 package helper
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	errors "github.com/racibaz/go-arch/pkg/error"
-	"net/http"
 )
 
 // ValidationErrorResponse sends a standardized validation error response
@@ -21,7 +22,6 @@ func ValidationErrorResponse(c *gin.Context, message string, err error) {
 
 // ErrorResponse sends a standardized error response
 func ErrorResponse(c *gin.Context, message string, err error, status int) {
-
 	errorMap := make(map[string][]string)
 	errorMap["error"] = []string{err.Error()}
 

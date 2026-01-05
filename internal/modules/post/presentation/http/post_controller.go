@@ -2,8 +2,6 @@ package http
 
 import (
 	"fmt"
-	"go.opentelemetry.io/otel/codes"
-	"go.opentelemetry.io/otel/trace"
 	"net/http"
 	"time"
 
@@ -19,6 +17,8 @@ import (
 	_ "github.com/swaggo/gin-swagger"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/trace"
 )
 
 const (
@@ -62,7 +62,7 @@ func (controller PostController) Store(c *gin.Context) {
 		helper.StructName(controller),
 		helper.CurrentFuncName(),
 	)
-	//todo context should be passed from gin context
+	// todo context should be passed from gin context
 	ctx, span := tracer.Start(c.Request.Context(), path)
 	defer span.End()
 
