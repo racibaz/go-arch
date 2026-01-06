@@ -231,9 +231,9 @@ Follow the structure of existing modules (for example, the post module).
 
 Typical responsibilities include:
 
-- Controllers
-- Services (business logic)
-- Repositories and queries
+- Handlers for HTTP/gRPC/other protocols
+- CommandHandler (business logic), QueryHandler
+- Repository
 - DTOs and validation logic
 
 Step 5: Generate Swagger Documentation
@@ -517,11 +517,11 @@ Minimal Structure
 │   │   └── seeder
 │   ├── modules
 │   │   ├── post                          # Your module directory
-│   │   │   ├── application         # The application bussiness logics live here such as services, commands, queries, so on.
+│   │   │   ├── application         # The application bussiness logics live here such as services, command, queries, so on.
 │   │   │   ├── domain              # The core business logic and entities
-│   │   │   ├── infrastructure      # You can implemenet 3. party services integration here such as PostgreSQL and  Mysql implementation
+│   │   │   ├── infrastructure      # (Outbound Adapter) You can implemenet 3. party services integration here such as PostgreSQL and  Mysql implementation
 │   │   │   ├── module.go           # The module's main entry point for registration
-│   │   │   ├── presentation        # Handles HTTP and gRPC requests and responses
+│   │   │   ├── presentation        # (Inbound Adapter) Handles HTTP and gRPC requests and responses
 │   │   │   └── testing             # Mocks and Integration tests for the module
 │   │   └── shared                        # Shared module for common functionalities across modules
 │   │       ├── domain
@@ -545,7 +545,7 @@ Expanded Structure
 │   ├── modules
 │   │   ├── post
 │   │   │   ├── application
-│   │   │   │   ├── commands
+│   │   │   │   ├── command
 │   │   │   │   ├── dtos
 │   │   │   │   ├── handlers
 │   │   │   │   ├── ports

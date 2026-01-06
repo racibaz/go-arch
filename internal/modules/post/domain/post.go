@@ -1,5 +1,3 @@
-// Package post contains the domain logic for managing blog posts.
-
 package domain
 
 import (

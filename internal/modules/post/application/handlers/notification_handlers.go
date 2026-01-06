@@ -27,6 +27,7 @@ func (h NotificationHandlers[T]) HandleEvent(ctx context.Context, event T) error
 	case PostCreatedEvent:
 		return h.onPostCreated(ctx, event)
 	}
+	// todo add more cases when needed
 	return nil
 }
 

@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	dto "github.com/racibaz/go-arch/internal/modules/post/application/dtos"
+	"github.com/racibaz/go-arch/internal/modules/post/application/command"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/presentation"
@@ -22,7 +22,8 @@ import (
 )
 
 const (
-	routePath            = "/api/v1/posts"
+	routePath = "/api/v1/posts"
+
 	ValidationErrMessage = "post validation request body does not validate"
 	InValidErrMessage    = "Invalid request body"
 	NotFoundErrMessage   = "Not found a record"
@@ -30,13 +31,15 @@ const (
 	ModulePrefix         = "PostModule - Restful"
 )
 
-type PostController struct {
-	Service ports.PostService
+type CreatePostHandler struct {
+	Handler ports.CommandHandler[command.CreatePostCommand]
 }
 
-func NewPostController(service ports.PostService) *PostController {
-	return &PostController{
-		Service: service,
+func NewCreatePostHandler(
+	handler ports.CommandHandler[command.CreatePostCommand],
+) *CreatePostHandler {
+	return &CreatePostHandler{
+		Handler: handler,
 	}
 }
 
@@ -52,14 +55,16 @@ func NewPostController(service ports.PostService) *PostController {
 //	@Produce		json
 //	@Param			post	body		presentation.CreatePostRequestDto	true	"Create Post Request DTO"
 //	@Success		201		{object}	presentation.CreatePostResponseDto	"Post created successfully"
-//	@Failure		400		{object}	errors.AppError						"Invalid request body"
+//	@Failure		400		{object}	errors.appError						"Invalid request body"
+//	@Failure		422		{object}	errors.appError						"Post validation request body does not validate"
+//	@Failure		500		{object}	errors.appError						"Post create failed"
 //	@Router			/posts [post]
-func (controller PostController) Store(c *gin.Context) {
+func (h CreatePostHandler) Store(c *gin.Context) {
 	tracer := otel.Tracer(config.Get().App.Name) // go-arch
 	path := fmt.Sprintf(
 		"%s - %s - %s",
 		ModulePrefix,
-		helper.StructName(controller),
+		helper.StructName(h),
 		helper.CurrentFuncName(),
 	)
 	// todo context should be passed from gin context
@@ -95,7 +100,7 @@ func (controller PostController) Store(c *gin.Context) {
 
 	newID := uuid.NewID()
 
-	serviceErr := controller.Service.CreatePost(ctx, dto.CreatePostInput{
+	serviceErr := h.Handler.Handle(ctx, command.CreatePostCommand{
 		ID:          newID,
 		UserID:      createPostRequestDto.UserId,
 		Title:       createPostRequestDto.Title,
@@ -136,68 +141,4 @@ func (controller PostController) Store(c *gin.Context) {
 	span.SetAttributes(attribute.String("post.id", newID))
 
 	helper.SuccessResponse(c, "Post created successfully", responsePayload, http.StatusCreated)
-}
-
-// Show PostGetById Show is a method to retrieve a post by its ID
-//
-//	@Summary	Get post by id
-//	@Schemes
-//	@Description	It is a method to retrieve a post by its ID
-//	@Tags			posts
-//	@Accept			json
-//	@Produce		json
-//	@Param			id	path		string							true	"Post ID"
-//	@Success		200	{object}	presentation.GetPostResponseDto	"Post retrieved successfully"
-//	@Failure		404	{object}	errors.AppError					"Page not found"
-//	@Router			/posts/{id} [get]
-func (controller PostController) Show(c *gin.Context) {
-	tracer := otel.Tracer(config.Get().App.Name)
-	path := fmt.Sprintf(
-		"%s - %s - %s",
-		ModulePrefix,
-		helper.StructName(controller),
-		helper.CurrentFuncName(),
-	)
-	ctx, span := tracer.Start(c, path)
-	defer span.End()
-
-	id := c.Param("id")
-	postID, parseErr := uuid.Parse(id)
-	if parseErr != nil {
-
-		if span := trace.SpanFromContext(ctx); span != nil {
-			span.SetAttributes(attribute.String("error", ParseErrMessage))
-			span.SetStatus(codes.Error, ParseErrMessage)
-			span.RecordError(parseErr)
-		}
-
-		helper.ValidationErrorResponse(c, ParseErrMessage, parseErr)
-		return
-	}
-	result, serviceErr := controller.Service.GetById(ctx, postID.ToString())
-	if serviceErr != nil {
-
-		if span := trace.SpanFromContext(ctx); span != nil {
-			span.SetAttributes(attribute.String("error", NotFoundErrMessage))
-			span.SetStatus(codes.Error, NotFoundErrMessage)
-			span.RecordError(serviceErr)
-		}
-
-		helper.ErrorResponse(c, NotFoundErrMessage, serviceErr, http.StatusInternalServerError)
-		return
-	}
-
-	responsePayload := helper.Response[presentation.GetPostResponseDto]{
-		Data: &presentation.GetPostResponseDto{
-			Post: presentation.FromPostCoreToHTTP(result),
-		},
-		Links: []helper.Link{
-			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, postID), http.MethodGet),
-			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), http.MethodPost),
-			helper.AddHateoas("update", fmt.Sprintf("%s/%s", routePath, postID), http.MethodPut),
-			helper.AddHateoas("delete", fmt.Sprintf("%s/%s", routePath, postID), http.MethodDelete),
-		},
-	}
-
-	helper.SuccessResponse(c, "Show post", responsePayload, http.StatusOK)
 }

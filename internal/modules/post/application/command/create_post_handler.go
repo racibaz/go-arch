@@ -1,11 +1,10 @@
-package commands
+package command
 
 import (
 	"context"
 	"fmt"
 	"time"
 
-	dto "github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	applicationPorts "github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
@@ -15,58 +14,58 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-type CreatePostService struct {
+// CreatePostHandler handles the creation of new posts.
+type CreatePostHandler struct {
 	PostRepository   ports.PostRepository
 	logger           logger.Logger
 	messagePublisher messaging.MessagePublisher
 	tracer           trace.Tracer
 }
 
-var _ applicationPorts.PostService = (*CreatePostService)(nil)
+// Ensure RemovePostHandler implements the CommandHandler interface
+var _ applicationPorts.CommandHandler[CreatePostCommand] = (*CreatePostHandler)(nil)
 
-// NewCreatePostService initializes a new CreatePostService with the provided PostRepository.
-func NewCreatePostService(
+// NewCreatePostHandler initializes a new CreatePostHandler with the provided PostRepository.
+func NewCreatePostHandler(
 	postRepository ports.PostRepository,
 	logger logger.Logger,
 	messagePublisher messaging.MessagePublisher,
-) *CreatePostService {
-	return &CreatePostService{
+) *CreatePostHandler {
+	return &CreatePostHandler{
 		PostRepository:   postRepository,
 		logger:           logger,
 		messagePublisher: messagePublisher,
-		tracer:           otel.Tracer("CreatePostService"),
+		tracer:           otel.Tracer("CreatePostHandler"),
 	}
 }
 
-func (postService CreatePostService) CreatePost(
-	ctx context.Context,
-	postInput dto.CreatePostInput,
-) error {
-	ctx, span := postService.tracer.Start(ctx, "CreatePost - Service")
+// Handle processes the CreatePostCommand to create a new post.
+func (h CreatePostHandler) Handle(ctx context.Context, cmd CreatePostCommand) error {
+	ctx, span := h.tracer.Start(ctx, "CreatePost - Handler")
 	defer span.End()
 
 	// Create a new post using the factory
 	post, _ := domain.Create(
-		postInput.ID,
-		postInput.UserID,
-		postInput.Title,
-		postInput.Description,
-		postInput.Content,
-		postInput.Status,
+		cmd.ID,
+		cmd.UserID,
+		cmd.Title,
+		cmd.Description,
+		cmd.Content,
+		cmd.Status,
 		time.Now(),
 		time.Now(),
 	)
 
 	// check is the post exists in db?
-	isExists, err := postService.PostRepository.IsExists(ctx, post.Title, post.Description)
+	isExists, err := h.PostRepository.IsExists(ctx, post.Title, post.Description)
 	if err != nil {
-		postService.logger.Error("Error saving post: %v", err.Error())
+		h.logger.Error("Error saving post: %v", err.Error())
 		return fmt.Errorf("error checking if post exists: %v", err)
 	}
 
 	// If the post already exists, return an error
 	if isExists {
-		postService.logger.Info(
+		h.logger.Info(
 			"Post already exists with title: %s and description: %s",
 			post.Title,
 			post.Description,
@@ -75,26 +74,26 @@ func (postService CreatePostService) CreatePost(
 	}
 
 	// Save the new post to the repository
-	savingErr := postService.PostRepository.Save(ctx, post)
+	savingErr := h.PostRepository.Save(ctx, post)
 
 	if savingErr != nil {
-		postService.logger.Error("Error saving post: %v", savingErr)
+		h.logger.Error("Error saving post: %v", savingErr)
 		return savingErr
 	}
 
 	// Publish an event indicating that a new post has been created
-	if messageErr := postService.messagePublisher.PublishPostCreated(ctx, post); messageErr != nil {
+	if messageErr := h.messagePublisher.PublishPostCreated(ctx, post); messageErr != nil {
 		return fmt.Errorf("failed to publish the post created event: %v", messageErr)
 	}
 
-	postService.logger.Info("Post created successfully with ID: %s", post.ID())
+	h.logger.Info("Post created successfully with ID: %s", post.ID())
 
 	return nil
 }
 
-func (postService CreatePostService) GetById(ctx context.Context, id string) (*domain.Post, error) {
-	ctx, span := postService.tracer.Start(ctx, "GetById - Service")
+func (h CreatePostHandler) GetById(ctx context.Context, id string) (*domain.Post, error) {
+	ctx, span := h.tracer.Start(ctx, "GetById - Handler")
 	defer span.End()
 
-	return postService.PostRepository.GetByID(ctx, id)
+	return h.PostRepository.GetByID(ctx, id)
 }

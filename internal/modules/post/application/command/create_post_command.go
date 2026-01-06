@@ -1,4 +1,4 @@
-package dto
+package command
 
 import (
 	"time"
@@ -6,7 +6,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 )
 
-type CreatePostInput struct {
+type CreatePostCommand struct {
 	ID          string // Unique identifier for the post
 	UserID      string
 	Title       string

@@ -6,8 +6,8 @@ package ports
 
 import (
 	"context"
+	"github.com/racibaz/go-arch/internal/modules/post/application/command"
 
-	"github.com/racibaz/go-arch/internal/modules/post/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	mock "github.com/stretchr/testify/mock"
 )
@@ -40,15 +40,15 @@ func (_m *MockPostService) EXPECT() *MockPostService_Expecter {
 }
 
 // CreatePost provides a mock function for the type MockPostService
-func (_mock *MockPostService) CreatePost(ctx context.Context, postDto dto.CreatePostInput) error {
+func (_mock *MockPostService) Handle(ctx context.Context, postDto command.CreatePostCommand) error {
 	ret := _mock.Called(ctx, postDto)
 
 	if len(ret) == 0 {
-		panic("no return value specified for CreatePost")
+		panic("no return value specified for Handle")
 	}
 
 	var r0 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, dto.CreatePostInput) error); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, command.CreatePostCommand) error); ok {
 		r0 = returnFunc(ctx, postDto)
 	} else {
 		r0 = ret.Error(0)
@@ -56,27 +56,27 @@ func (_mock *MockPostService) CreatePost(ctx context.Context, postDto dto.Create
 	return r0
 }
 
-// MockPostService_CreatePost_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'CreatePost'
+// MockPostService_CreatePost_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Handle'
 type MockPostService_CreatePost_Call struct {
 	*mock.Call
 }
 
 // CreatePost is a helper method to define mock.On call
 //   - ctx context.Context
-//   - postDto dto.CreatePostInput
+//   - postDto dto.CreatePostCommand
 func (_e *MockPostService_Expecter) CreatePost(ctx interface{}, postDto interface{}) *MockPostService_CreatePost_Call {
-	return &MockPostService_CreatePost_Call{Call: _e.mock.On("CreatePost", ctx, postDto)}
+	return &MockPostService_CreatePost_Call{Call: _e.mock.On("Handle", ctx, postDto)}
 }
 
-func (_c *MockPostService_CreatePost_Call) Run(run func(ctx context.Context, postDto dto.CreatePostInput)) *MockPostService_CreatePost_Call {
+func (_c *MockPostService_CreatePost_Call) Run(run func(ctx context.Context, postDto command.CreatePostCommand)) *MockPostService_CreatePost_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 dto.CreatePostInput
+		var arg1 command.CreatePostCommand
 		if args[1] != nil {
-			arg1 = args[1].(dto.CreatePostInput)
+			arg1 = args[1].(command.CreatePostCommand)
 		}
 		run(
 			arg0,
@@ -91,7 +91,7 @@ func (_c *MockPostService_CreatePost_Call) Return(err error) *MockPostService_Cr
 	return _c
 }
 
-func (_c *MockPostService_CreatePost_Call) RunAndReturn(run func(ctx context.Context, postDto dto.CreatePostInput) error) *MockPostService_CreatePost_Call {
+func (_c *MockPostService_CreatePost_Call) RunAndReturn(run func(ctx context.Context, postDto command.CreatePostCommand) error) *MockPostService_CreatePost_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -5,14 +5,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	postModule "github.com/racibaz/go-arch/internal/modules/post"
-	"github.com/racibaz/go-arch/internal/modules/post/application/commands"
+	"github.com/racibaz/go-arch/internal/modules/post/application/command"
 	"github.com/racibaz/go-arch/internal/modules/post/application/handlers"
+	"github.com/racibaz/go-arch/internal/modules/post/application/query"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/messaging/rabbitmq"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/notification/sms"
 	gormPostRepo "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/repositories"
 	"github.com/racibaz/go-arch/internal/modules/post/logging"
-	postGrpcController "github.com/racibaz/go-arch/internal/modules/post/presentation/grpc"
-	postController "github.com/racibaz/go-arch/internal/modules/post/presentation/http"
+	grpcHandler "github.com/racibaz/go-arch/internal/modules/post/presentation/grpc"
+	httpHandler "github.com/racibaz/go-arch/internal/modules/post/presentation/http"
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/logger"
 	rabbitmqConn "github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
@@ -25,6 +26,12 @@ var (
 )
 
 func BuildPostModule() *postModule.PostModule {
+	// Return existing instance if already created
+	if postModuleInstance != nil {
+		return postModuleInstance
+	}
+
+	// Create the instance only once
 	once.Do(func() {
 		// Use In-memory for persistence
 		// repo := in_memory.NewGormPostRepository()
@@ -42,7 +49,12 @@ func BuildPostModule() *postModule.PostModule {
 		/* todo we need to use processor in services to publish events after transaction is committed
 		for now we will use directly the publisher in the service
 		*/
-		createPostService := commands.NewCreatePostService(repository, logger, messagePublisher)
+		createPostCommandHandler := command.NewCreatePostHandler(
+			repository,
+			logger,
+			messagePublisher,
+		)
+		getPostQueryHandler := query.NewGetPostHandler(repository, logger)
 
 		notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
 
@@ -55,7 +67,8 @@ func BuildPostModule() *postModule.PostModule {
 
 		postModuleInstance = postModule.NewPostModule(
 			repository,
-			createPostService,
+			createPostCommandHandler,
+			getPostQueryHandler,
 			logger,
 			notificationAdapter,
 		)
@@ -65,14 +78,18 @@ func BuildPostModule() *postModule.PostModule {
 
 func Routes(router *gin.Engine) {
 	module := BuildPostModule()
-	newPostController := postController.NewPostController(module.Service())
+
+	// Handler for creating posts (POST)
+	createPostHandler := httpHandler.NewCreatePostHandler(module.CommandHandler())
+	// Handler for getting posts (GET)
+	getPostHandler := httpHandler.NewGetPostHandler(module.QueryHandler())
 
 	v1 := router.Group("/api/v1")
 	{
 		eg := v1.Group("/posts")
 		{
-			eg.GET("/:id", newPostController.Show)
-			eg.POST("/", newPostController.Store)
+			eg.GET("/:id", getPostHandler.Show)
+			eg.POST("/", createPostHandler.Store)
 		}
 	}
 }
@@ -80,5 +97,5 @@ func Routes(router *gin.Engine) {
 func GrpcRoutes(grpcServer *googleGrpc.Server) {
 	module := BuildPostModule()
 
-	postGrpcController.NewPostGrpcController(grpcServer, module.Service())
+	grpcHandler.NewPostGrpcController(grpcServer, module.CommandHandler())
 }

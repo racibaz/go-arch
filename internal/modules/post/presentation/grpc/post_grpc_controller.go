@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	dto "github.com/racibaz/go-arch/internal/modules/post/application/dtos"
+	"github.com/racibaz/go-arch/internal/modules/post/application/command"
 	"github.com/racibaz/go-arch/internal/modules/post/application/ports"
 	postValueObject "github.com/racibaz/go-arch/internal/modules/post/domain"
 	proto "github.com/racibaz/go-arch/internal/modules/post/presentation/grpc/proto"
@@ -17,11 +17,14 @@ import (
 )
 
 type PostGrpcController struct {
-	Service ports.PostService // todo Service name will be changed to PostService and it should be camelCase
+	Service ports.CommandHandler[command.CreatePostCommand]
 	proto.UnimplementedPostServiceServer
 }
 
-func NewPostGrpcController(grpc *grpc.Server, postService ports.PostService) {
+func NewPostGrpcController(
+	grpc *grpc.Server,
+	postService ports.CommandHandler[command.CreatePostCommand],
+) {
 	gRPController := &PostGrpcController{
 		Service: postService,
 	}
@@ -45,7 +48,7 @@ func (controller *PostGrpcController) CreatePost(
 
 	newUuid := uuid.NewID()
 
-	input := dto.CreatePostInput{
+	input := command.CreatePostCommand{
 		ID:          newUuid,   // todo it should be value object
 		UserID:      in.UserID, // todo it should be value object
 		Title:       in.Title,
@@ -56,7 +59,7 @@ func (controller *PostGrpcController) CreatePost(
 		UpdatedAt:   time.Time{},
 	}
 
-	err := controller.Service.CreatePost(ctx, input)
+	err := controller.Service.Handle(ctx, input)
 	if err != nil {
 		return nil, err
 	}
