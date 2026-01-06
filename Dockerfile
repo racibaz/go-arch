@@ -45,20 +45,32 @@ RUN swag init -o api/openapi-spec
 #RUN go build -o main .
 
 # Expose ports to the outside world
+# SERVER_PORT
 EXPOSE 3000
-EXPOSE 8080
+# SWAGGER_PORT
 EXPOSE 8081
+# METRICS_PORT
 EXPOSE 9090
-EXPOSE 9091
+# GRPC_PORT
 EXPOSE 50051
-EXPOSE 50052
+# Prometheus Exporter Port
 EXPOSE 8889
+# Web Port
 EXPOSE 3001
+# Grafana UI Port
 EXPOSE 3002
+# RabbitMQ Port
 EXPOSE 5672
+# Fluentd Ports
 EXPOSE 24224
+# Elasticsearch Ports
 EXPOSE 9200
-EXPOSE 9300
+
+# todo remove if not needed
+#EXPOSE 9300
+#EXPOSE 9091
+#EXPOSE 8080
+#EXPOSE 50052
 
 # Entrypoint script
 COPY entrypoint.sh /entrypoint.sh
