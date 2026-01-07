@@ -100,7 +100,7 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 
 	newID := uuid.NewID()
 
-	serviceErr := h.Handler.Handle(ctx, command.CreatePostCommand{
+	handlerErr := h.Handler.Handle(ctx, command.CreatePostCommand{
 		ID:          newID,
 		UserID:      createPostRequestDto.UserId,
 		Title:       createPostRequestDto.Title,
@@ -110,15 +110,15 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
 	})
-	if serviceErr != nil {
+	if handlerErr != nil {
 
 		if span := trace.SpanFromContext(ctx); span != nil {
 			span.SetAttributes(attribute.String("error", "post create failed"))
 			span.SetStatus(codes.Error, "post create failed")
-			span.RecordError(serviceErr)
+			span.RecordError(handlerErr)
 		}
 
-		helper.ErrorResponse(c, "post create failed", serviceErr, http.StatusInternalServerError)
+		helper.ErrorResponse(c, "post create failed", handlerErr, http.StatusInternalServerError)
 	}
 
 	responsePayload := helper.Response[presentation.CreatePostResponseDto]{

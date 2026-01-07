@@ -12,7 +12,7 @@ import (
 type PostModule struct {
 	repository               postDomainPorts.PostRepository
 	createPostCommandHandler ports.CommandHandler[command.CreatePostCommand]
-	getPostQueryHandler      ports.QueryHandler[query.GetPostQuery, query.PostView]
+	getPostQueryHandler      ports.QueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse]
 	logger                   logger.Logger
 	notifier                 postDomainPorts.NotificationAdapter
 }
@@ -21,7 +21,7 @@ type PostModule struct {
 func NewPostModule(
 	repository postDomainPorts.PostRepository,
 	createPostCommandHandler ports.CommandHandler[command.CreatePostCommand],
-	getPostQueryHandler ports.QueryHandler[query.GetPostQuery, query.PostView],
+	getPostQueryHandler ports.QueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse],
 	logger logger.Logger,
 	notifier postDomainPorts.NotificationAdapter,
 ) *PostModule {
@@ -42,7 +42,7 @@ func (m PostModule) CommandHandler() ports.CommandHandler[command.CreatePostComm
 	return m.createPostCommandHandler
 }
 
-func (m PostModule) QueryHandler() ports.QueryHandler[query.GetPostQuery, query.PostView] {
+func (m PostModule) QueryHandler() ports.QueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse] {
 	return m.getPostQueryHandler
 }
 

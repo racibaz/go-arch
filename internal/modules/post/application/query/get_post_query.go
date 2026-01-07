@@ -2,11 +2,11 @@ package query
 
 import "time"
 
-type GetPostQuery struct {
+type GetPostByIdQuery struct {
 	ID string // Unique identifier for the post
 }
 
-type PostView struct {
+type GetPostByIdQueryResponse struct {
 	ID          string
 	UserID      string
 	Title       string

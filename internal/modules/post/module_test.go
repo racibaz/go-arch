@@ -17,7 +17,7 @@ type PostModuleTestSuite struct {
 	mockRepo           *domainMockPorts.MockPostRepository
 	mockAdapter        *domainMockPorts.MockNotificationAdapter
 	mockCommandHandler *appMockPorts.MockCommandHandler[command.CreatePostCommand]
-	mockQueryHandler   *appMockPorts.MockQueryHandler[query.GetPostQuery, query.PostView]
+	mockQueryHandler   *appMockPorts.MockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse]
 	mockLogger         *logger.MockLogger
 }
 
@@ -28,7 +28,7 @@ func (suite *PostModuleTestSuite) SetupTest() {
 	suite.mockCommandHandler = appMockPorts.NewMockCommandHandler[command.CreatePostCommand](
 		suite.T(),
 	)
-	suite.mockQueryHandler = appMockPorts.NewMockQueryHandler[query.GetPostQuery, query.PostView](
+	suite.mockQueryHandler = appMockPorts.NewMockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse](
 		suite.T(),
 	)
 
@@ -171,7 +171,7 @@ func (suite *PostModuleTestSuite) TestPostModule_MultipleInstances() {
 		mockCommandHandler2 := appMockPorts.NewMockCommandHandler[command.CreatePostCommand](
 			suite.T(),
 		)
-		mockQueryHandler2 := appMockPorts.NewMockQueryHandler[query.GetPostQuery, query.PostView](
+		mockQueryHandler2 := appMockPorts.NewMockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse](
 			suite.T(),
 		)
 		mockAdapter2 := domainMockPorts.NewMockNotificationAdapter(suite.T())

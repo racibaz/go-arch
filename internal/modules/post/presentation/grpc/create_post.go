@@ -16,31 +16,31 @@ import (
 	"google.golang.org/grpc"
 )
 
-type PostGrpcController struct {
-	Service ports.CommandHandler[command.CreatePostCommand]
+type CreatePostHandler struct {
+	Handler ports.CommandHandler[command.CreatePostCommand]
 	proto.UnimplementedPostServiceServer
 }
 
-func NewPostGrpcController(
+func NewCreatePostHandler(
 	grpc *grpc.Server,
-	postService ports.CommandHandler[command.CreatePostCommand],
+	postHandler ports.CommandHandler[command.CreatePostCommand],
 ) {
-	gRPController := &PostGrpcController{
-		Service: postService,
+	handler := &CreatePostHandler{
+		Handler: postHandler,
 	}
 
-	// Register the gRPC service with the server
-	proto.RegisterPostServiceServer(grpc, gRPController)
+	// Register the gRPC handler with the server
+	proto.RegisterPostServiceServer(grpc, handler)
 }
 
-func (controller *PostGrpcController) CreatePost(
+func (h *CreatePostHandler) CreatePost(
 	ctx context.Context,
 	in *proto.CreatePostInput,
 ) (*proto.CreatePostResponse, error) {
 	tracer := otel.Tracer(config.Get().App.Name)
 	path := fmt.Sprintf(
 		"PostModule - gRPC - %s - %s",
-		helper.StructName(controller),
+		helper.StructName(h),
 		helper.CurrentFuncName(),
 	)
 	ctx, span := tracer.Start(ctx, path)
@@ -59,7 +59,7 @@ func (controller *PostGrpcController) CreatePost(
 		UpdatedAt:   time.Time{},
 	}
 
-	err := controller.Service.Handle(ctx, input)
+	err := h.Handler.Handle(ctx, input)
 	if err != nil {
 		return nil, err
 	}

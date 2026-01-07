@@ -20,7 +20,7 @@ func FromPostCoreToHTTP(input *domain.Post) *Post {
 	return result
 }
 
-func FromPostViewToHTTP(input *query.PostView) *Post {
+func FromPostViewToHTTP(input *query.GetPostByIdQueryResponse) *Post {
 	if input == nil {
 		return nil
 	}

@@ -20,11 +20,11 @@ import (
 )
 
 type GetPostHandler struct {
-	Handler ports.QueryHandler[query.GetPostQuery, query.PostView]
+	Handler ports.QueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse]
 }
 
 func NewGetPostHandler(
-	handler ports.QueryHandler[query.GetPostQuery, query.PostView],
+	handler ports.QueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse],
 ) *GetPostHandler {
 	return &GetPostHandler{
 		Handler: handler,
@@ -68,16 +68,16 @@ func (h GetPostHandler) Show(c *gin.Context) {
 		helper.ValidationErrorResponse(c, ParseErrMessage, parseErr)
 		return
 	}
-	postView, serviceErr := h.Handler.Handle(ctx, query.GetPostQuery{ID: postID.ToString()})
-	if serviceErr != nil {
+	postView, handlerErr := h.Handler.Handle(ctx, query.GetPostByIdQuery{ID: postID.ToString()})
+	if handlerErr != nil {
 
 		if span := trace.SpanFromContext(ctx); span != nil {
 			span.SetAttributes(attribute.String("error", NotFoundErrMessage))
 			span.SetStatus(codes.Error, NotFoundErrMessage)
-			span.RecordError(serviceErr)
+			span.RecordError(handlerErr)
 		}
 
-		helper.ErrorResponse(c, NotFoundErrMessage, serviceErr, http.StatusInternalServerError)
+		helper.ErrorResponse(c, NotFoundErrMessage, handlerErr, http.StatusInternalServerError)
 		return
 	}
 
@@ -86,10 +86,22 @@ func (h GetPostHandler) Show(c *gin.Context) {
 			Post: presentation.FromPostViewToHTTP(&postView),
 		},
 		Links: []helper.Link{
-			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, postID), http.MethodGet),
+			helper.AddHateoas(
+				"self",
+				fmt.Sprintf("%s/%s", routePath, postID.ToString()),
+				http.MethodGet,
+			),
 			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), http.MethodPost),
-			helper.AddHateoas("update", fmt.Sprintf("%s/%s", routePath, postID), http.MethodPut),
-			helper.AddHateoas("delete", fmt.Sprintf("%s/%s", routePath, postID), http.MethodDelete),
+			helper.AddHateoas(
+				"update",
+				fmt.Sprintf("%s/%s", routePath, postID.ToString()),
+				http.MethodPut,
+			),
+			helper.AddHateoas(
+				"delete",
+				fmt.Sprintf("%s/%s", routePath, postID.ToString()),
+				http.MethodDelete,
+			),
 		},
 	}
 

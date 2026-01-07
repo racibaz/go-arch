@@ -27,18 +27,18 @@ func NewGetPostHandler(postRepository ports.PostRepository, logger logger.Logger
 // Handle retrieves a post by its ID using the PostRepository.
 func (h *GetPostHandler) Handle(
 	ctx context.Context,
-	query GetPostQuery,
-) (PostView, error) {
+	query GetPostByIdQuery,
+) (GetPostByIdQueryResponse, error) {
 	ctx, span := h.tracer.Start(ctx, "GetById - Handler")
 	defer span.End()
 
 	post, err := h.PostRepository.GetByID(ctx, query.ID)
 	if err != nil {
-		return PostView{}, err
+		return GetPostByIdQueryResponse{}, err
 	}
 
-	// Map domain.Post to PostView DTO
-	postView := PostView{
+	// Map domain.Post to GetPostByIdQueryResponse DTO
+	postView := GetPostByIdQueryResponse{
 		ID:          post.ID(),
 		UserID:      post.UserID,
 		Title:       post.Title,

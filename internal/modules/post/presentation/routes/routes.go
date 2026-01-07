@@ -46,8 +46,8 @@ func BuildPostModule() *postModule.PostModule {
 		rabbitmqConn := rabbitmqConn.Connection()
 
 		messagePublisher := rabbitmq.NewPostMessagePublisher(rabbitmqConn, logger)
-		/* todo we need to use processor in services to publish events after transaction is committed
-		for now we will use directly the publisher in the service
+		/* todo we need to use processor in handler to publish events after transaction is committed
+		for now we will use directly the publisher in the handler
 		*/
 		createPostCommandHandler := command.NewCreatePostHandler(
 			repository,
@@ -97,5 +97,5 @@ func Routes(router *gin.Engine) {
 func GrpcRoutes(grpcServer *googleGrpc.Server) {
 	module := BuildPostModule()
 
-	grpcHandler.NewPostGrpcController(grpcServer, module.CommandHandler())
+	grpcHandler.NewCreatePostHandler(grpcServer, module.CommandHandler())
 }

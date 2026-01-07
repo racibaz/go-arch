@@ -63,7 +63,7 @@ func TestGrpcRoutes(t *testing.T) {
 	GrpcRoutes(grpcServer)
 
 	// The function should complete without panicking
-	// We can't easily test the internal gRPC service registration without more complex mocking
+	// We can't easily test the internal gRPC handler registration without more complex mocking
 	// but we can at least verify the function executes
 }
 

@@ -13,8 +13,8 @@ testing/
 │   │       └── post_repository_mock.go
 │   └── infrastructure/         # Infrastructure interface mocks (auto-generated)
 │   │   └── ports/
-│   │       ├── get_post_service_mock.go
-│   │       ├── post_service_mock.go
+│   │       ├── get_post_handler_mock.go
+│   │       ├── post_handler_mock.go
 └── README.md
 ```
 
@@ -61,9 +61,9 @@ func TestMyUseCase(t *testing.T) {
 }
 ```
 
-### Application Service Mocks
+### Application Handler Mocks
 
-Application service mocks remain in their original location:
+Application handler mocks remain in their original location:
 
 ```go
 import (
@@ -71,7 +71,7 @@ import (
 )
 
 func TestMyHandler(t *testing.T) {
-    mockService := appPorts.NewMockPostService(t)
+    mockHandler := appPorts.NewMockCommandHandler(t)
 
     // Your test logic here
 }
@@ -80,7 +80,7 @@ func TestMyHandler(t *testing.T) {
 ## Guidelines
 
 - **Domain Layer**: No mocks should exist in the domain layer itself
-- **Application Layer**: Mocks for application services can remain in `application/ports/`
+- **Application Layer**: Mocks for application handlers can remain in `application/ports/`
 - **Infrastructure Layer**: Mocks for external dependencies go in `testing/mocks/infrastructure/`
 - **Cross-module**: Shared mocks go in `internal/modules/shared/testing/mocks/`
 

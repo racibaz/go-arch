@@ -90,10 +90,3 @@ func (h CreatePostHandler) Handle(ctx context.Context, cmd CreatePostCommand) er
 
 	return nil
 }
-
-func (h CreatePostHandler) GetById(ctx context.Context, id string) (*domain.Post, error) {
-	ctx, span := h.tracer.Start(ctx, "GetById - Handler")
-	defer span.End()
-
-	return h.PostRepository.GetByID(ctx, id)
-}
