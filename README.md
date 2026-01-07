@@ -350,7 +350,11 @@ make fmt
 
 #### 🛠️ Generate gRPC Code
 ```bash
-make generate_proto
+ make generate_proto DIR=yourPath
+```
+Example:
+```bash
+ make generate_proto DIR=internal/modules/post/presentation/grpc/proto
 ```
 
 #### 🧪 gRPC Client Example

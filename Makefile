@@ -35,6 +35,12 @@ help:
 	@echo "  make ci-lint               		- Run golangci-lint for CI"
 	@echo "  make fmt                   		- Format the code using golangci-lint"
 	@echo "  make module name=<name>    		- Create a new module with the specified name"
+	@echo "  "
+	@echo "  		Example Usage For Module Generator : "
+	@echo "  "
+	@echo "  		make module name=YourModuleName"
+	@echo "  "
+	@echo "  "
 
 
 run:
