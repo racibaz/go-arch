@@ -68,6 +68,8 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🗄️ Elasticsearch](#elasticsearch)
 - [🌐 Kibana UI](#kibana-ui)
 - [📦 Dependencies](#-dependencies)
+- [📂 Project Structure](#-project-structure)
+- [📑 Architecture Decision Log (ADL)](#-architecture-decision-log-adl)
 - [🛠 Roadmap / TODO](#-roadmap--todo)
 - [🚪 API Requests](#-api-requests)
 - [📬 Postman Collection](#-postman-collection)
@@ -116,6 +118,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **Interface Assertions** for better type safety
 - **Migration** and **Seeder** mechanisms
 - **Golangci-lint** for more linters
+- **Architecture Decision Log (ADL)** for documenting architectural decisions
 - And more...
 
 
@@ -279,7 +282,7 @@ If you want to debug the application locally with your IDE or command line, foll
 - In the main.go file, uncomment the following line:
 ```go
 	//cmd.Execute() // if you want  use  cobra cli
-        bootstrap.Serve() //uncomment this line, if you want to local debugging 
+	bootstrap.Serve() //uncomment this line, if you want to local debugging 
 ```
 - Debug it with your IDE or command line.
 - Use the url `localhost:3000` instead of `localhost:3001`.
@@ -607,9 +610,17 @@ Expanded Structure
 
 ```
 
+## 📑 Architecture Decision Log (ADL)
+
+The Architecture Decision Log (ADL) for this project can be found in the `docs/ADL` directory. Each decision is documented in a separate markdown file, following the established format for recording architectural decisions.
+
+- [0001-keep-an-architecture-decision-log.md](docs/ADL/0001-keep-an-architecture-decision-log.md)
+- [0002-use-a-vertical-slice-architecture.md](docs/ADL/0002-use-a-vertical-slice-architecture.md)
+
+
 
 ## 🛠 Roadmap / TODO
-
+- [x] Implement state-change pattern
 - [x] Module Code Generator
 - [x] Push Docker Image to Docker Hub via GitHub Actions
 - [x] Grafana & Prometheus integration
@@ -635,7 +646,6 @@ Expanded Structure
 - [ ] Implement API versioning
 - [ ] Implement feature toggles
 - [ ] Implement vertical slice architecture
-- [ ] Implement state-change pattern
 
 
 ## 🚪 API Requests
