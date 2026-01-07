@@ -1,4 +1,4 @@
-# 1. Use a vertical slice architecture
+# 2. Use a vertical slice architecture
 
 Date: 2026/01/07
 
