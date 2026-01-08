@@ -1,4 +1,4 @@
-# 2. Use a vertical slice architecture
+# ADR-0002: Use a vertical slice architecture
 
 Date: 2026/01/07
 

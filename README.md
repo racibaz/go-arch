@@ -612,10 +612,11 @@ Expanded Structure
 
 ## 📑 Architecture Decision Log (ADL)
 
-The Architecture Decision Log (ADL) for this project can be found in the `docs/ADL` directory. Each decision is documented in a separate markdown file, following the established format for recording architectural decisions.
+The Architecture Decision Log (ADL) for this project can be found in the `docs/adl` directory. It contains records of significant architectural decisions made during the development of this project.
+If you need to add new adr, you can use [template.md](docs/adl/template.md) file.
 
-- [0001-keep-an-architecture-decision-log.md](docs/ADL/0001-keep-an-architecture-decision-log.md)
-- [0002-use-a-vertical-slice-architecture.md](docs/ADL/0002-use-a-vertical-slice-architecture.md)
+- [ADL.md](docs/adl/adl.md) 👈 index
+
 
 
 

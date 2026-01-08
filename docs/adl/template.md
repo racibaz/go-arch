@@ -1,10 +1,10 @@
-# 1. Keep an architecture decision log
+# ADR-[number]: [Architectural Decision Title]
 
-Date: 2026/01/07
+Date: [YYYY/MM/DD]
 
 ## Status
 
-Accepted
+[]Pending, Accepted, Rejected, Superceded, Proposed By [RecordNum|Link], Deprecated
 
 ## Context
 
@@ -34,4 +34,4 @@ The records will use the following markdown.
 
 ## Consequences
 
-All decisions will be kept in the /docs/ADL directory.
+All decisions will be kept in the /docs/adl/adr directory.
