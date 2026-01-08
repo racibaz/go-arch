@@ -1,9 +1,5 @@
 name: "Continuous Integration"
 on:
-  workflow_run:
-    workflows: [ "GolangCI Lint" ]
-    types:
-      - completed
   push:
     branches:
       - main
@@ -74,8 +70,6 @@ jobs:
       name: Publish Docker Image
       needs: run_code_checks
       runs-on: ubuntu-latest
-
-      if: startsWith(github.ref, 'refs/tags/')
 
       steps:
         - name: Checkout repository
