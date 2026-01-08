@@ -15,7 +15,7 @@ permissions:
 
 jobs:
     run_code_checks:
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        name: Run Code Checks and Tests
         runs-on: ubuntu-latest
 
         steps:
