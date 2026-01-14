@@ -33,18 +33,17 @@ func (uuid *Uuid) ToString() string {
 	return uuid.Uuid.String()
 }
 
-// Parse parses a string into a Uuid struct.
-func Parse(input string) (*Uuid, error) {
+func Parse(input string) (Uuid, error) {
 	parsedUuid, err := uuid.Parse(input)
 	if err != nil {
-		return &Uuid{}, fmt.Errorf("the uuid can not be parse: %w", err)
+		return Uuid{}, fmt.Errorf("the uuid can not be parse: %w", err)
 	}
 
 	if parsedUuid == uuid.Nil {
-		return &Uuid{}, ErrUuidCannotBeNil
+		return Uuid{}, ErrUuidCannotBeNil
 	}
 
-	return &Uuid{
+	return Uuid{
 		Uuid: &parsedUuid,
 	}, nil
 }

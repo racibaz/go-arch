@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	myuuid "github.com/racibaz/go-arch/pkg/uuid"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewUuid_ShouldGenerateValidUUID(t *testing.T) {
@@ -46,7 +47,7 @@ func TestParse_ShouldParseValidUUID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if &parsed.Uuid == nil {
+	if parsed.Uuid == nil {
 		t.Fatal("expected non-nil uuid")
 	}
 	if parsed.ToString() != id {
@@ -64,7 +65,7 @@ func TestParse_ShouldReturnError_OnInvalidUUID(t *testing.T) {
 func TestParse_ShouldReturnEmpty_OnNilUUIDString(t *testing.T) {
 	parsed, err := myuuid.Parse(uuid.Nil.String())
 	if err != nil {
-		t.Fatalf("did not expect error: %v", err)
+		assert.ErrorIs(t, myuuid.ErrUuidCannotBeNil, err)
 	}
 	if parsed.Uuid != nil {
 		t.Fatal("expected nil uuid for Nil UUID")
