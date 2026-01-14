@@ -246,7 +246,7 @@ issues:
   new-from-rev: HEAD
   # Show only new issues created in git patch with set file path.
   # Default: ""
-  new-from-patch: path/to/patch/file
+  #new-from-patch: path/to/patch/file
   # Show issues in any part of update files (requires new-from-rev or new-from-patch).
   # Default: false
   whole-files: true
