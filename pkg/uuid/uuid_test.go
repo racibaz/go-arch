@@ -46,7 +46,7 @@ func TestParse_ShouldParseValidUUID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if parsed.Uuid == nil {
+	if &parsed.Uuid == nil {
 		t.Fatal("expected non-nil uuid")
 	}
 	if parsed.ToString() != id {

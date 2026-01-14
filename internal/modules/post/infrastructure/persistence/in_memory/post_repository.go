@@ -38,7 +38,7 @@ func (pr *Repository) Save(ctx context.Context, post *domain.Post) error {
 
 	parsedUUID, err := uuid.Parse(post.ID())
 
-	if _, exists := pr.posts[parsedUUID]; exists {
+	if _, exists := pr.posts[*parsedUUID]; exists {
 		return errors.New("post ID cannot be empty")
 	}
 
@@ -61,7 +61,7 @@ func (pr *Repository) GetByID(ctx context.Context, id string) (*domain.Post, err
 		return nil, errors.New("post ID cannot be nil")
 	}
 
-	exists := pr.posts[postID]
+	exists := pr.posts[*postID]
 
 	if exists == nil {
 		return nil, errors.New("post not found")
