@@ -56,7 +56,7 @@ func (h GetPostHandler) Show(c *gin.Context) {
 	defer span.End()
 
 	id := c.Param("id")
-	postID, parseErr := uuid.Parse(id)
+	postID, parseErr := uuid.ParseToString(id)
 	if parseErr != nil {
 
 		if span := trace.SpanFromContext(ctx); span != nil {
@@ -68,7 +68,7 @@ func (h GetPostHandler) Show(c *gin.Context) {
 		helper.ValidationErrorResponse(c, ParseErrMessage, parseErr)
 		return
 	}
-	postView, handlerErr := h.Handler.Handle(ctx, query.GetPostByIdQuery{ID: postID.ToString()})
+	postView, handlerErr := h.Handler.Handle(ctx, query.GetPostByIdQuery{ID: postID})
 	if handlerErr != nil {
 
 		if span := trace.SpanFromContext(ctx); span != nil {
@@ -88,18 +88,18 @@ func (h GetPostHandler) Show(c *gin.Context) {
 		Links: []helper.Link{
 			helper.AddHateoas(
 				"self",
-				fmt.Sprintf("%s/%s", routePath, postID.ToString()),
+				fmt.Sprintf("%s/%s", routePath, postID),
 				http.MethodGet,
 			),
 			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), http.MethodPost),
 			helper.AddHateoas(
 				"update",
-				fmt.Sprintf("%s/%s", routePath, postID.ToString()),
+				fmt.Sprintf("%s/%s", routePath, postID),
 				http.MethodPut,
 			),
 			helper.AddHateoas(
 				"delete",
-				fmt.Sprintf("%s/%s", routePath, postID.ToString()),
+				fmt.Sprintf("%s/%s", routePath, postID),
 				http.MethodDelete,
 			),
 		},
