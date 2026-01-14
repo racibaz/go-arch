@@ -163,8 +163,11 @@ docker compose up --build
 ```
 To access the running container shell:
 ```bash
-docker exec -it Blog-app sh
+docker exec -it Go-Arch-app sh
 ```
+The container name is `Go-Arch-app` by default, you can change it in the `docker-compose.yml` file. 
+Or edit `APP_NAME` variable in the `.env` file.
+
 To run database migrations using Makefile commands inside the container shell:
 ```bash
 make db_migrate_up
