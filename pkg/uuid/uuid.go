@@ -7,9 +7,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var (
-	ErrUuidCannotBeNil = errors.New("the uuid cannot be nil")
-)
+var ErrUuidCannotBeNil = errors.New("the uuid cannot be nil")
 
 // Uuid is a wrapper around the uuid.UUID type.
 type Uuid struct {
