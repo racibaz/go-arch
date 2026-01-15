@@ -22,8 +22,9 @@
     <img src="https://codecov.io/github/racibaz/go-arch/graph/badge.svg?token=2YAP23FY1G" alt="codecov"/> 
 </a>
 
-
 </p>
+
+
 
 # Go-Arch
 Go-Arch provides a full-featured template for building modern backend services in Go, combining:
@@ -45,6 +46,8 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🐳 Docker Hub Link](#-docker-hub-link)
 - [🔐 GitHub Secrets](#-github-secrets)
 - [🐳 Run with Docker (air for live reload)](#-run-with-docker)
+- [📄 C4 Model Diagrams](#-c4-model-diagrams)
+- [📑 Architecture Decision Log (ADL)](#-architecture-decision-log-adl)
 - [🧩 Create Your First Module](#-create-your-first-module)
     - [Step 1: Generate the Module](#step-1-generate-the-module)
     - [Step 2: Register Routes](#step-2-register-routes)
@@ -69,7 +72,6 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🌐 Kibana UI](#kibana-ui)
 - [📦 Dependencies](#-dependencies)
 - [📂 Project Structure](#-project-structure)
-- [📑 Architecture Decision Log (ADL)](#-architecture-decision-log-adl)
 - [🛠 Roadmap / TODO](#-roadmap--todo)
 - [🚪 API Requests](#-api-requests)
 - [📬 Postman Collection](#-postman-collection)
@@ -179,6 +181,21 @@ docker exec -it elasticsearch bin/elasticsearch-create-enrollment-token --scope 
 docker exec -it kibana bin/kibana-verification-code
 ```
 
+## 📄 C4 Model Diagrams
+The C4 model diagrams for this project can be found in the `docs/architecture` directory. These diagrams provide a visual representation of the system's architecture at different levels of detail, including:
+[c4 model](docs/architecture/README.md)
+- [Level 1: Context Diagram ](docs/architecture/README.md)
+- [Level 2: Container Diagram](docs/architecture/C4-Container-Diagram.md)
+- [Level 3: Component Diagram](docs/architecture/C4-Component-Diagram.md)
+- [Level 4: Code Diagram](docs/architecture/C4-Code-Diagram.md)
+- [Summary](docs/architecture/C4-Summary.md)
+
+## 📑 Architecture Decision Log (ADL)
+
+The Architecture Decision Log (ADL) for this project can be found in the `docs/adl` directory. It contains records of significant architectural decisions made during the development of this project.
+If you need to add new adr, you can use [template.md](docs/adl/template.md) file.
+
+- [ADL.md](docs/adl/adl.md) 👈 index
 
 ## 🧩 Create Your First Module
 
@@ -612,15 +629,6 @@ Expanded Structure
 
 
 ```
-
-## 📑 Architecture Decision Log (ADL)
-
-The Architecture Decision Log (ADL) for this project can be found in the `docs/adl` directory. It contains records of significant architectural decisions made during the development of this project.
-If you need to add new adr, you can use [template.md](docs/adl/template.md) file.
-
-- [ADL.md](docs/adl/adl.md) 👈 index
-
-
 
 
 ## 🛠 Roadmap / TODO
