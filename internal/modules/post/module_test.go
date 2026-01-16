@@ -5,8 +5,8 @@ import (
 
 	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/post/features/gettingpostbyid/v1/application/query"
-	appMockPorts "github.com/racibaz/go-arch/internal/modules/post/testing/mocks/application/ports"
 	domainMockPorts "github.com/racibaz/go-arch/internal/modules/post/testing/mocks/domain/ports"
+	appMockPorts "github.com/racibaz/go-arch/internal/modules/shared/testing/mocks/application/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
 	"github.com/stretchr/testify/suite"
 )

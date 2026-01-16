@@ -1,7 +1,6 @@
 package module
 
 import (
-	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/observability/logging"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +12,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/features/gettingpostbyid/v1/application/query"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/messaging/rabbitmq"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/notification/sms"
+	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/observability/logging"
 	gormPostRepo "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/repositories"
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/logger"

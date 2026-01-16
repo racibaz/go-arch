@@ -56,11 +56,11 @@ packages:
       dir: "internal/modules/post/testing/mocks/domain/ports"
 
   # Post application interfaces
-  github.com/racibaz/go-arch/internal/modules/post/features/ports:
+  github.com/racibaz/go-arch/internal/modules/post/features/_shared/ports:
     config:
       all: true
       # Make use of the template variables to place the mock in the same
       # directory as the original interface.
-      dir: "internal/modules/post/testing/mocks/features/ports"
+      dir: "internal/modules/post/testing/mocks/features/_shared/ports"
 
 
