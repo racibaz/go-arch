@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
-// GormEventRepository Secondary adapter: postgreSQL implementation
+// GormEventRepository Secondary adapters: postgreSQL implementation
 type GormEventRepository struct {
 	DB *gorm.DB
 	sync.Mutex

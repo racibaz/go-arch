@@ -10,9 +10,9 @@ import (
 )
 
 func Set(configPath, envFilePath string) error {
-	// load .env before viper
+	// load env file before viper
 	if err := godotenv.Load(envFilePath); err != nil {
-		log.Printf("Warning: unable to load .env file: %v", err)
+		log.Printf("Warning: unable to load %s file: %v", err, envFilePath)
 	}
 
 	viper.SetConfigName("config")

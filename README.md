@@ -59,7 +59,6 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🪲 Local Debugging Mode](#-local-debugging-mode)
 - [🚀 GitHub Actions CI Workflow](#-github-actions-ci-workflow)
 - [🔧 Makefile Commands](#-makefile-commands)
-- [📂 Project Structure](#-project-structure)
 - [⚙️ Generate gRPC Code](#-generate-grpc-code)
     - [ gRPC Client Example](#-grpc-client-example)
 - [📑 Swagger Documentation UI](#-swagger-documentation-ui)
@@ -75,7 +74,8 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🛠 Roadmap / TODO](#-roadmap--todo)
 - [🚪 API Requests](#-api-requests)
 - [📬 Postman Collection](#-postman-collection)
-- [❌ Validation Error Example](#-validation-error-example)
+- [❌ Validation Error Response Example](#-validation-error-response-example)
+- [✔️ API Response Example](#-api-response-example)
 - [✔️ Linters](#-linters)
 - [🧪 Test](#-tests)
 - [🤝 Code of Conduct](#-code-of-conduct)
@@ -377,7 +377,7 @@ make fmt
 ```
 Example:
 ```bash
- make generate_proto DIR=internal/modules/post/presentation/grpc/proto
+ make generate_proto DIR=internal/modules/post/application/features/creatingpost/v1/endpoints/grpc/proto
 ```
 
 #### 🧪 gRPC Client Example
@@ -521,114 +521,6 @@ http://127.0.0.1:5601/app/home#/
 - jaeger: `go.opentelemetry.io/otel/exporters/jaeger`
 - golangci-lint: `github.com/golangci/golangci-lint/cmd/golangci-lint`
 
-## 📂 Project Structure
-
-Minimal Structure
-
-```lua
-├── Dockerfile
-├── LICENSE
-├── Makefile
-├── README.md
-├── cmd
-├── config
-├── deployments
-├── docker-compose.yml
-├── docs
-├── entrypoint.sh
-├── go.mod
-├── go.sum
-├── internal
-│   ├── database
-│   │   ├── migration
-│   │   └── seeder
-│   ├── modules
-│   │   ├── post                          # Your module directory
-│   │   │   ├── application         # The application bussiness logics live here such as services, command, queries, so on.
-│   │   │   ├── domain              # The core business logic and entities
-│   │   │   ├── infrastructure      # (Outbound Adapter) You can implemenet 3. party services integration here such as PostgreSQL and  Mysql implementation
-│   │   │   ├── module.go           # The module's main entry point for registration
-│   │   │   ├── presentation        # (Inbound Adapter) Handles HTTP and gRPC requests and responses
-│   │   │   └── testing             # Mocks and Integration tests for the module
-│   │   └── shared                        # Shared module for common functionalities across modules
-│   │       ├── domain
-│   │       ├── infrastructure
-│   │       └── presentation
-│   │       └── testing
-│   └── providers                                
-├── main.go
-├── migrations
-├── pkg
-```
-
-Expanded Structure
-
-```lua
-├── cmd
-├── internal
-│   ├── database
-│   │   ├── migration
-│   │   └── seeder
-│   ├── modules
-│   │   ├── post
-│   │   │   ├── application
-│   │   │   │   ├── command
-│   │   │   │   ├── dtos
-│   │   │   │   ├── handlers
-│   │   │   │   ├── ports
-│   │   │   │   └── queries
-│   │   │   ├── domain
-│   │   │   ├── infrastructure
-│   │   │   │   ├── messaging
-│   │   │   │   │   └── rabbitmq
-│   │   │   │   ├── notification
-│   │   │   │   │   └── sms
-│   │   │   │   └── persistence
-│   │   │   │       ├── gorm
-│   │   │   │       │   ├── entities
-│   │   │   │       │   ├── mappers
-│   │   │   │       │   └── repositories
-│   │   │   │       └── in_memory
-│   │   │   ├── module.go
-│   │   │   ├── presentation
-│   │   │   │   ├── grpc
-│   │   │   │   │   └── proto
-│   │   │   │   ├── http
-│   │   │   └── testing
-│   │   │       └── mocks
-│   │   │       └── integration
-│   │   └── shared
-│   │       ├── domain
-│   │       ├── infrastructure
-│   │       └── presentation
-│   │       └── testing
-│   └── providers
-├── main.go
-├── migrations
-├── pkg
-│   ├── bootstrap
-│   │   ├── seed.go
-│   │   └── serve.go
-│   ├── config
-│   ├── database
-│   ├── ddd
-│   ├── env
-│   ├── error
-│   ├── es
-│   ├── grpc
-│   ├── helper
-│   ├── logger
-│   ├── messaging
-│   ├── notification
-│   ├── prometheus
-│   ├── registry
-│   ├── routing
-│   ├── trace
-│   ├── uuid
-│   └── validator
-
-
-```
 
 
 ## 🛠 Roadmap / TODO
@@ -642,6 +534,7 @@ Expanded Structure
 - [x] Single environment (override config.yaml file with .env file)
 - [x] Alternative migration usage with cmd/migrate CLI app and golang-migrate package
 - [x] GitHub Actions Workflow for CI
+- [x] Implement vertical slice architecture
 - [ ] Add more unit tests
 - [ ] Add more integration tests
 - [ ] Add more end-to-end tests
@@ -657,7 +550,7 @@ Expanded Structure
 - [ ] Implement rate limiting
 - [ ] Implement API versioning
 - [ ] Implement feature toggles
-- [ ] Implement vertical slice architecture
+
 
 
 ## 🚪 API Requests
@@ -672,7 +565,7 @@ Expanded Structure
 ## 📬 Postman Collection
 [Download](docs/postman/baz-arch.postman_collection.json)
 
-## ❌ Validation Error Example
+## ❌ Validation Error Response Example
 When sending a POST request to create a post with invalid data, you might receive a validation error response like this:
 ```
 {
@@ -689,6 +582,47 @@ When sending a POST request to create a post with invalid data, you might receiv
     }
 }
 
+```
+
+## ✔️ API Response Example
+When sending a GET request to retrieve a post by its ID, you might receive a response like this:
+```
+{
+    "data": {
+        "data": {
+            "post": {
+                "title": "test title title title",
+                "description": "test description description",
+                "content": "test content content content",
+                "status": "published"
+            }
+        },
+        "_links": [
+            {
+                "rel": "self",
+                "href": "/api/v1/posts/2d86263a-eebf-4e7d-867a-0115569d6a3a",
+                "type": "GET"
+            },
+            {
+                "rel": "store",
+                "href": "/api/v1/posts/",
+                "type": "POST"
+            },
+            {
+                "rel": "update",
+                "href": "/api/v1/posts/2d86263a-eebf-4e7d-867a-0115569d6a3a",
+                "type": "PUT"
+            },
+            {
+                "rel": "delete",
+                "href": "/api/v1/posts/2d86263a-eebf-4e7d-867a-0115569d6a3a",
+                "type": "DELETE"
+            }
+        ]
+    },
+    "message": "Show post",
+    "status": 200
+}
 ```
 
 

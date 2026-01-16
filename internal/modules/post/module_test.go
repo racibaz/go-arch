@@ -3,8 +3,8 @@ package module
 import (
 	"testing"
 
-	"github.com/racibaz/go-arch/internal/modules/post/application/command"
-	"github.com/racibaz/go-arch/internal/modules/post/application/query"
+	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/application/commands"
+	"github.com/racibaz/go-arch/internal/modules/post/features/gettingpostbyid/v1/application/query"
 	appMockPorts "github.com/racibaz/go-arch/internal/modules/post/testing/mocks/application/ports"
 	domainMockPorts "github.com/racibaz/go-arch/internal/modules/post/testing/mocks/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
@@ -16,7 +16,7 @@ type PostModuleTestSuite struct {
 	suite.Suite
 	mockRepo           *domainMockPorts.MockPostRepository
 	mockAdapter        *domainMockPorts.MockNotificationAdapter
-	mockCommandHandler *appMockPorts.MockCommandHandler[command.CreatePostCommand]
+	mockCommandHandler *appMockPorts.MockCommandHandler[commands.CreatePostCommandV1]
 	mockQueryHandler   *appMockPorts.MockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse]
 	mockLogger         *logger.MockLogger
 }
@@ -25,7 +25,7 @@ type PostModuleTestSuite struct {
 func (suite *PostModuleTestSuite) SetupTest() {
 	suite.mockRepo = domainMockPorts.NewMockPostRepository(suite.T())
 	suite.mockAdapter = domainMockPorts.NewMockNotificationAdapter(suite.T())
-	suite.mockCommandHandler = appMockPorts.NewMockCommandHandler[command.CreatePostCommand](
+	suite.mockCommandHandler = appMockPorts.NewMockCommandHandler[commands.CreatePostCommandV1](
 		suite.T(),
 	)
 	suite.mockQueryHandler = appMockPorts.NewMockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse](
@@ -168,7 +168,7 @@ func (suite *PostModuleTestSuite) TestPostModule_MultipleInstances() {
 	suite.Run("should create multiple independent module instances", func() {
 		// Given
 		mockRepo2 := domainMockPorts.NewMockPostRepository(suite.T())
-		mockCommandHandler2 := appMockPorts.NewMockCommandHandler[command.CreatePostCommand](
+		mockCommandHandler2 := appMockPorts.NewMockCommandHandler[commands.CreatePostCommandV1](
 			suite.T(),
 		)
 		mockQueryHandler2 := appMockPorts.NewMockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse](

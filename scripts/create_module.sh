@@ -18,52 +18,76 @@ if [ -d "$MODULE_DIR" ]; then
     exit 1
 fi
 
+
 echo "🚀 Creating module: $MODULE_NAME -> $PASCAL_MODULE_NAME"
 echo "📌 PascalCase: $PASCAL_MODULE_NAME | camelCase: $CAMEL_MODULE_NAME"
 
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/application
-mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/commands
-mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/queries
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/commands
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/dtos
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/transformers
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/endpoints
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/endpoints/http
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/endpoints/grpc
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/endpoints/grpc/proto
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/handlers
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/ports
-mkdir -p internal/modules/$CAMEL_MODULE_NAME/application/dtos
 
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/domain
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/domain/ports
 
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/messaging
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/messaging/rabbitmq
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/notification
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/notification/sms
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/persistence
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/persistence/gorm
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/persistence/gorm/entities
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/persistence/gorm/mappers
 mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/persistence/gorm/repositories
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/infrastructure/persistence/in_memory
 
-mkdir -p internal/modules/$CAMEL_MODULE_NAME/presentation
-mkdir -p internal/modules/$CAMEL_MODULE_NAME/presentation/http
-mkdir -p internal/modules/$CAMEL_MODULE_NAME/presentation/routes
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/logging
+mkdir -p internal/modules/$CAMEL_MODULE_NAME/routes
+# TODO: Add testing directories and mocks when needed
 
-mkdir -p internal/modules/$CAMEL_MODULE_NAME/testing
-mkdir -p internal/modules/$CAMEL_MODULE_NAME/query
-
-cat > internal/modules/$CAMEL_MODULE_NAME/presentation/http/${CAMEL_MODULE_NAME}_controller.go << EOF
+cat > internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/endpoints/http/create_${CAMEL_MODULE_NAME}.go << EOF
 package http
 
 import (
+	"fmt"
+	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/features/creating${CAMEL_MODULE_NAME}/v1/dtos"
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
-	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/dtos"
+	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/features/creating${CAMEL_MODULE_NAME}/v1/commands"
+
 	ports "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/ports"
+	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/domain"
+	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
-	validator "github.com/racibaz/go-arch/pkg/validator"
-	"github.com/racibaz/go-arch/pkg/config"
-
 	_ "github.com/swaggo/files"
 	_ "github.com/swaggo/gin-swagger"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
-	"net/http"
-	"fmt"
+	"go.opentelemetry.io/otel/trace"
 )
+
+const (
+	routePath = "/api/v1/${CAMEL_MODULE_NAME}"
+
+	ValidationErrMessage = "${CAMEL_MODULE_NAME} validation request body does not validate"
+	InValidErrMessage    = "Invalid request body"
+	NotFoundErrMessage   = "Not found a record"
+	ParseErrMessage      = "The Id does not parse correctly"
+	ModulePrefix         = "PostModule - Restful"
+)
+
 
 // Create${PASCAL_MODULE_NAME}ResponseDto
 // @Description Create${PASCAL_MODULE_NAME}ResponseDto is a data transfer object for reporting the details of a created ${CAMEL_MODULE_NAME}
@@ -76,24 +100,39 @@ type Create${PASCAL_MODULE_NAME}ResponseDto struct {
 // @Description Get${PASCAL_MODULE_NAME}ResponseDto is a data transfer object for reporting the details of a ${CAMEL_MODULE_NAME}
 type Get${PASCAL_MODULE_NAME}ResponseDto struct {
 	// @Description ID is the id of the ${CAMEL_MODULE_NAME}
-	ID string \`json:"id"\`
+	ID          string    \`json:"id"\`
+	UserID      string    \`json:"userId"\`
+	Title       string    \`json:"title"\`
+	Description string    \`json:"description"\`
+	Content     string    \`json:"content"\`
+	Status      int       \`json:"status"\`
+	CreatedAt   time.Time \`json:"createdAt"\`
+	UpdatedAt   time.Time \`json:"updatedAt"\`
 }
 
 // Create${PASCAL_MODULE_NAME}RequestDto
 // @Description Create${PASCAL_MODULE_NAME}RequestDto is a data transfer object for creating a ${CAMEL_MODULE_NAME}
 type Create${PASCAL_MODULE_NAME}RequestDto struct {
-	// @Description ID is the ID of the user creating the ${CAMEL_MODULE_NAME}
-	ID string \`json:"id" validate:"required,uuid"\`
+	// @Description UserID is the ID of the user creating the ${CAMEL_MODULE_NAME}
+	UserID string \`json:"userId" validate:"required,uuid"\`
+	// @Description Title of the ${CAMEL_MODULE_NAME}
+	Title string \`json:"title" validate:"required,min=10"\`
+	// @Description Description of the ${CAMEL_MODULE_NAME}
+	Description string \`json:"description" validate:"required,min=10"\`
+	// @Description Content of the ${CAMEL_MODULE_NAME}
+	Content string \`json:"content" validate:"required,min=10"\`
 }
 
 
-type ${PASCAL_MODULE_NAME}Controller struct {
-	Service ports.${PASCAL_MODULE_NAME}Service
+type ${PASCAL_MODULE_NAME}Handler struct {
+	Create${PASCAL_MODULE_NAME}Handler *commands.Create${PASCAL_MODULE_NAME}Handler
+	Repository                   ports.${PASCAL_MODULE_NAME}Repository
 }
 
-func New${PASCAL_MODULE_NAME}Controller(service ports.${PASCAL_MODULE_NAME}Service) *${PASCAL_MODULE_NAME}Controller {
-	return &${PASCAL_MODULE_NAME}Controller{
-		Service: service,
+func New${PASCAL_MODULE_NAME}Handler(createHandler *commands.Create${PASCAL_MODULE_NAME}Handler, repository ports.${PASCAL_MODULE_NAME}Repository) *${PASCAL_MODULE_NAME}Handler {
+	return &${PASCAL_MODULE_NAME}Handler{
+		Create${PASCAL_MODULE_NAME}Handler: createHandler,
+		Repository:                   repository,
 	}
 }
 
@@ -113,38 +152,55 @@ func New${PASCAL_MODULE_NAME}Controller(service ports.${PASCAL_MODULE_NAME}Servi
 //	@Success		201		{object}	Create${PASCAL_MODULE_NAME}ResponseDto	"${PASCAL_MODULE_NAME} created successfully"
 //	@Failure		400		{object}	errors.AppError					"Invalid request body"
 //	@Router			/${CAMEL_MODULE_NAME}s [post]
-func (controller *${PASCAL_MODULE_NAME}Controller) Store(c *gin.Context) {
+func (handler *${PASCAL_MODULE_NAME}Handler) Store(c *gin.Context) {
 
 	tracer := otel.Tracer(config.Get().App.Name)
-  path := fmt.Sprintf("${PASCAL_MODULE_NAME}Module - Restful - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
+  path := fmt.Sprintf("${PASCAL_MODULE_NAME}Module - Restful - %s - %s", helper.StructName(handler), helper.CurrentFuncName())
 	ctx, span := tracer.Start(c.Request.Context(), path)
 	defer span.End()
 
-	create${PASCAL_MODULE_NAME}RequestDto, err := helper.Decode[Create${PASCAL_MODULE_NAME}RequestDto](c)
+	// Decode the request body into Create${PASCAL_MODULE_NAME}RequestDto
+	create${PASCAL_MODULE_NAME}RequestDto, decodeErr := helper.Decode[dtos.Create${PASCAL_MODULE_NAME}RequestDto](c)
+	if decodeErr != nil {
 
-	if err != nil {
-		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
+		if span := trace.SpanFromContext(ctx); span != nil {
+			span.SetAttributes(attribute.String("error", InValidErrMessage))
+			span.SetStatus(codes.Error, InValidErrMessage)
+			span.RecordError(decodeErr)
+		}
+
+		helper.ErrorResponse(c, InValidErrMessage, decodeErr, http.StatusBadRequest)
 		return
 	}
 
 	// Validate the request body
-	if err := validator.Get().Struct(&create${PASCAL_MODULE_NAME}RequestDto); err != nil {
-		// If validation fails, extract the validation errors
-		c.JSON(
-			http.StatusBadRequest,
-			validator.NewValidationError(
-				"${CAMEL_MODULE_NAME} validation request body does not validate",
-				validator.ShowRegularValidationErrors(err).Errors,
-			),
-		)
-		return
+	if validationErr := helper.Get().Struct(create${PASCAL_MODULE_NAME}RequestDto); validationErr != nil {
+
+		if span := trace.SpanFromContext(ctx); span != nil {
+			span.SetAttributes(attribute.String("error", ValidationErrMessage))
+			span.SetStatus(codes.Error, ValidationErrMessage)
+			span.RecordError(validationErr)
+		}
+
+		// If validation fails, extract the validation errors and return a validation error response
+		helper.ValidationErrorResponse(c, ValidationErrMessage, validationErr)
 	}
+
 
 	newUuid := uuid.NewID()
 
-	err = controller.Service.Create${PASCAL_MODULE_NAME}(ctx, dto.Create${PASCAL_MODULE_NAME}Input{
+	command := commands.Create${PASCAL_MODULE_NAME}CommandV1{
 		ID:          newUuid,
-	})
+		UserID:      create${PASCAL_MODULE_NAME}RequestDto.UserID,
+		Title:       create${PASCAL_MODULE_NAME}RequestDto.Title,
+		Description: create${PASCAL_MODULE_NAME}RequestDto.Description,
+		Content:     create${PASCAL_MODULE_NAME}RequestDto.Content,
+		Status:      domain.${PASCAL_MODULE_NAME}StatusDraft,
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
+	}
+
+	err = handler.Create${PASCAL_MODULE_NAME}Handler.Handle(ctx, command)
 
 	if err != nil {
 		span.SetAttributes(attribute.String("error", "${PASCAL_MODULE_NAME} create failed"))
@@ -162,108 +218,127 @@ func (controller *${PASCAL_MODULE_NAME}Controller) Store(c *gin.Context) {
 	helper.SuccessResponse(c, "${PASCAL_MODULE_NAME} created successfully", responseData, http.StatusCreated)
 }
 
-// Show ${PASCAL_MODULE_NAME}GetById Show is a method to retrieve a ${CAMEL_MODULE_NAME} by its ID
-//
-//	@Summary	Get ${CAMEL_MODULE_NAME} by id
-//	@Schemes
-//	@Description	It is a method to retrieve a ${CAMEL_MODULE_NAME} by its ID
-//	@Tags			${CAMEL_MODULE_NAME}s
-//	@Accept			json
-//	@Produce		json
-//	@Param			id	path		string		true	"${PASCAL_MODULE_NAME} ID"
-//	@Success		200	{object}	Get${PASCAL_MODULE_NAME}ResponseDto	"${PASCAL_MODULE_NAME} retrieved successfully"
-//	@Failure		404	{object}	errors.AppError		"Page not found"
-//	@Router			/${CAMEL_MODULE_NAME}s/{id} [get]
-func (controller ${PASCAL_MODULE_NAME}Controller) Show(c *gin.Context) {
-
-	tracer := otel.Tracer(config.Get().App.Name)
-  path := fmt.Sprintf("${PASCAL_MODULE_NAME}Module - Restful - %s - %s", helper.StructName(controller), helper.CurrentFuncName())
-	ctx, span := tracer.Start(c.Request.Context(), path)
-	defer span.End()
-
-	${CAMEL_MODULE_NAME}ID := c.Param("id")
-
-	result, err := controller.Service.GetById(ctx, ${CAMEL_MODULE_NAME}ID)
-
-	if err != nil {
-		helper.ErrorResponse(c, "Invalid request body", err, http.StatusBadRequest)
-		return
-	}
-
-	responseData := Get${PASCAL_MODULE_NAME}ResponseDto{
-		ID:       result.ID(),
-	}
-
-	helper.SuccessResponse(c, "Show ${CAMEL_MODULE_NAME}", responseData, http.StatusOK)
-}
-
-
 
 EOF
 
-cat > internal/modules/$CAMEL_MODULE_NAME/application/commands/create_${CAMEL_MODULE_NAME}.go << EOF
+
+cat > internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/commands/create_${CAMEL_MODULE_NAME}_command.go << EOF
+package commands
+
+import (
+	"time"
+
+	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/domain"
+)
+
+type Create${PASCAL_MODULE_NAME}CommandV1 struct {
+	ID          string // Unique identifier for the ${CAMEL_MODULE_NAME}
+	UserID      string
+	Title       string
+	Description string
+	Content     string
+	Status      domain.${PASCAL_MODULE_NAME}Status
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+}
+
+EOF
+
+cat > internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/commands/create_${CAMEL_MODULE_NAME}_handler.go << EOF
 package commands
 
 import (
 	"context"
-	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/dtos"
+	"fmt"
+	"time"
+
 	applicationPorts "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/domain"
 	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
+	"github.com/racibaz/go-arch/pkg/messaging"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
 )
 
-
-type Create${PASCAL_MODULE_NAME}Service struct {
+// Create${PASCAL_MODULE_NAME}Handler handles the creation of new ${CAMEL_MODULE_NAME}s.
+type Create${PASCAL_MODULE_NAME}Handler struct {
 	${PASCAL_MODULE_NAME}Repository   ports.${PASCAL_MODULE_NAME}Repository
 	logger           logger.Logger
+	messagePublisher messaging.MessagePublisher
 	tracer           trace.Tracer
 }
 
-var _ applicationPorts.${PASCAL_MODULE_NAME}Service = (*Create${PASCAL_MODULE_NAME}Service)(nil)
+// Ensure Create${PASCAL_MODULE_NAME}Handler implements the CommandHandler interface
+var _ applicationPorts.CommandHandler[Create${PASCAL_MODULE_NAME}CommandV1] = (*Create${PASCAL_MODULE_NAME}Handler)(nil)
 
-// NewCreate${PASCAL_MODULE_NAME}Service initializes a new Create${PASCAL_MODULE_NAME}Service with the provided ${PASCAL_MODULE_NAME}Repository.
-func NewCreate${PASCAL_MODULE_NAME}Service(${CAMEL_MODULE_NAME}Repository ports.${PASCAL_MODULE_NAME}Repository, logger logger.Logger) *Create${PASCAL_MODULE_NAME}Service {
-	return &Create${PASCAL_MODULE_NAME}Service{
+// NewCreate${PASCAL_MODULE_NAME}Handler initializes a new Create${PASCAL_MODULE_NAME}Handler with the provided ${PASCAL_MODULE_NAME}Repository.
+func NewCreate${PASCAL_MODULE_NAME}Handler(
+	${CAMEL_MODULE_NAME}Repository ports.${PASCAL_MODULE_NAME}Repository,
+	logger logger.Logger,
+	messagePublisher messaging.MessagePublisher,
+) *Create${PASCAL_MODULE_NAME}Handler {
+	return &Create${PASCAL_MODULE_NAME}Handler{
 		${PASCAL_MODULE_NAME}Repository:   ${CAMEL_MODULE_NAME}Repository,
 		logger:           logger,
-		tracer:           otel.Tracer("Create${PASCAL_MODULE_NAME}Service"),
+		messagePublisher: messagePublisher,
+		tracer:           otel.Tracer("Create${PASCAL_MODULE_NAME}Handler"),
 	}
 }
 
-func (${CAMEL_MODULE_NAME}Service Create${PASCAL_MODULE_NAME}Service) Create${PASCAL_MODULE_NAME}(ctx context.Context, ${CAMEL_MODULE_NAME}Input dto.Create${PASCAL_MODULE_NAME}Input) error {
-
-	ctx, span := ${CAMEL_MODULE_NAME}Service.tracer.Start(ctx, "Create${PASCAL_MODULE_NAME} - Service")
+// Handle processes the Create${PASCAL_MODULE_NAME}CommandV1 to create a new ${CAMEL_MODULE_NAME}.
+func (h Create${PASCAL_MODULE_NAME}Handler) Handle(ctx context.Context, cmd Create${PASCAL_MODULE_NAME}CommandV1) error {
+	ctx, span := h.tracer.Start(ctx, "Create${PASCAL_MODULE_NAME} - Handler")
 	defer span.End()
 
 	// Create a new ${CAMEL_MODULE_NAME} using the factory
 	${CAMEL_MODULE_NAME}, _ := domain.Create(
-		${CAMEL_MODULE_NAME}Input.ID,
-		//.. add other fields here
+		cmd.ID,
+		cmd.UserID,
+		cmd.Title,
+		cmd.Description,
+		cmd.Content,
+		cmd.Status,
+		time.Now(),
+		time.Now(),
 	)
 
-	// todo check is the ${CAMEL_MODULE_NAME} exists in db?
+	// Check if the ${CAMEL_MODULE_NAME} exists in db
+	isExists, err := h.${PASCAL_MODULE_NAME}Repository.IsExists(ctx, ${CAMEL_MODULE_NAME}.Title, ${CAMEL_MODULE_NAME}.Description)
+	if err != nil {
+		h.logger.Error("Error saving ${CAMEL_MODULE_NAME}: %v", err.Error())
+		return fmt.Errorf("error checking if ${CAMEL_MODULE_NAME} exists: %v", err)
+	}
 
-	savingErr := ${CAMEL_MODULE_NAME}Service.${PASCAL_MODULE_NAME}Repository.Save(ctx, ${CAMEL_MODULE_NAME})
+	// If the ${CAMEL_MODULE_NAME} already exists, return an error
+	if isExists {
+		h.logger.Info(
+			"${PASCAL_MODULE_NAME} already exists with title: %s and description: %s",
+			${CAMEL_MODULE_NAME}.Title,
+			${CAMEL_MODULE_NAME}.Description,
+		)
+		return domain.ErrAlreadyExists
+	}
+
+	// Save the new ${CAMEL_MODULE_NAME} to the repository
+	savingErr := h.${PASCAL_MODULE_NAME}Repository.Save(ctx, ${CAMEL_MODULE_NAME})
 
 	if savingErr != nil {
-		${CAMEL_MODULE_NAME}Service.logger.Error("Error saving ${CAMEL_MODULE_NAME}: %v", savingErr)
+		h.logger.Error("Error saving ${CAMEL_MODULE_NAME}: %v", savingErr)
 		return savingErr
 	}
 
-	${CAMEL_MODULE_NAME}Service.logger.Info("${PASCAL_MODULE_NAME} created successfully with ID: %s", ${CAMEL_MODULE_NAME}.ID())
+	// Publish an event indicating that a new ${CAMEL_MODULE_NAME} has been created
+	if h.messagePublisher != nil {
+		// TODO: Implement message publishing when publisher is available
+		// if messageErr := h.messagePublisher.Publish${PASCAL_MODULE_NAME}Created(ctx, ${CAMEL_MODULE_NAME}); messageErr != nil {
+		//	return fmt.Errorf("failed to publish the ${CAMEL_MODULE_NAME} created event: %v", messageErr)
+		// }
+	}
+
+	h.logger.Info("${PASCAL_MODULE_NAME} created successfully with ID: %s", ${CAMEL_MODULE_NAME}.ID())
 
 	return nil
-}
-
-func (${CAMEL_MODULE_NAME}Service Create${PASCAL_MODULE_NAME}Service) GetById(ctx context.Context, id string) (*domain.${PASCAL_MODULE_NAME}, error) {
-
-	ctx, span := ${CAMEL_MODULE_NAME}Service.tracer.Start(ctx, "GetById - Service")
-	defer span.End()
-
-	return ${CAMEL_MODULE_NAME}Service.${PASCAL_MODULE_NAME}Repository.GetByID(ctx, id)
 }
 
 EOF
@@ -271,9 +346,21 @@ EOF
 cat > internal/modules/$CAMEL_MODULE_NAME/infrastructure/persistence/gorm/entities/${CAMEL_MODULE_NAME}_entity.go << EOF
 package entities
 
+import (
+	"time"
+
+	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/domain"
+)
 
 type ${PASCAL_MODULE_NAME} struct {
-	ID          string    \`gorm:"primaryKey;type:uuid;default:gen_random_uuid()"\`
+	ID          string                    \`gorm:"primaryKey;type:uuid;default:gen_random_uuid()"\`
+	UserID      string                    \`gorm:"not null"\`
+	Title       string                    \`gorm:"not null;size:255"\`
+	Description string                    \`gorm:"not null;size:500"\`
+	Content     string                    \`gorm:"not null;type:text"\`
+	Status      domain.${PASCAL_MODULE_NAME}Status \`gorm:"not null;type:varchar(20);default:'draft'"\`
+	CreatedAt   time.Time                 \`gorm:"autoCreateTime"\`
+	UpdatedAt   time.Time                 \`gorm:"autoUpdateTime"\`
 }
 
 EOF
@@ -287,21 +374,30 @@ import (
 	"github.com/racibaz/go-arch/pkg/es"
 )
 
-func ToDomain(${CAMEL_MODULE_NAME}Entity entity.${PASCAL_MODULE_NAME}) domain.${PASCAL_MODULE_NAME} {
-
-
-	return domain.${PASCAL_MODULE_NAME}{
+func ToDomain(${CAMEL_MODULE_NAME}Entity *entity.${PASCAL_MODULE_NAME}) *domain.${PASCAL_MODULE_NAME} {
+	return &domain.${PASCAL_MODULE_NAME}{
 		Aggregate:   es.NewAggregate(${CAMEL_MODULE_NAME}Entity.ID, domain.${PASCAL_MODULE_NAME}Aggregate),
+		UserID:      ${CAMEL_MODULE_NAME}Entity.UserID,
+		Title:       ${CAMEL_MODULE_NAME}Entity.Title,
+		Description: ${CAMEL_MODULE_NAME}Entity.Description,
+		Content:     ${CAMEL_MODULE_NAME}Entity.Content,
+		Status:      ${CAMEL_MODULE_NAME}Entity.Status,
+		CreatedAt:   ${CAMEL_MODULE_NAME}Entity.CreatedAt,
+		UpdatedAt:   ${CAMEL_MODULE_NAME}Entity.UpdatedAt,
 	}
-
 }
 
-func ToPersistence(${CAMEL_MODULE_NAME} domain.${PASCAL_MODULE_NAME}) entity.${PASCAL_MODULE_NAME} {
-
-	return entity.${PASCAL_MODULE_NAME}{
+func ToPersistence(${CAMEL_MODULE_NAME} *domain.${PASCAL_MODULE_NAME}) *entity.${PASCAL_MODULE_NAME} {
+	return &entity.${PASCAL_MODULE_NAME}{
 		ID:          ${CAMEL_MODULE_NAME}.ID(),
+		UserID:      ${CAMEL_MODULE_NAME}.UserID,
+		Title:       ${CAMEL_MODULE_NAME}.Title,
+		Description: ${CAMEL_MODULE_NAME}.Description,
+		Content:     ${CAMEL_MODULE_NAME}.Content,
+		Status:      ${CAMEL_MODULE_NAME}.Status,
+		CreatedAt:   ${CAMEL_MODULE_NAME}.CreatedAt,
+		UpdatedAt:   ${CAMEL_MODULE_NAME}.UpdatedAt,
 	}
-
 }
 
 EOF
@@ -328,18 +424,16 @@ type Gorm${PASCAL_MODULE_NAME}Repository struct {
 
 var _ ports.${PASCAL_MODULE_NAME}Repository = (*Gorm${PASCAL_MODULE_NAME}Repository)(nil)
 
-func New() *Gorm${PASCAL_MODULE_NAME}Repository {
+func NewGorm${PASCAL_MODULE_NAME}Repository() *Gorm${PASCAL_MODULE_NAME}Repository {
 	return &Gorm${PASCAL_MODULE_NAME}Repository{
 		DB: database.Connection(),
 	}
 }
 
 func (repo *Gorm${PASCAL_MODULE_NAME}Repository) Save(ctx context.Context, ${CAMEL_MODULE_NAME} *domain.${PASCAL_MODULE_NAME}) error {
-	var new${PASCAL_MODULE_NAME} entities.${PASCAL_MODULE_NAME}
+	persistenceModel := ${CAMEL_MODULE_NAME}Mapper.ToPersistence(${CAMEL_MODULE_NAME})
 
-	persistenceModel := ${CAMEL_MODULE_NAME}Mapper.ToPersistence(*${CAMEL_MODULE_NAME})
-
-	err := repo.DB.WithContext(ctx).Create(&persistenceModel).Scan(&new${PASCAL_MODULE_NAME}).Error
+	err := repo.DB.WithContext(ctx).Create(persistenceModel).Error
 	if err != nil {
 		return err
 	}
@@ -348,37 +442,102 @@ func (repo *Gorm${PASCAL_MODULE_NAME}Repository) Save(ctx context.Context, ${CAM
 }
 
 func (repo *Gorm${PASCAL_MODULE_NAME}Repository) GetByID(ctx context.Context, id string) (*domain.${PASCAL_MODULE_NAME}, error) {
+	var entity entities.${PASCAL_MODULE_NAME}
 
-	var ${CAMEL_MODULE_NAME} domain.${PASCAL_MODULE_NAME}
-
-	if err := repo.DB.WithContext(ctx).Where("id = ?", id).First(&${CAMEL_MODULE_NAME}).Error; err != nil {
+	if err := repo.DB.WithContext(ctx).Where("id = ?", id).First(&entity).Error; err != nil {
 		return nil, err
 	}
 
-	return &${CAMEL_MODULE_NAME}, nil
+	return ${CAMEL_MODULE_NAME}Mapper.ToDomain(&entity), nil
 }
 
+func (repo *Gorm${PASCAL_MODULE_NAME}Repository) Update(ctx context.Context, ${CAMEL_MODULE_NAME} *domain.${PASCAL_MODULE_NAME}) error {
+	persistenceModel := ${CAMEL_MODULE_NAME}Mapper.ToPersistence(${CAMEL_MODULE_NAME})
 
-func (repo *Gorm${PASCAL_MODULE_NAME}Repository) IsExists(ctx context.Context, title, description string) (bool, error) {
-
-	var ${CAMEL_MODULE_NAME} domain.${PASCAL_MODULE_NAME}
-
-	repo.DB.WithContext(ctx).Where("title = ?", title).Where("description = ?", description).First(&${CAMEL_MODULE_NAME})
-
-	if ${CAMEL_MODULE_NAME}.ID() != "" {
-		return true, nil
+	err := repo.DB.WithContext(ctx).Save(persistenceModel).Error
+	if err != nil {
+		return err
 	}
 
-	return false, nil
+	return nil
+}
+
+func (repo *Gorm${PASCAL_MODULE_NAME}Repository) Delete(ctx context.Context, id string) error {
+	err := repo.DB.WithContext(ctx).Where("id = ?", id).Delete(&entities.${PASCAL_MODULE_NAME}{}).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *Gorm${PASCAL_MODULE_NAME}Repository) List(ctx context.Context) ([]*domain.${PASCAL_MODULE_NAME}, error) {
+	var entities []entities.${PASCAL_MODULE_NAME}
+
+	if err := repo.DB.WithContext(ctx).Find(&entities).Error; err != nil {
+		return nil, err
+	}
+
+	var ${CAMEL_MODULE_NAME}s []*domain.${PASCAL_MODULE_NAME}
+	for _, entity := range entities {
+		${CAMEL_MODULE_NAME}s = append(${CAMEL_MODULE_NAME}s, ${CAMEL_MODULE_NAME}Mapper.ToDomain(&entity))
+	}
+
+	return ${CAMEL_MODULE_NAME}s, nil
+}
+
+func (repo *Gorm${PASCAL_MODULE_NAME}Repository) IsExists(ctx context.Context, title, description string) (bool, error) {
+	var count int64
+
+	err := repo.DB.WithContext(ctx).Model(&entities.${PASCAL_MODULE_NAME}{}).
+		Where("title = ? AND description = ?", title, description).
+		Count(&count).Error
+
+	if err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
 }
 
 EOF
 
 
+cat > internal/modules/$CAMEL_MODULE_NAME/domain/${CAMEL_MODULE_NAME}_status.go << EOF
+package domain
+
+import "errors"
+
+type ${PASCAL_MODULE_NAME}Status string
+
+const (
+	${PASCAL_MODULE_NAME}StatusDraft    ${PASCAL_MODULE_NAME}Status = "draft"
+	${PASCAL_MODULE_NAME}StatusPublished ${PASCAL_MODULE_NAME}Status = "published"
+	${PASCAL_MODULE_NAME}StatusArchived  ${PASCAL_MODULE_NAME}Status = "archived"
+)
+
+var ErrInvalidStatus = errors.New("status is not valid")
+
+func (${PASCAL_MODULE_NAME}Status) IsValid() error {
+	switch ${PASCAL_MODULE_NAME}Status {
+	case ${PASCAL_MODULE_NAME}StatusDraft, ${PASCAL_MODULE_NAME}StatusPublished, ${PASCAL_MODULE_NAME}StatusArchived:
+		return nil
+	default:
+		return ErrInvalidStatus
+	}
+}
+
+EOF
+
 cat > internal/modules/$CAMEL_MODULE_NAME/domain/${CAMEL_MODULE_NAME}.go << EOF
 package domain
 
 import (
+	"errors"
+	"fmt"
+	"strings"
+	"time"
+
 	"github.com/racibaz/go-arch/pkg/es"
 )
 
@@ -386,26 +545,90 @@ const (
 	${PASCAL_MODULE_NAME}Aggregate = "${CAMEL_MODULE_NAME}s.${PASCAL_MODULE_NAME}"
 )
 
+var (
+	TitleMinLength       = 10
+	DescriptionMinLength = 10
+	ContentMinLength     = 10
+)
+
+var (
+	ErrNotFound          = errors.New("the ${CAMEL_MODULE_NAME} was not found")
+	ErrAlreadyExists     = errors.New("the ${CAMEL_MODULE_NAME} already exists")
+	ErrEmptyId           = errors.New("id cannot be empty")
+	ErrEmptyUserId       = errors.New("user id cannot be empty")
+	ErrMinTitleLength = errors.New(
+		fmt.Sprintf("title must be at least %d characters long", TitleMinLength),
+	)
+	ErrMinDescriptionLength = errors.New(
+		fmt.Sprintf("description must be at least %d characters long", DescriptionMinLength),
+	)
+	ErrMinContentLength = errors.New(
+		fmt.Sprintf("content must be at least %d characters long", ContentMinLength),
+	)
+)
 
 type ${PASCAL_MODULE_NAME} struct {
 	es.Aggregate
+	UserID      string
+	Title       string
+	Description string
+	Content     string
+	Status      ${PASCAL_MODULE_NAME}Status
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
+func (p *${PASCAL_MODULE_NAME}) validate() error {
+	if p.ID() == "" {
+		return ErrEmptyId
+	}
+	if p.UserID == "" {
+		return ErrEmptyUserId
+	}
+	if len(strings.TrimSpace(p.Title)) < TitleMinLength {
+		return ErrMinTitleLength
+	}
+	if len(strings.TrimSpace(p.Description)) < DescriptionMinLength {
+		return ErrMinDescriptionLength
+	}
+	if len(strings.TrimSpace(p.Content)) < ContentMinLength {
+		return ErrMinContentLength
+	}
+	if err := p.Status.IsValid(); err != nil {
+		return err
+	}
+	return nil
+}
 
 // Create This factory method creates a new ${PASCAL_MODULE_NAME} with default values if you want.
-func Create(id string) (*${PASCAL_MODULE_NAME}, error) {
-
+func Create(
+	id, userID, title, description, content string,
+	status ${PASCAL_MODULE_NAME}Status,
+	createdAt, updatedAt time.Time,
+) (*${PASCAL_MODULE_NAME}, error) {
 	${CAMEL_MODULE_NAME} := &${PASCAL_MODULE_NAME}{
 		Aggregate:   es.NewAggregate(id, ${PASCAL_MODULE_NAME}Aggregate),
+		UserID:      userID,
+		Title:       title,
+		Description: description,
+		Content:     content,
+		Status:      status,
+		CreatedAt:   createdAt,
+		UpdatedAt:   updatedAt,
 	}
 
-	//todo validate the ${CAMEL_MODULE_NAME} before returning it
-
+	// validate the ${CAMEL_MODULE_NAME} before returning it
+	err := ${CAMEL_MODULE_NAME}.validate()
+	if err != nil {
+		return nil, err
+	}
 
 	return ${CAMEL_MODULE_NAME}, nil
 }
 
-
+func (p *${PASCAL_MODULE_NAME}) Delete() {
+	// todo implement me
+}
 
 EOF
 
@@ -422,87 +645,178 @@ import (
 type ${PASCAL_MODULE_NAME}Repository interface {
 	Save(ctx context.Context, ${CAMEL_MODULE_NAME} *domain.${PASCAL_MODULE_NAME}) error
 	GetByID(ctx context.Context, id string) (*domain.${PASCAL_MODULE_NAME}, error)
+	Update(ctx context.Context, ${CAMEL_MODULE_NAME} *domain.${PASCAL_MODULE_NAME}) error
+	Delete(ctx context.Context, id string) error
+	List(ctx context.Context) ([]*domain.${PASCAL_MODULE_NAME}, error)
 	IsExists(ctx context.Context, title, description string) (bool, error)
 }
 
 EOF
 
 
-cat > internal/modules/$CAMEL_MODULE_NAME/presentation/routes/routes.go << EOF
+cat > internal/modules/$CAMEL_MODULE_NAME/routes/routes.go << EOF
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
-	${CAMEL_MODULE_NAME}Module "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}"
-	${CAMEL_MODULE_NAME}Controller "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/presentation/http"
-	googleGrpc "google.golang.org/grpc"
+	"sync"
 
+	"github.com/gin-gonic/gin"
+	module "github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME"
+	"github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/commands"
+	creatingV1Endpoint "github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/endpoints"
+	"github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/endpoints/grpc"
+	getByIdV1Endpoint "github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/application/features/getting${CAMEL_MODULE_NAME}byid/v1/endpoints"
+	"github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/application/features/getting${CAMEL_MODULE_NAME}byid/v1/query"
+	"github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/application/handlers"
+	"github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/infrastructure/messaging/rabbitmq"
+	"github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/infrastructure/notification/sms"
+	gormRepo "github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/infrastructure/persistence/gorm/repositories"
+	"github.com/racibaz/go-arch/internal/modules/$CAMEL_MODULE_NAME/logging"
+	"github.com/racibaz/go-arch/pkg/ddd"
+	"github.com/racibaz/go-arch/pkg/logger"
+	rabbitmqConn "github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
+	googleGrpc "google.golang.org/grpc"
 )
 
-func Routes(router *gin.Engine) {
+var (
+	${CAMEL_MODULE_NAME}ModuleInstance *module.${PASCAL_MODULE_NAME}Module
+	once                              sync.Once
+)
 
-	module := ${CAMEL_MODULE_NAME}Module.New${PASCAL_MODULE_NAME}Module()
-	new${PASCAL_MODULE_NAME}Controller := ${CAMEL_MODULE_NAME}Controller.New${PASCAL_MODULE_NAME}Controller(module.Service())
-
-	v1 := router.Group("/api/v1")
-	{
-		eg := v1.Group("/${CAMEL_MODULE_NAME}s")
-		{
-			eg.GET("/:id", new${PASCAL_MODULE_NAME}Controller.Show)
-			eg.POST("/", new${PASCAL_MODULE_NAME}Controller.Store)
-		}
+func Build${PASCAL_MODULE_NAME}Module() *module.${PASCAL_MODULE_NAME}Module {
+	// Return existing instance if already created
+	if ${CAMEL_MODULE_NAME}ModuleInstance != nil {
+		return ${CAMEL_MODULE_NAME}ModuleInstance
 	}
+
+	// Create the instance only once
+	once.Do(func() {
+		// Use In-memory for persistence
+		// repo := in_memory.NewGorm${PASCAL_MODULE_NAME}Repository()
+		// Use GORM repository for persistence
+		repository := gormRepo.NewGorm${PASCAL_MODULE_NAME}Repository()
+
+		// Assuming NewZapLogger is a function that initializes a logger
+		logger, _ := logger.NewZapLogger()
+
+		domainDispatcher := ddd.NewEventDispatcher[ddd.AggregateEvent]()
+
+		rabbitmqConn := rabbitmqConn.Connection()
+
+		messagePublisher := rabbitmq.New${PASCAL_MODULE_NAME}MessagePublisher(rabbitmqConn, logger)
+		/* todo we need to use processor in handler to publish events after transaction is committed
+		for now we will use directly the publisher in the handler
+		*/
+		createCommandHandler := commands.NewCreate${PASCAL_MODULE_NAME}Handler(
+			repository,
+			logger,
+			messagePublisher,
+		)
+
+		getQueryHandler := query.NewGet${PASCAL_MODULE_NAME}Handler(repository, logger)
+
+		notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
+
+		notificationHandlers := logging.LogEventHandlerAccess[ddd.AggregateEvent](
+			handlers.NewNotificationHandlers(notificationAdapter),
+			"Notification", logger,
+		)
+
+		handlers.RegisterNotificationHandlers(notificationHandlers, domainDispatcher)
+
+		${CAMEL_MODULE_NAME}ModuleInstance = module.New${PASCAL_MODULE_NAME}Module(
+			repository,
+			createCommandHandler,
+			getQueryHandler,
+			logger,
+			notificationAdapter,
+		)
+	})
+
+	return ${CAMEL_MODULE_NAME}ModuleInstance
+}
+
+func Routes(router *gin.Engine) {
+	module := Build${PASCAL_MODULE_NAME}Module()
+
+	// Collect here restful routes of your module.
+	creatingV1Endpoint.MapHttpRoute(router, module.CommandHandler())
+	getByIdV1Endpoint.MapHttpRoute(router, module.QueryHandler())
 }
 
 func GrpcRoutes(grpcServer *googleGrpc.Server) {
+	module := Build${PASCAL_MODULE_NAME}Module()
 
-  // Add gRPC routes here
+	// Collect here grpc routes of your module
+	grpc.NewCreate${PASCAL_MODULE_NAME}Handler(grpcServer, module.CommandHandler())
+}
+
+
+EOF
+
+
+cat > internal/modules/$CAMEL_MODULE_NAME/application/ports/command_handler.go << EOF
+package ports
+
+import "context"
+
+type CommandHandler[Q any, R any] interface {
+	Handle(ctx context.Context, query Q) error
+}
+
+EOF
+
+cat > internal/modules/$CAMEL_MODULE_NAME/application/ports/query_handler.go << EOF
+package ports
+
+import "context"
+
+type QueryHandler[Q any, R any] interface {
+	Handle(ctx context.Context, query Q) (R, error)
 }
 
 EOF
 
 
-cat > internal/modules/$CAMEL_MODULE_NAME/application/ports/${CAMEL_MODULE_NAME}_service.go << EOF
-package ports
+cat > internal/modules/$CAMEL_MODULE_NAME/application/features/creating${CAMEL_MODULE_NAME}/v1/dtos/dtos.go << EOF
+package dtos
 
 import (
-	"context"
-	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/dtos"
+	"time"
+
 	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/domain"
 )
 
-
-type ${PASCAL_MODULE_NAME}Service interface {
-	Create${PASCAL_MODULE_NAME}(ctx context.Context, ${CAMEL_MODULE_NAME}Dto dto.Create${PASCAL_MODULE_NAME}Input) error
-	GetById(ctx context.Context, id string) (*domain.${PASCAL_MODULE_NAME}, error)
-}
-
-
-EOF
-
-
-cat > internal/modules/$CAMEL_MODULE_NAME/application/dtos/create_${CAMEL_MODULE_NAME}_dto.go << EOF
-package dto
-
-
 type Create${PASCAL_MODULE_NAME}Input struct {
 	ID          string // Unique identifier for the ${CAMEL_MODULE_NAME}
+	UserID      string
+	Title       string
+	Description string
+	Content     string
+	Status      domain.${PASCAL_MODULE_NAME}Status
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 EOF
 
 
 
-cat > internal/modules/$CAMEL_MODULE_NAME/testing/${CAMEL_MODULE_NAME}_integration_test.go << EOF
-package testing
+cat > internal/modules/$CAMEL_MODULE_NAME/module_test.go << EOF
+package module
 
 import (
 	"testing"
 	"github.com/stretchr/testify/assert"
 )
 
-func Test${PASCAL_MODULE_NAME}Integration (t *testing.T) {
-	assert.True(t, true)
+func Test${PASCAL_MODULE_NAME}Module(t *testing.T) {
+	module := New${PASCAL_MODULE_NAME}Module()
+
+	assert.NotNil(t, module)
+	assert.NotNil(t, module.Repository())
+	assert.NotNil(t, module.Create${PASCAL_MODULE_NAME}Handler())
+	assert.NotNil(t, module.Logger())
 }
 EOF
 
@@ -511,40 +825,53 @@ cat > internal/modules/$CAMEL_MODULE_NAME/module.go << EOF
 package module
 
 import (
-	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/commands"
-	${CAMEL_MODULE_NAME}Service "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/ports"
-	${CAMEL_MODULE_NAME}Ports "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/domain/ports"
-  gorm${MODULE_NAME}Repo "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/infrastructure/persistence/gorm/repositories"
+	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/features/creating${CAMEL_MODULE_NAME}/v1/commands"
+	"github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/features/getting${CAMEL_MODULE_NAME}byid/v1/query"
+	ports "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/application/ports"
+	${CAMEL_MODULE_NAME}DomainPorts "github.com/racibaz/go-arch/internal/modules/${CAMEL_MODULE_NAME}/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
 )
 
+// ${PASCAL_MODULE_NAME}Module encapsulates the components related to the ${PASCAL_MODULE_NAME} module.
 type ${PASCAL_MODULE_NAME}Module struct {
-	repository ${CAMEL_MODULE_NAME}Ports.${PASCAL_MODULE_NAME}Repository
-	service    ${CAMEL_MODULE_NAME}Service.${PASCAL_MODULE_NAME}Service
-	logger        logger.Logger
+	repository               ${CAMEL_MODULE_NAME}DomainPorts.${PASCAL_MODULE_NAME}Repository
+	create${PASCAL_MODULE_NAME}CommandHandler ports.CommandHandler[commands.Create${PASCAL_MODULE_NAME}CommandV1]
+	get${PASCAL_MODULE_NAME}QueryHandler      ports.QueryHandler[query.Get${PASCAL_MODULE_NAME}ByIdQuery, query.Get${PASCAL_MODULE_NAME}ByIdQueryResponse]
+	logger                   logger.Logger
+	notifier                 ${CAMEL_MODULE_NAME}DomainPorts.NotificationAdapter
 }
 
-
-func New${PASCAL_MODULE_NAME}Module() *${PASCAL_MODULE_NAME}Module {
-
-	repo := gormUserRepo.New()         // Use GORM repository for persistence
-	logger, _ := logger.NewZapLogger() // Assuming NewZapLogger is a function that initializes a logger
-
-	create${PASCAL_MODULE_NAME}Service := commands.NewCreate${PASCAL_MODULE_NAME}Service(repo, logger)
-
+// New${PASCAL_MODULE_NAME}Module initializes a new ${PASCAL_MODULE_NAME}Module with the provided components.
+func New${PASCAL_MODULE_NAME}Module(
+	repository ${CAMEL_MODULE_NAME}DomainPorts.${PASCAL_MODULE_NAME}Repository,
+	create${PASCAL_MODULE_NAME}CommandHandler ports.CommandHandler[commands.Create${PASCAL_MODULE_NAME}CommandV1],
+	get${PASCAL_MODULE_NAME}QueryHandler ports.QueryHandler[query.Get${PASCAL_MODULE_NAME}ByIdQuery, query.Get${PASCAL_MODULE_NAME}ByIdQueryResponse],
+	logger logger.Logger,
+	notifier ${CAMEL_MODULE_NAME}DomainPorts.NotificationAdapter,
+) *${PASCAL_MODULE_NAME}Module {
 	return &${PASCAL_MODULE_NAME}Module{
-		repository: repo,
-		service:    create${PASCAL_MODULE_NAME}Service,
-		logger:     logger,
+		repository:               repository,
+		create${PASCAL_MODULE_NAME}CommandHandler: create${PASCAL_MODULE_NAME}CommandHandler,
+		get${PASCAL_MODULE_NAME}QueryHandler:      get${PASCAL_MODULE_NAME}QueryHandler,
+		logger:                   logger,
+		notifier:                 notifier,
 	}
 }
 
-func (m ${PASCAL_MODULE_NAME}Module) Repository() ${CAMEL_MODULE_NAME}Ports.${PASCAL_MODULE_NAME}Repository {
+func (m ${PASCAL_MODULE_NAME}Module) Repository() ${CAMEL_MODULE_NAME}DomainPorts.${PASCAL_MODULE_NAME}Repository {
 	return m.repository
 }
 
-func (m ${PASCAL_MODULE_NAME}Module) Service() ${CAMEL_MODULE_NAME}Service.${PASCAL_MODULE_NAME}Service {
-	return m.service
+func (m ${PASCAL_MODULE_NAME}Module) CommandHandler() ports.CommandHandler[commands.Create${PASCAL_MODULE_NAME}CommandV1] {
+	return m.create${PASCAL_MODULE_NAME}CommandHandler
+}
+
+func (m ${PASCAL_MODULE_NAME}Module) QueryHandler() ports.QueryHandler[query.Get${PASCAL_MODULE_NAME}ByIdQuery, query.Get${PASCAL_MODULE_NAME}ByIdQueryResponse] {
+	return m.get${PASCAL_MODULE_NAME}QueryHandler
+}
+
+func (m ${PASCAL_MODULE_NAME}Module) Notifier() ${CAMEL_MODULE_NAME}DomainPorts.NotificationAdapter {
+	return m.notifier
 }
 
 func (m ${PASCAL_MODULE_NAME}Module) Logger() logger.Logger {

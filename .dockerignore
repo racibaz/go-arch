@@ -1,2 +1,7 @@
 /vendor
 /go/pkg/mod
+.idea
+*.log
+*.tmp
+.DS_Store
+.env

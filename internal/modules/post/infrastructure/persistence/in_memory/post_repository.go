@@ -11,7 +11,7 @@ import (
 	"github.com/racibaz/go-arch/pkg/uuid"
 )
 
-// Repository Secondary adapter: InMemory implementation
+// Repository Secondary adapters: InMemory implementation
 type Repository struct {
 	posts map[uuid.Uuid]*domain.Post
 	sync.Mutex

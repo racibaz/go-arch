@@ -19,6 +19,14 @@ packages:
       # directory as the original interface.
       dir: "pkg/logger"
 
+  # Messaging interfaces
+  github.com/racibaz/go-arch/pkg/messaging:
+    config:
+      all: true
+      # Make use of the template variables to place the mock in the same
+      # directory as the original interface.
+      dir: "pkg/messaging"
+
   #-----------Shared Module Mocks-----------#
   # Shared domain interfaces
   github.com/racibaz/go-arch/internal/modules/shared/domain/ports:
@@ -27,6 +35,15 @@ packages:
       # Make use of the template variables to place the mock in the same
       # directory as the original interface.
       dir: "internal/modules/shared/testing/mocks/domain/ports"
+
+
+  # Shared domain interfaces
+  github.com/racibaz/go-arch/internal/modules/shared/application/ports:
+    config:
+      all: true
+      # Make use of the template variables to place the mock in the same
+      # directory as the original interface.
+      dir: "internal/modules/shared/testing/mocks/application/ports"
 
 
   #-----------Post Module Mocks-----------#
@@ -39,11 +56,11 @@ packages:
       dir: "internal/modules/post/testing/mocks/domain/ports"
 
   # Post application interfaces
-  github.com/racibaz/go-arch/internal/modules/post/application/ports:
+  github.com/racibaz/go-arch/internal/modules/post/features/ports:
     config:
       all: true
       # Make use of the template variables to place the mock in the same
       # directory as the original interface.
-      dir: "internal/modules/post/testing/mocks/application/ports"
+      dir: "internal/modules/post/testing/mocks/features/ports"
 
 
