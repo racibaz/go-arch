@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/application/commands"
-	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/application/dtos"
 	"github.com/racibaz/go-arch/internal/modules/shared/application/ports"
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/helper"
@@ -53,8 +52,8 @@ func NewCreatePostHandler(
 //	@Tags			posts
 //	@Accept			json
 //	@Produce		json
-//	@Param			post	body		dtos.CreatePostRequestDto	true	"Create Post Request DTO"
-//	@Success		201		{object}	dtos.CreatePostResponseDto	"Post created successfully"
+//	@Param			post	body		CreatePostRequestDto	true	"Create Post Request DTO"
+//	@Success		201		{object}	CreatePostResponseDto	"Post created successfully"
 //	@Failure		400		{object}	errors.appError				"Invalid request body"
 //	@Failure		422		{object}	errors.appError				"Post validation request body does not validate"
 //	@Failure		500		{object}	errors.appError				"Post create failed"
@@ -72,7 +71,7 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 	defer span.End()
 
 	// Decode the request body into CreatePostRequestDto
-	createPostRequestDto, decodeErr := helper.Decode[dtos.CreatePostRequestDto](c)
+	createPostRequestDto, decodeErr := helper.Decode[CreatePostRequestDto](c)
 	if decodeErr != nil {
 
 		if span := trace.SpanFromContext(ctx); span != nil {
@@ -121,9 +120,9 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 		helper.ErrorResponse(c, "post create failed", handlerErr, http.StatusInternalServerError)
 	}
 
-	responsePayload := helper.Response[dtos.CreatePostResponseDto]{
-		Data: &dtos.CreatePostResponseDto{
-			Post: &dtos.Post{
+	responsePayload := helper.Response[CreatePostResponseDto]{
+		Data: &CreatePostResponseDto{
+			Post: &Post{
 				Title:       createPostRequestDto.Title,
 				Description: createPostRequestDto.Description,
 				Content:     createPostRequestDto.Content,

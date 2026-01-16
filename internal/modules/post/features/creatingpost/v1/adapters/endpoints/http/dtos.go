@@ -1,4 +1,4 @@
-package dtos
+package http
 
 // Post It is a best practice to keep DTOs in stable when you need to change your dto model such as "GetPostResponseDto"
 // Post dto model
@@ -17,13 +17,6 @@ type Post struct {
 //
 //	@Description	CreatePostResponseDto is a data transfer object for reporting the details of a created post
 type CreatePostResponseDto struct {
-	Post *Post `json:"post"`
-}
-
-// GetPostResponseDto
-//
-//	@Description	GetPostResponseDto is a data transfer object for reporting the details of a post
-type GetPostResponseDto struct {
 	Post *Post `json:"post"`
 }
 

@@ -1,5 +1,42 @@
 definitions:
-  dtos.CreatePostRequestDto:
+  dtos.GetPostResponseDto:
+    description: GetPostResponseDto is a data transfer object for reporting the details
+      of a post
+    properties:
+      post:
+        $ref: '#/definitions/dtos.Post'
+    type: object
+  dtos.Post:
+    properties:
+      content:
+        description: "@Description\tContent is the content of the post"
+        type: string
+      description:
+        description: "@Description\tDescription is the description of the post"
+        type: string
+      status:
+        description: "@Description\tStatus is the status of the post"
+        type: string
+      title:
+        description: "@Description\tTitle is the title of the post"
+        type: string
+    type: object
+  errors.appError:
+    properties:
+      cause:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+      message:
+        type: string
+      status:
+        type: integer
+      type:
+        type: string
+    type: object
+  http.CreatePostRequestDto:
     description: CreatePostRequestDto is a data transfer object for creating a post
     properties:
       content:
@@ -23,51 +60,14 @@ definitions:
     - title
     - user_id
     type: object
-  dtos.CreatePostResponseDto:
+  http.CreatePostResponseDto:
     description: CreatePostResponseDto is a data transfer object for reporting the
       details of a created post
     properties:
       post:
-        $ref: '#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_application_dtos.Post'
+        $ref: '#/definitions/http.Post'
     type: object
-  errors.appError:
-    properties:
-      cause:
-        additionalProperties:
-          items:
-            type: string
-          type: array
-        type: object
-      message:
-        type: string
-      status:
-        type: integer
-      type:
-        type: string
-    type: object
-  github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_application_dtos.Post:
-    properties:
-      content:
-        description: "@Description\tContent is the content of the post"
-        type: string
-      description:
-        description: "@Description\tDescription is the description of the post"
-        type: string
-      status:
-        description: "@Description\tStatus is the status of the post"
-        type: string
-      title:
-        description: "@Description\tTitle is the title of the post"
-        type: string
-    type: object
-  github_com_racibaz_go-arch_internal_modules_post_features_gettingpostbyid_v1_adapters_endpoints_dtos.GetPostResponseDto:
-    description: GetPostResponseDto is a data transfer object for reporting the details
-      of a post
-    properties:
-      post:
-        $ref: '#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingpostbyid_v1_adapters_endpoints_dtos.Post'
-    type: object
-  github_com_racibaz_go-arch_internal_modules_post_features_gettingpostbyid_v1_adapters_endpoints_dtos.Post:
+  http.Post:
     properties:
       content:
         description: "@Description\tContent is the content of the post"
@@ -111,14 +111,14 @@ paths:
         name: post
         required: true
         schema:
-          $ref: '#/definitions/dtos.CreatePostRequestDto'
+          $ref: '#/definitions/http.CreatePostRequestDto'
       produces:
       - application/json
       responses:
         "201":
           description: Post created successfully
           schema:
-            $ref: '#/definitions/dtos.CreatePostResponseDto'
+            $ref: '#/definitions/http.CreatePostResponseDto'
         "400":
           description: Invalid request body
           schema:
@@ -151,7 +151,7 @@ paths:
         "200":
           description: Post retrieved successfully
           schema:
-            $ref: '#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingpostbyid_v1_adapters_endpoints_dtos.GetPostResponseDto'
+            $ref: '#/definitions/dtos.GetPostResponseDto'
         "400":
           description: The Id does not parse correctly
           schema:
