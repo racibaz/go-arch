@@ -58,7 +58,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/presentation.CreatePostRequestDto"
+                            "$ref": "#/definitions/dtos.CreatePostRequestDto"
                         }
                     }
                 ],
@@ -66,13 +66,25 @@ const docTemplate = `{
                     "201": {
                         "description": "Post created successfully",
                         "schema": {
-                            "$ref": "#/definitions/presentation.CreatePostResponseDto"
+                            "$ref": "#/definitions/dtos.CreatePostResponseDto"
                         }
                     },
                     "400": {
                         "description": "Invalid request body",
                         "schema": {
-                            "$ref": "#/definitions/errors.AppError"
+                            "$ref": "#/definitions/errors.appError"
+                        }
+                    },
+                    "422": {
+                        "description": "Post validation request body does not validate",
+                        "schema": {
+                            "$ref": "#/definitions/errors.appError"
+                        }
+                    },
+                    "500": {
+                        "description": "Post create failed",
+                        "schema": {
+                            "$ref": "#/definitions/errors.appError"
                         }
                     }
                 }
@@ -104,13 +116,19 @@ const docTemplate = `{
                     "200": {
                         "description": "Post retrieved successfully",
                         "schema": {
-                            "$ref": "#/definitions/presentation.GetPostResponseDto"
+                            "$ref": "#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingpostbyid_v1_adapters_endpoints_dtos.GetPostResponseDto"
+                        }
+                    },
+                    "400": {
+                        "description": "The Id does not parse correctly",
+                        "schema": {
+                            "$ref": "#/definitions/errors.appError"
                         }
                     },
                     "404": {
                         "description": "Page not found",
                         "schema": {
-                            "$ref": "#/definitions/errors.AppError"
+                            "$ref": "#/definitions/errors.appError"
                         }
                     }
                 }
@@ -118,21 +136,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "errors.AppError": {
-            "type": "object",
-            "properties": {
-                "cause": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "presentation.CreatePostRequestDto": {
+        "dtos.CreatePostRequestDto": {
             "description": "CreatePostRequestDto is a data transfer object for creating a post",
             "type": "object",
             "required": [
@@ -143,61 +147,105 @@ const docTemplate = `{
             ],
             "properties": {
                 "content": {
-                    "description": "@Description Content is the content of the post",
+                    "description": "@Description\tContent is the content of the post",
                     "type": "string",
                     "minLength": 10
                 },
                 "description": {
-                    "description": "@Description Description is the description of the post",
+                    "description": "@Description\tDescription is the description of the post",
                     "type": "string",
                     "minLength": 10
                 },
                 "title": {
-                    "description": "@Description Title is the title of the post",
+                    "description": "@Description\tTitle is the title of the post",
                     "type": "string",
                     "minLength": 10
                 },
                 "user_id": {
-                    "description": "@Description UserId is the ID of the user creating the post",
+                    "description": "@Description\tUserId is the ID of the user creating the post",
                     "type": "string"
                 }
             }
         },
-        "presentation.CreatePostResponseDto": {
+        "dtos.CreatePostResponseDto": {
             "description": "CreatePostResponseDto is a data transfer object for reporting the details of a created post",
             "type": "object",
             "properties": {
                 "post": {
-                    "$ref": "#/definitions/presentation.Post"
+                    "$ref": "#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_application_dtos.Post"
                 }
             }
         },
-        "presentation.GetPostResponseDto": {
+        "errors.appError": {
+            "type": "object",
+            "properties": {
+                "cause": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_application_dtos.Post": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "@Description\tContent is the content of the post",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "@Description\tDescription is the description of the post",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "@Description\tStatus is the status of the post",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "@Description\tTitle is the title of the post",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_racibaz_go-arch_internal_modules_post_features_gettingpostbyid_v1_adapters_endpoints_dtos.GetPostResponseDto": {
             "description": "GetPostResponseDto is a data transfer object for reporting the details of a post",
             "type": "object",
             "properties": {
                 "post": {
-                    "$ref": "#/definitions/presentation.Post"
+                    "$ref": "#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingpostbyid_v1_adapters_endpoints_dtos.Post"
                 }
             }
         },
-        "presentation.Post": {
+        "github_com_racibaz_go-arch_internal_modules_post_features_gettingpostbyid_v1_adapters_endpoints_dtos.Post": {
             "type": "object",
             "properties": {
                 "content": {
-                    "description": "@Description Content is the content of the post",
+                    "description": "@Description\tContent is the content of the post",
                     "type": "string"
                 },
                 "description": {
-                    "description": "@Description Description is the description of the post",
+                    "description": "@Description\tDescription is the description of the post",
                     "type": "string"
                 },
                 "status": {
-                    "description": "@Description Status is the status of the post",
+                    "description": "@Description\tStatus is the status of the post",
                     "type": "string"
                 },
                 "title": {
-                    "description": "@Description Title is the title of the post",
+                    "description": "@Description\tTitle is the title of the post",
                     "type": "string"
                 }
             }

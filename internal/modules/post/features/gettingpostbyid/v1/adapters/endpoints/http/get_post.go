@@ -50,10 +50,10 @@ func NewGetPostHandler(
 //	@Tags			posts
 //	@Accept			json
 //	@Produce		json
-//	@Param			id	path		string							true	"Post ID"
-//	@Success		200	{object}	presentation.GetPostResponseDto	"Post retrieved successfully"
-//	@Failure		404	{object}	errors.appError					"Page not found"
-//	@Failure		400	{object}	errors.appError					"The Id does not parse correctly"
+//	@Param			id	path		string					true	"Post ID"
+//	@Success		200	{object}	dtos.GetPostResponseDto	"Post retrieved successfully"
+//	@Failure		404	{object}	errors.appError			"Page not found"
+//	@Failure		400	{object}	errors.appError			"The Id does not parse correctly"
 //	@Router			/posts/{id} [get]
 func (h GetPostHandler) Show(c *gin.Context) {
 	tracer := otel.Tracer(config.Get().App.Name)

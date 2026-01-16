@@ -53,11 +53,11 @@ func NewCreatePostHandler(
 //	@Tags			posts
 //	@Accept			json
 //	@Produce		json
-//	@Param			post	body		presentation.CreatePostRequestDto	true	"Create Post Request DTO"
-//	@Success		201		{object}	presentation.CreatePostResponseDto	"Post created successfully"
-//	@Failure		400		{object}	errors.appError						"Invalid request body"
-//	@Failure		422		{object}	errors.appError						"Post validation request body does not validate"
-//	@Failure		500		{object}	errors.appError						"Post create failed"
+//	@Param			post	body		dtos.CreatePostRequestDto	true	"Create Post Request DTO"
+//	@Success		201		{object}	dtos.CreatePostResponseDto	"Post created successfully"
+//	@Failure		400		{object}	errors.appError				"Invalid request body"
+//	@Failure		422		{object}	errors.appError				"Post validation request body does not validate"
+//	@Failure		500		{object}	errors.appError				"Post create failed"
 //	@Router			/posts [post]
 func (h CreatePostHandler) Store(c *gin.Context) {
 	tracer := otel.Tracer(config.Get().App.Name) // go-arch
