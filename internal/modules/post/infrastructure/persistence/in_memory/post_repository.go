@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/racibaz/go-arch/pkg/helper"
 	"sync"
 
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 )
 
@@ -81,7 +81,10 @@ func (pr *Repository) Delete(ctx context.Context, id string) error {
 	panic("implement me")
 }
 
-func (pr *Repository) List(ctx context.Context, pagination helper.Pagination) ([]*domain.Post, error) {
+func (pr *Repository) List(
+	ctx context.Context,
+	pagination helper.Pagination,
+) ([]*domain.Post, error) {
 	// TODO implement me
 	panic("implement me")
 }

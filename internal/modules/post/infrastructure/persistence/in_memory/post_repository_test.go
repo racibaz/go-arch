@@ -5,9 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/racibaz/go-arch/pkg/helper"
-
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	"github.com/stretchr/testify/assert"
 )

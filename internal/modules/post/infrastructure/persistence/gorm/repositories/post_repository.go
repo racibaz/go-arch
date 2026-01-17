@@ -3,7 +3,6 @@ package repositories
 import (
 	"context"
 	"fmt"
-	"github.com/racibaz/go-arch/pkg/helper"
 	"sync"
 
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
@@ -11,6 +10,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/entities"
 	postMapper "github.com/racibaz/go-arch/internal/modules/post/infrastructure/persistence/gorm/mappers"
 	"github.com/racibaz/go-arch/pkg/database"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"gorm.io/gorm"
 )
 
@@ -73,8 +73,10 @@ func (repo *GormPostRepository) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
-func (repo *GormPostRepository) List(ctx context.Context, pagination helper.Pagination) ([]*domain.Post, error) {
-
+func (repo *GormPostRepository) List(
+	ctx context.Context,
+	pagination helper.Pagination,
+) ([]*domain.Post, error) {
 	var posts []*domain.Post
 
 	err := repo.DB.WithContext(ctx).Scopes(helper.Paginate(pagination)).Find(&posts)
