@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/racibaz/go-arch/pkg/helper"
+
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/pkg/uuid"
 	"github.com/stretchr/testify/assert"
@@ -181,8 +183,13 @@ func TestRepository_List_Panics(t *testing.T) {
 
 	ctx := context.Background()
 
+	pagination := helper.Pagination{
+		Page:     1,
+		PageSize: 10,
+	}
+
 	assert.Panics(t, func() {
-		repo.List(ctx)
+		repo.List(ctx, pagination)
 	})
 }
 
@@ -204,7 +211,7 @@ func TestRepositoryImplementsInterface(t *testing.T) {
 		GetByID(ctx context.Context, id string) (*domain.Post, error)
 		Update(ctx context.Context, post *domain.Post) error
 		Delete(ctx context.Context, id string) error
-		List(ctx context.Context) ([]*domain.Post, error)
+		List(ctx context.Context, pagination helper.Pagination) ([]*domain.Post, error)
 		IsExists(ctx context.Context, title, description string) (bool, error)
 	})
 

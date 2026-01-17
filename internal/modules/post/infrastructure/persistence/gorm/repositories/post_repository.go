@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"fmt"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"sync"
 
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
@@ -56,18 +57,32 @@ func (repo *GormPostRepository) GetByID(ctx context.Context, id string) (*domain
 }
 
 func (repo *GormPostRepository) Update(ctx context.Context, post *domain.Post) error {
-	// TODO implement me
-	panic("implement me")
+	err := repo.DB.WithContext(ctx).Updates(post)
+	if err != nil {
+		return err.Error
+	}
+	return nil
 }
 
 func (repo *GormPostRepository) Delete(ctx context.Context, id string) error {
-	// TODO implement me
-	panic("implement me")
+	err := repo.DB.WithContext(ctx).Delete(&domain.Post{}, "id = ?", id)
+	if err != nil {
+		return err.Error
+	}
+
+	return nil
 }
 
-func (repo *GormPostRepository) List(ctx context.Context) ([]*domain.Post, error) {
-	// TODO implement me
-	panic("implement me")
+func (repo *GormPostRepository) List(ctx context.Context, pagination helper.Pagination) ([]*domain.Post, error) {
+
+	var posts []*domain.Post
+
+	err := repo.DB.WithContext(ctx).Scopes(helper.Paginate(pagination)).Find(&posts)
+	if err != nil {
+		return nil, err.Error
+	}
+
+	return posts, nil
 }
 
 func (repo *GormPostRepository) IsExists(

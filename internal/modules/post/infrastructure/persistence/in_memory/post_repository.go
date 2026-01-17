@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"sync"
 
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
@@ -80,7 +81,7 @@ func (pr *Repository) Delete(ctx context.Context, id string) error {
 	panic("implement me")
 }
 
-func (pr *Repository) List(ctx context.Context) ([]*domain.Post, error) {
+func (pr *Repository) List(ctx context.Context, pagination helper.Pagination) ([]*domain.Post, error) {
 	// TODO implement me
 	panic("implement me")
 }

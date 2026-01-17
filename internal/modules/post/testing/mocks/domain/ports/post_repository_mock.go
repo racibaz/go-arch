@@ -8,6 +8,7 @@ import (
 	"context"
 
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
+	"github.com/racibaz/go-arch/pkg/helper"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -236,8 +237,8 @@ func (_c *MockPostRepository_IsExists_Call) RunAndReturn(run func(ctx context.Co
 }
 
 // List provides a mock function for the type MockPostRepository
-func (_mock *MockPostRepository) List(ctx context.Context) ([]*domain.Post, error) {
-	ret := _mock.Called(ctx)
+func (_mock *MockPostRepository) List(ctx context.Context, pagination helper.Pagination) ([]*domain.Post, error) {
+	ret := _mock.Called(ctx, pagination)
 
 	if len(ret) == 0 {
 		panic("no return value specified for List")
@@ -245,18 +246,18 @@ func (_mock *MockPostRepository) List(ctx context.Context) ([]*domain.Post, erro
 
 	var r0 []*domain.Post
 	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]*domain.Post, error)); ok {
-		return returnFunc(ctx)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, helper.Pagination) ([]*domain.Post, error)); ok {
+		return returnFunc(ctx, pagination)
 	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context) []*domain.Post); ok {
-		r0 = returnFunc(ctx)
+	if returnFunc, ok := ret.Get(0).(func(context.Context, helper.Pagination) []*domain.Post); ok {
+		r0 = returnFunc(ctx, pagination)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*domain.Post)
 		}
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
-		r1 = returnFunc(ctx)
+	if returnFunc, ok := ret.Get(1).(func(context.Context, helper.Pagination) error); ok {
+		r1 = returnFunc(ctx, pagination)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -270,18 +271,24 @@ type MockPostRepository_List_Call struct {
 
 // List is a helper method to define mock.On call
 //   - ctx context.Context
-func (_e *MockPostRepository_Expecter) List(ctx interface{}) *MockPostRepository_List_Call {
-	return &MockPostRepository_List_Call{Call: _e.mock.On("List", ctx)}
+//   - pagination helper.Pagination
+func (_e *MockPostRepository_Expecter) List(ctx interface{}, pagination interface{}) *MockPostRepository_List_Call {
+	return &MockPostRepository_List_Call{Call: _e.mock.On("List", ctx, pagination)}
 }
 
-func (_c *MockPostRepository_List_Call) Run(run func(ctx context.Context)) *MockPostRepository_List_Call {
+func (_c *MockPostRepository_List_Call) Run(run func(ctx context.Context, pagination helper.Pagination)) *MockPostRepository_List_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
+		var arg1 helper.Pagination
+		if args[1] != nil {
+			arg1 = args[1].(helper.Pagination)
+		}
 		run(
 			arg0,
+			arg1,
 		)
 	})
 	return _c
@@ -292,7 +299,7 @@ func (_c *MockPostRepository_List_Call) Return(posts []*domain.Post, err error) 
 	return _c
 }
 
-func (_c *MockPostRepository_List_Call) RunAndReturn(run func(ctx context.Context) ([]*domain.Post, error)) *MockPostRepository_List_Call {
+func (_c *MockPostRepository_List_Call) RunAndReturn(run func(ctx context.Context, pagination helper.Pagination) ([]*domain.Post, error)) *MockPostRepository_List_Call {
 	_c.Call.Return(run)
 	return _c
 }
