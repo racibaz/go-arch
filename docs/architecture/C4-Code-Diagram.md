@@ -139,18 +139,16 @@ internal/modules/post/
 │   │   ├── post_repository.go      # Domain Interface
 │   │   └── notification_adapter.go # Domain Interface
 │   └── post_events.go              # Domain Events
-├── application/                     # Application Layer
-│   ├── commands/
-│   │   ├── create_post_command.go  # Command DTO
-│   │   └── create_post_handler.go  # Command Handler
-│   ├── queries/
-│   │   ├── get_post_query.go       # Query DTO
-│   │   └── get_post_handler.go     # Query Handler
-│   ├── ports/
-│   │   ├── command_handler.go      # CQRS Interface
-│   │   └── query_handler.go        # CQRS Interface
-│   └── dtos/
-│       └── create_post_dto.go      # Application DTOs
+├── features/                        # Application Layer
+│   ├── creatingpost/
+│   │   ├── v1                        # Feature Version
+│   │   ├──── application               # Commands
+│   │   │    ├────commmands             # Business Logic
+│   │   │    ├────dtos                  # Business Logic DTOs
+│   │   ├──── adapters                  # Adapters
+│   │   │    ├────endpoints             # Endpoints
+│   │   │    │    ├────http                  # Http handler
+│   │   │    │    ├────grpc                  # gRCP handler
 ├── infrastructure/                  # Infrastructure Layer
 │   ├── persistence/gorm/
 │   │   ├── entities/post_entity.go # Database Entity
@@ -160,15 +158,6 @@ internal/modules/post/
 │   │   └── post_message_publisher.go # Message Publisher
 │   └── notification/sms/
 │       └── twilio_sms_adapter.go    # Notification Adapter
-├── presentation/                    # Presentation Layer
-│   ├── http/
-│   │   ├── create_post.go          # HTTP Controller
-│   │   └── get_post.go             # HTTP Controller
-│   ├── grpc/
-│   │   └── post_grpc_controller.go # gRPC Controller
-│   ├── routes/
-│   │   └── routes.go               # Route Configuration
-│   └── dtos.go                     # Presentation DTOs
 └── testing/mocks/                   # Test Doubles
     ├── application/ports/
     │   ├── command_handler_mock.go

@@ -67,7 +67,7 @@ Application handler mocks remain in their original location:
 
 ```go
 import (
-    appPorts "github.com/racibaz/go-arch/internal/modules/post/application/ports"
+    appPorts "github.com/racibaz/go-arch/internal/modules/post/features/featureName/v1/application/ports/"
 )
 
 func TestMyHandler(t *testing.T) {
@@ -80,7 +80,7 @@ func TestMyHandler(t *testing.T) {
 ## Guidelines
 
 - **Domain Layer**: No mocks should exist in the domain layer itself
-- **Application Layer**: Mocks for application handlers can remain in `application/ports/`
+- **Application Layer**: Mocks for application handlers can remain in `features/featureName/v1/application/ports/`
 - **Infrastructure Layer**: Mocks for external dependencies go in `testing/mocks/infrastructure/`
 - **Cross-module**: Shared mocks go in `internal/modules/shared/testing/mocks/`
 

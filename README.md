@@ -30,6 +30,7 @@
 Go-Arch provides a full-featured template for building modern backend services in Go, combining:
 - Hexagonal (ports & adapters) architecture + Domain-Driven Design (DDD)
 - Modular monolith structure
+- Vertical slice architecture (aka feature-based organization)
 - Module code generator for rapid development
 - RESTful APIs and gRPC support
 - Database integration via Gorm + PostgreSQL + migrations
@@ -48,21 +49,21 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🐳 Run with Docker (air for live reload)](#-run-with-docker)
 - [📄 C4 Model Diagrams](#-c4-model-diagrams)
 - [📑 Architecture Decision Log (ADL)](#-architecture-decision-log-adl)
+- [🔧 Makefile Commands](#-makefile-commands)
 - [🧩 Create Your First Module](#-create-your-first-module)
     - [Step 1: Generate the Module](#step-1-generate-the-module)
     - [Step 2: Register Routes](#step-2-register-routes)
     - [Step 3: Add Database Migrations](#step-3-add-database-migrations)
     - [Step 4: Implement Module Logic](#step-4-implement-module-logic)
-    - [Step 5: Generate Swagger Documentation](#step-5-generate-swagger-documentation)
     - [Module Creation Flow](#module-creation-flow)
 - [⚙️ Application Runtime Modes](#-application-runtime-modes)
 - [🪲 Local Debugging Mode](#-local-debugging-mode)
-- [🚀 GitHub Actions CI Workflow](#-github-actions-ci-workflow)
-- [🔧 Makefile Commands](#-makefile-commands)
+- [🚀 CI/CD & Quality Automation](#-cicd--quality-automation)
+    - [Workflows](#workflows)
 - [⚙️ Generate gRPC Code](#-generate-grpc-code)
     - [ gRPC Client Example](#-grpc-client-example)
 - [📑 Swagger Documentation UI](#-swagger-documentation-ui)
-    - [Generate Swagger Documentation](#generate-swagger-documentation)
+    - [Generate Swagger Documentation](#-generate-swagger-documentation)
 - [📬 RabbitMQ UI](#rabbitmq-ui)
 - [📡 Prometheus UI](#prometheus-ui)
 - [📊 Grafana UI](#grafana-ui)
@@ -70,14 +71,12 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🗄️ Elasticsearch](#elasticsearch)
 - [🌐 Kibana UI](#kibana-ui)
 - [📦 Dependencies](#-dependencies)
-- [📂 Project Structure](#-project-structure)
 - [🛠 Roadmap / TODO](#-roadmap--todo)
 - [🚪 API Requests](#-api-requests)
 - [📬 Postman Collection](#-postman-collection)
 - [❌ Validation Error Response Example](#-validation-error-response-example)
 - [✔️ API Response Example](#-api-response-example)
-- [✔️ Linters](#-linters)
-- [🧪 Test](#-tests)
+- [🧪 Test](#-testing--quality)
 - [🤝 Code of Conduct](#-code-of-conduct)
 - [👥 Contributing](#-contributing)
 - [📜 License](#-license)
@@ -121,6 +120,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **Migration** and **Seeder** mechanisms
 - **Golangci-lint** for more linters
 - **Architecture Decision Log (ADL)** for documenting architectural decisions
+- **Vertical Slice Architecture** for organizing code by feature
 - And more...
 
 
@@ -265,7 +265,7 @@ After adding or modifying API endpoints, update the Swagger documentation:
 
 `make generate_swagger`
 
-See [Generate Swagger Documentation](#generate-swagger-documentation) for details.
+See [Generate Swagger Documentation](#-generate-swagger-documentation) for details.
 
 ### Module Creation Flow
 
@@ -311,19 +311,31 @@ If you want to debug the application locally with your IDE or command line, foll
 
 
 
-### 🚀 GitHub Actions CI Workflow
-The project includes a GitHub Actions workflow for continuous integration (CI). The workflow is defined in the `.github/workflows/ci.yaml` file and includes the following steps:
-#### Step 1 - (push and release):
-- Checkout code
-- Set up Go environment
-- Install dependencies
-- Run linters
-- Run tests
+### 🚀 CI/CD & Quality Automation
 
-#### Step 2 - If you give tag to your repository, it will trigger the release job:
-- Build the application
-- Build Docker image
-- Push Docker image to Docker Hub
+This project uses GitHub Actions for:
+
+- ✅ Automated tests
+- ✅ Linting (golangci-lint)
+- ✅ Code coverage + Codecov
+- ✅ Security scanning (CodeQL)
+- ✅ Docker image publishing to Docker Hub (if it is a tagged release)
+
+### Workflows
+
+- **CI**
+    - Runs on push & PR
+    - Executes tests, coverage & vet
+
+- **Release**
+    - Triggered by tags (`v*.*.*`)
+    - Builds & pushes Docker image
+
+- **Security**
+    - CodeQL analysis for vulnerabilities
+
+Fully automated and production-ready 🚀
+
  
 
 
@@ -331,54 +343,42 @@ The project includes a GitHub Actions workflow for continuous integration (CI). 
 ```bash
 make run
 ```
+#### 🛠 Database Migrations
 ```bash
-name=init_schema make db_create_migration
-```
-```bash
+make db_create_migration name=init_schema
 make db_migrate_up
-```
-```bash
 make db_migrate_down
-```
-```bash
 make db_migrate_force
-```
-```bash
 make db_migrate_drop
-```
-```bash
 make db_migrate_version
 ```
+#### 🌱 Database Seeding
 ```bash
 make seed
 ```
+#### 🧪 Testing & Quality
 ```bash
 make mock
-```
-```bash
 make coverage
-```
-```bash
 make test
 ```
+#### 🧹 Linters
+
 ```bash
 make lint
-```
-```bash
 make ci-lint
-```
-```bash
 make fmt
 ```
 
 #### 🛠️ Generate gRPC Code
 ```bash
  make generate_proto DIR=yourPath
+ 
+ Example:
+ make generate_proto DIR=internal/modules/post/features/creatingpost/v1/endpoints/grpc/proto
 ```
-Example:
-```bash
- make generate_proto DIR=internal/modules/post/application/features/creatingpost/v1/endpoints/grpc/proto
-```
+
+
 
 #### 🧪 gRPC Client Example
 ```   
@@ -388,11 +388,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/racibaz/go-arch/internal/modules/post/presentation/grpc/proto"
+        "log"
+	
+	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/adapters/endpoints/grpc/proto"
 	"github.com/racibaz/go-arch/pkg/config"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"log"
+
 )
 
 const (
@@ -626,22 +628,10 @@ When sending a GET request to retrieve a post by its ID, you might receive a res
 ```
 
 
-## 🧹 Linters
-```bash
-make lint
-```
 
-## 🧪 Tests
-For testing, when you are working in you local, change the APP_ENV variable to "test" in the .env file.
-```bash 
-APP_ENV="test" 
-```
-```bash
-make test
-```
-```bash
-make coverage
-```
+## 🧪 Tests & Quality
+
+You can find [test](#-testing--quality) , [linters](#-linters), and [mock](#-testing--quality) commands in the Makefile.
 
 
 ## 🤝 Code of Conduct
