@@ -43,3 +43,11 @@ func SuccessResponse(c *gin.Context, message string, data any, status int) {
 		"data":    data,
 	})
 }
+
+// SchemaResponse sends a standardized schema response
+func SchemaResponse(c *gin.Context, data any, expects string) {
+	c.JSON(200, gin.H{
+		"fields":  data,
+		"expects": expects,
+	})
+}

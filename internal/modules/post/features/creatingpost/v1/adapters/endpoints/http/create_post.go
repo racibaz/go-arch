@@ -130,10 +130,25 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 			},
 		},
 		Links: []helper.Link{
-			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, newID), http.MethodGet),
-			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), http.MethodPost),
-			helper.AddHateoas("update", fmt.Sprintf("%s/%s", routePath, newID), http.MethodPut),
-			helper.AddHateoas("delete", fmt.Sprintf("%s/%s", routePath, newID), http.MethodDelete),
+			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, newID), http.MethodGet, ""),
+			helper.AddHateoas(
+				"store",
+				fmt.Sprintf("%s/", routePath),
+				http.MethodPost,
+				"api/v1/schemas/posts/create",
+			),
+			helper.AddHateoas(
+				"update",
+				fmt.Sprintf("%s/%s", routePath, newID),
+				http.MethodPut,
+				"api/v1/schemas/posts/update",
+			),
+			helper.AddHateoas(
+				"delete",
+				fmt.Sprintf("%s/%s", routePath, newID),
+				http.MethodDelete,
+				"",
+			),
 		},
 	}
 

@@ -159,6 +159,38 @@
                     }
                 }
             }
+        },
+        "/schemas/posts/create": {
+            "get": {
+                "description": "Get fields of creation requirement",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Get fields of creation requirement",
+                "responses": {}
+            }
+        },
+        "/schemas/posts/update": {
+            "get": {
+                "description": "Get fields of update requirement",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Get fields of update requirement",
+                "responses": {}
+            }
         }
     },
     "definitions": {

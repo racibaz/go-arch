@@ -17,6 +17,12 @@ func MapHttpRoute(
 
 	v1 := router.Group("/api/v1")
 	{
+		schemas := v1.Group("/schemas")
+		{
+			schemas.GET("/posts/create", http.Create)
+			schemas.GET("/posts/update", http.Update)
+		}
+
 		eg := v1.Group("/posts")
 		{
 			eg.POST("", createPostHandler.Store)

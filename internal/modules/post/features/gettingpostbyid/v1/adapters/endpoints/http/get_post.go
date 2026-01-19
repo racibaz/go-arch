@@ -101,17 +101,25 @@ func (h GetPostHandler) Show(c *gin.Context) {
 				"self",
 				fmt.Sprintf("%s/%s", routePath, postID),
 				http.MethodGet,
+				"",
 			),
-			helper.AddHateoas("store", fmt.Sprintf("%s/", routePath), http.MethodPost),
+			helper.AddHateoas(
+				"store",
+				fmt.Sprintf("%s/", routePath),
+				http.MethodPost,
+				"api/v1/schemas/posts/create",
+			),
 			helper.AddHateoas(
 				"update",
 				fmt.Sprintf("%s/%s", routePath, postID),
 				http.MethodPut,
+				"api/v1/schemas/posts/update",
 			),
 			helper.AddHateoas(
 				"delete",
 				fmt.Sprintf("%s/%s", routePath, postID),
 				http.MethodDelete,
+				"",
 			),
 		},
 	}

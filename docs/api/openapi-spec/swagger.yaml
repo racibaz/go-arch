@@ -213,4 +213,26 @@ paths:
       summary: Get post by id
       tags:
       - posts
+  /schemas/posts/create:
+    get:
+      consumes:
+      - application/json
+      description: Get fields of creation requirement
+      produces:
+      - application/json
+      responses: {}
+      summary: Get fields of creation requirement
+      tags:
+      - posts
+  /schemas/posts/update:
+    get:
+      consumes:
+      - application/json
+      description: Get fields of update requirement
+      produces:
+      - application/json
+      responses: {}
+      summary: Get fields of update requirement
+      tags:
+      - posts
 swagger: "2.0"

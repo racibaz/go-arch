@@ -9,6 +9,55 @@
 			"name": "posts",
 			"item": [
 				{
+					"name": "schemas",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3001/api/v1/schemas/posts/create",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"v1",
+										"schemas",
+										"posts",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3001/api/v1/schemas/posts/update",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"api",
+										"v1",
+										"schemas",
+										"posts",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "show",
 					"request": {
 						"method": "GET",

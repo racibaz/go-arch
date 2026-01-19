@@ -101,6 +101,7 @@ func (h GetPostsHandler) Index(c *gin.Context) {
 				"self",
 				fmt.Sprintf("%s", routePath),
 				http.MethodGet,
+				"",
 			),
 		},
 	}

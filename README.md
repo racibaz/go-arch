@@ -113,7 +113,7 @@ This project demonstrates clean architectural principles in Go, including:
 - CI with GitHub Actions
 - **Build Docker Images** and **Push to Docker Hub**
 - **Module Generator** for rapid module creation
-- **Hateoas** for API responses
+- **Hateoas** and **"Schemas"** for API responses
 - **CodeQL Analysis** for security
 - **Codecov** coverage reports
 - **Interface Assertions** for better type safety
@@ -558,13 +558,15 @@ http://127.0.0.1:5601/app/home#/
 
 ## 🚪 API Requests
 
-| Endpoint                            | HTTP Method |    Description    |
-|-------------------------------------|:-----------:|:-----------------:|
-| `/api/v1/posts`                     |   `POST`    |  `Create a post`  |
-| `/api/v1/posts/{{post_id}}`         |    `GET`    |   `Get a post`    |
-| `/api/v1/posts?page=1&page_size=15` |    `GET`    |   `List posts`    |
-| `/api/health`                       |    `GET`    | `Health endpoint` |
-| `/metrics`                          |    `GET`    |  `List metrics`   |
+| Endpoint                            | HTTP Method |           Description           |
+|-------------------------------------|:-----------:|:-------------------------------:|
+| `/api/v1/posts`                     |   `POST`    |         `Create a post`         |
+| `/api/v1/posts/{{post_id}}`         |    `GET`    |          `Get a post`           |
+| `/api/v1/posts?page=1&page_size=15` |    `GET`    |          `List posts`           |
+| `/api/health`                       |    `GET`    |        `Health endpoint`        |
+| `/metrics`                          |    `GET`    |         `List metrics`          |
+| `/api/v1/schemas/posts/create`      |    `GET`    | `List of creation requirements` |
+| `/api/v1/schemas/posts/update`      |    `GET`    |  `List of update requirements`  |
 
 ## 📬 Postman Collection
 [Download](docs/postman/go-arch.postman_collection.json)
@@ -604,22 +606,24 @@ When sending a GET request to retrieve a post by its ID, you might receive a res
         "_links": [
             {
                 "rel": "self",
-                "href": "/api/v1/posts/2d86263a-eebf-4e7d-867a-0115569d6a3a",
+                "href": "/api/v1/posts/647174b2-e0a4-45c0-94b0-f69fcb8506f9",
                 "type": "GET"
             },
             {
                 "rel": "store",
                 "href": "/api/v1/posts/",
-                "type": "POST"
+                "type": "POST",
+                "schema": "api/v1/schemas/posts/create"
             },
             {
                 "rel": "update",
-                "href": "/api/v1/posts/2d86263a-eebf-4e7d-867a-0115569d6a3a",
-                "type": "PUT"
+                "href": "/api/v1/posts/647174b2-e0a4-45c0-94b0-f69fcb8506f9",
+                "type": "PUT",
+                "schema": "api/v1/schemas/posts/update"
             },
             {
                 "rel": "delete",
-                "href": "/api/v1/posts/2d86263a-eebf-4e7d-867a-0115569d6a3a",
+                "href": "/api/v1/posts/647174b2-e0a4-45c0-94b0-f69fcb8506f9",
                 "type": "DELETE"
             }
         ]
