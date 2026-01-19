@@ -121,6 +121,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **Golangci-lint** for more linters
 - **Architecture Decision Log (ADL)** for documenting architectural decisions
 - **Vertical Slice Architecture** for organizing code by feature
+- **Pagination** for listing records
 - And more...
 
 
@@ -557,15 +558,16 @@ http://127.0.0.1:5601/app/home#/
 
 ## 🚪 API Requests
 
-| Endpoint                    | HTTP Method |    Description    |
-|-----------------------------|:-----------:|:-----------------:|
-| `/api/v1/posts`             |   `POST`    |  `Create a post`  |
-| `/api/v1/posts/{{post_id}}` |    `GET`    |   `Get a post`    |
-| `/api/health`               |    `GET`    | `Health endpoint` |
-| `/metrics`                  |    `GET`    |  `List metrics`   |
+| Endpoint                            | HTTP Method |    Description    |
+|-------------------------------------|:-----------:|:-----------------:|
+| `/api/v1/posts`                     |   `POST`    |  `Create a post`  |
+| `/api/v1/posts/{{post_id}}`         |    `GET`    |   `Get a post`    |
+| `/api/v1/posts?page=1&page_size=15` |    `GET`    |   `List posts`    |
+| `/api/health`                       |    `GET`    | `Health endpoint` |
+| `/metrics`                          |    `GET`    |  `List metrics`   |
 
 ## 📬 Postman Collection
-[Download](docs/postman/baz-arch.postman_collection.json)
+[Download](docs/postman/go-arch.postman_collection.json)
 
 ## ❌ Validation Error Response Example
 When sending a POST request to create a post with invalid data, you might receive a validation error response like this:

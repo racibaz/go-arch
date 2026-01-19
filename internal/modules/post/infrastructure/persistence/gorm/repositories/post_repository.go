@@ -79,9 +79,12 @@ func (repo *GormPostRepository) List(
 ) ([]*domain.Post, error) {
 	var posts []*domain.Post
 
-	err := repo.DB.WithContext(ctx).Scopes(helper.Paginate(pagination)).Find(&posts)
+	err := repo.DB.WithContext(ctx).
+		Scopes(helper.Paginate(pagination)).
+		Find(&posts).
+		Error
 	if err != nil {
-		return nil, err.Error
+		return nil, err
 	}
 
 	return posts, nil

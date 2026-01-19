@@ -12,22 +12,22 @@ import (
 	"github.com/racibaz/go-arch/pkg/uuid"
 )
 
-// Repository Secondary adapters: InMemory implementation
-type Repository struct {
+// InMemoryRepository Secondary adapters: InMemory implementation
+type InMemoryRepository struct {
 	posts map[uuid.Uuid]*domain.Post
 	sync.Mutex
 }
 
-var _ ports.PostRepository = (*Repository)(nil)
+var _ ports.PostRepository = (*InMemoryRepository)(nil)
 
-func New() *Repository {
-	return &Repository{
+func NewInMemoryRepository() *InMemoryRepository {
+	return &InMemoryRepository{
 		posts: make(map[uuid.Uuid]*domain.Post),
 	}
 }
 
 // TODO it should return mapper or aggregate root
-func (pr *Repository) Save(ctx context.Context, post *domain.Post) error {
+func (pr *InMemoryRepository) Save(ctx context.Context, post *domain.Post) error {
 	pr.Mutex.Lock()
 	defer pr.Mutex.Unlock()
 
@@ -52,7 +52,7 @@ func (pr *Repository) Save(ctx context.Context, post *domain.Post) error {
 	return nil
 }
 
-func (pr *Repository) GetByID(ctx context.Context, id string) (*domain.Post, error) {
+func (pr *InMemoryRepository) GetByID(ctx context.Context, id string) (*domain.Post, error) {
 	postID, err := uuid.Parse(id)
 	if err != nil {
 		return nil, errors.New("invalid Post ID format")
@@ -71,17 +71,17 @@ func (pr *Repository) GetByID(ctx context.Context, id string) (*domain.Post, err
 	return exists, nil
 }
 
-func (pr *Repository) Update(ctx context.Context, post *domain.Post) error {
+func (pr *InMemoryRepository) Update(ctx context.Context, post *domain.Post) error {
 	// TODO implement me
 	panic("implement me")
 }
 
-func (pr *Repository) Delete(ctx context.Context, id string) error {
+func (pr *InMemoryRepository) Delete(ctx context.Context, id string) error {
 	// TODO implement me
 	panic("implement me")
 }
 
-func (pr *Repository) List(
+func (pr *InMemoryRepository) List(
 	ctx context.Context,
 	pagination helper.Pagination,
 ) ([]*domain.Post, error) {
@@ -89,7 +89,10 @@ func (pr *Repository) List(
 	panic("implement me")
 }
 
-func (repo *Repository) IsExists(ctx context.Context, title, description string) (bool, error) {
+func (repo *InMemoryRepository) IsExists(
+	ctx context.Context,
+	title, description string,
+) (bool, error) {
 	// TODO implement me
 	return false, nil
 }

@@ -29,14 +29,14 @@ func createTestPost() (*domain.Post, error) {
 }
 
 func TestNew(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 	assert.NotNil(t, repo)
 	assert.NotNil(t, repo.posts)
 	assert.IsType(t, make(map[uuid.Uuid]*domain.Post), repo.posts)
 }
 
 func TestRepository_Save_Success(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 	post, err := createTestPost()
 	assert.NoError(t, err)
 
@@ -54,7 +54,7 @@ func TestRepository_Save_Success(t *testing.T) {
 }
 
 func TestRepository_Save_InvalidID(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 
 	// Create a post manually with empty ID to bypass domain validation
 	post := &domain.Post{}
@@ -74,7 +74,7 @@ func TestRepository_Save_InvalidID(t *testing.T) {
 }
 
 func TestRepository_Save_InvalidUUIDFormat(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 
 	// Create post with invalid UUID
 	now := time.Now()
@@ -101,7 +101,7 @@ func TestRepository_GetByID_Success(t *testing.T) {
 	// Skip this test due to bug in Save method - it validates but doesn't store posts
 	t.Skip("Skipping due to Save method bug - posts are not actually stored")
 
-	repo := New()
+	repo := NewInMemoryRepository()
 	post, err := createTestPost()
 	assert.NoError(t, err)
 
@@ -121,7 +121,7 @@ func TestRepository_GetByID_Success(t *testing.T) {
 }
 
 func TestRepository_GetByID_NotFound(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 
 	ctx := context.Background()
 	retrievedPost, err := repo.GetByID(ctx, uuid.NewUuid().ToString())
@@ -132,7 +132,7 @@ func TestRepository_GetByID_NotFound(t *testing.T) {
 }
 
 func TestRepository_GetByID_InvalidID(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 
 	ctx := context.Background()
 	retrievedPost, err := repo.GetByID(ctx, "invalid-uuid")
@@ -143,7 +143,7 @@ func TestRepository_GetByID_InvalidID(t *testing.T) {
 }
 
 func TestRepository_GetByID_EmptyID(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 
 	ctx := context.Background()
 	retrievedPost, err := repo.GetByID(ctx, "")
@@ -155,7 +155,7 @@ func TestRepository_GetByID_EmptyID(t *testing.T) {
 }
 
 func TestRepository_Update_Panics(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 
 	post, err := createTestPost()
 	assert.NoError(t, err)
@@ -168,7 +168,7 @@ func TestRepository_Update_Panics(t *testing.T) {
 }
 
 func TestRepository_Delete_Panics(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 
 	ctx := context.Background()
 
@@ -178,7 +178,7 @@ func TestRepository_Delete_Panics(t *testing.T) {
 }
 
 func TestRepository_List_Panics(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 
 	ctx := context.Background()
 
@@ -193,7 +193,7 @@ func TestRepository_List_Panics(t *testing.T) {
 }
 
 func TestRepository_IsExists_NotImplemented(t *testing.T) {
-	repo := New()
+	repo := NewInMemoryRepository()
 
 	ctx := context.Background()
 	exists, err := repo.IsExists(ctx, "title", "description")
@@ -203,8 +203,8 @@ func TestRepository_IsExists_NotImplemented(t *testing.T) {
 }
 
 func TestRepositoryImplementsInterface(t *testing.T) {
-	// Test that Repository implements the PostRepository interface
-	var repo interface{} = &Repository{}
+	// Test that InMemoryRepository implements the PostRepository interface
+	var repo interface{} = &InMemoryRepository{}
 	_, ok := repo.(interface {
 		Save(ctx context.Context, post *domain.Post) error
 		GetByID(ctx context.Context, id string) (*domain.Post, error)
@@ -214,5 +214,5 @@ func TestRepositoryImplementsInterface(t *testing.T) {
 		IsExists(ctx context.Context, title, description string) (bool, error)
 	})
 
-	assert.True(t, ok, "Repository should implement PostRepository interface")
+	assert.True(t, ok, "InMemoryRepository should implement PostRepository interface")
 }

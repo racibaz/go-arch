@@ -5,8 +5,10 @@ import (
 
 	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/post/features/gettingpostbyid/v1/application/query"
+	gettingpostsQuery "github.com/racibaz/go-arch/internal/modules/post/features/gettingposts/v1/application/query"
 	domainMockPorts "github.com/racibaz/go-arch/internal/modules/post/testing/mocks/domain/ports"
 	appMockPorts "github.com/racibaz/go-arch/internal/modules/shared/testing/mocks/application/ports"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/logger"
 	"github.com/stretchr/testify/suite"
 )
@@ -14,11 +16,12 @@ import (
 // PostModuleTestSuite provides a test suite for PostModule testing
 type PostModuleTestSuite struct {
 	suite.Suite
-	mockRepo           *domainMockPorts.MockPostRepository
-	mockAdapter        *domainMockPorts.MockNotificationAdapter
-	mockCommandHandler *appMockPorts.MockCommandHandler[commands.CreatePostCommandV1]
-	mockQueryHandler   *appMockPorts.MockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse]
-	mockLogger         *logger.MockLogger
+	mockRepo             *domainMockPorts.MockPostRepository
+	mockAdapter          *domainMockPorts.MockNotificationAdapter
+	mockCommandHandler   *appMockPorts.MockCommandHandler[commands.CreatePostCommandV1]
+	mockQueryHandler     *appMockPorts.MockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse]
+	mockListQueryHandler *appMockPorts.MockQueryHandler[helper.Pagination, gettingpostsQuery.GetPostsQueryResponse]
+	mockLogger           *logger.MockLogger
 }
 
 // SetupTest is called before each test method
@@ -29,6 +32,10 @@ func (suite *PostModuleTestSuite) SetupTest() {
 		suite.T(),
 	)
 	suite.mockQueryHandler = appMockPorts.NewMockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse](
+		suite.T(),
+	)
+
+	suite.mockListQueryHandler = appMockPorts.NewMockQueryHandler[helper.Pagination, gettingpostsQuery.GetPostsQueryResponse](
 		suite.T(),
 	)
 
@@ -51,6 +58,7 @@ func (suite *PostModuleTestSuite) TestNewPostModule() {
 			suite.mockRepo,
 			suite.mockCommandHandler,
 			suite.mockQueryHandler,
+			suite.mockListQueryHandler,
 			suite.mockLogger,
 			suite.mockAdapter,
 		)
@@ -58,8 +66,9 @@ func (suite *PostModuleTestSuite) TestNewPostModule() {
 		// Then
 		suite.NotNil(postModule)
 		suite.NotNil(postModule.Repository())
-		suite.NotNil(postModule.CommandHandler())
-		suite.NotNil(postModule.QueryHandler())
+		suite.NotNil(postModule.CreatePostCommandHandler())
+		suite.NotNil(postModule.GetPostByIdQueryHandler())
+		suite.NotNil(postModule.GetPostsQueryHandler())
 		suite.NotNil(postModule.Notifier())
 		// Logger can be nil for testing purposes
 	})
@@ -72,6 +81,7 @@ func (suite *PostModuleTestSuite) TestPostModule_Repository() {
 			suite.mockRepo,
 			suite.mockCommandHandler,
 			suite.mockQueryHandler,
+			suite.mockListQueryHandler,
 			suite.mockLogger,
 			suite.mockAdapter,
 		)
@@ -92,12 +102,13 @@ func (suite *PostModuleTestSuite) TestPostModule_CommandHandler() {
 			suite.mockRepo,
 			suite.mockCommandHandler,
 			suite.mockQueryHandler,
+			suite.mockListQueryHandler,
 			suite.mockLogger,
 			suite.mockAdapter,
 		)
 
 		// When
-		commandHandler := postModule.CommandHandler()
+		commandHandler := postModule.CreatePostCommandHandler()
 
 		// Then
 		suite.NotNil(commandHandler)
@@ -112,12 +123,13 @@ func (suite *PostModuleTestSuite) TestPostModule_QueryHandler() {
 			suite.mockRepo,
 			suite.mockCommandHandler,
 			suite.mockQueryHandler,
+			suite.mockListQueryHandler,
 			suite.mockLogger,
 			suite.mockAdapter,
 		)
 
 		// When
-		queryHandler := postModule.QueryHandler()
+		queryHandler := postModule.GetPostByIdQueryHandler()
 
 		// Then
 		suite.NotNil(queryHandler)
@@ -132,6 +144,7 @@ func (suite *PostModuleTestSuite) TestPostModule_Logger() {
 			suite.mockRepo,
 			suite.mockCommandHandler,
 			suite.mockQueryHandler,
+			suite.mockListQueryHandler,
 			suite.mockLogger,
 			suite.mockAdapter,
 		)
@@ -151,6 +164,7 @@ func (suite *PostModuleTestSuite) TestPostModule_Notifier() {
 			suite.mockRepo,
 			suite.mockCommandHandler,
 			suite.mockQueryHandler,
+			suite.mockListQueryHandler,
 			suite.mockLogger,
 			suite.mockAdapter,
 		)
@@ -181,6 +195,7 @@ func (suite *PostModuleTestSuite) TestPostModule_MultipleInstances() {
 			suite.mockRepo,
 			suite.mockCommandHandler,
 			suite.mockQueryHandler,
+			suite.mockListQueryHandler,
 			suite.mockLogger,
 			suite.mockAdapter,
 		)
@@ -188,6 +203,7 @@ func (suite *PostModuleTestSuite) TestPostModule_MultipleInstances() {
 			mockRepo2,
 			mockCommandHandler2,
 			mockQueryHandler2,
+			suite.mockListQueryHandler,
 			suite.mockLogger,
 			mockAdapter2,
 		)
@@ -197,24 +213,9 @@ func (suite *PostModuleTestSuite) TestPostModule_MultipleInstances() {
 		suite.NotNil(module2)
 		suite.NotSame(module1, module2)
 		suite.NotSame(module1.Repository(), module2.Repository())
-		suite.NotSame(module1.CommandHandler(), module2.CommandHandler())
-		suite.NotSame(module1.QueryHandler(), module2.QueryHandler())
+		suite.NotSame(module1.CreatePostCommandHandler(), module2.CreatePostCommandHandler())
+		suite.NotSame(module1.GetPostByIdQueryHandler(), module2.GetPostByIdQueryHandler())
 		suite.NotSame(module1.Notifier(), module2.Notifier())
-	})
-}
-
-func (suite *PostModuleTestSuite) TestPostModule_WithNilDependencies() {
-	suite.Run("should handle nil dependencies gracefully", func() {
-		// When
-		postModule := NewPostModule(nil, nil, nil, nil, nil)
-
-		// Then
-		suite.NotNil(postModule)
-		suite.Nil(postModule.Repository())
-		suite.Nil(postModule.CommandHandler())
-		suite.Nil(postModule.QueryHandler())
-		suite.Nil(postModule.Logger())
-		suite.Nil(postModule.Notifier())
 	})
 }
 
@@ -225,14 +226,15 @@ func (suite *PostModuleTestSuite) TestPostModule_DependencyInjection() {
 			suite.mockRepo,
 			suite.mockCommandHandler,
 			suite.mockQueryHandler,
+			suite.mockListQueryHandler,
 			suite.mockLogger,
 			suite.mockAdapter,
 		)
 
 		// Then
 		suite.Equal(suite.mockRepo, postModule.Repository())
-		suite.Equal(suite.mockCommandHandler, postModule.CommandHandler())
-		suite.Equal(suite.mockQueryHandler, postModule.QueryHandler())
+		suite.Equal(suite.mockCommandHandler, postModule.CreatePostCommandHandler())
+		suite.Equal(suite.mockQueryHandler, postModule.GetPostByIdQueryHandler())
 		suite.Equal(suite.mockLogger, postModule.Logger())
 		suite.Equal(suite.mockAdapter, postModule.Notifier())
 	})

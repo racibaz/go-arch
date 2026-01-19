@@ -19,7 +19,7 @@ func MapHttpRoute(
 	{
 		eg := v1.Group("/posts")
 		{
-			eg.POST("/", createPostHandler.Store)
+			eg.POST("", createPostHandler.Store)
 		}
 	}
 }

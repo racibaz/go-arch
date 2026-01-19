@@ -16,7 +16,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// MockCommandHandler is a mock implementation of CommandHandler for testing
+// MockCommandHandler is a mock implementation of CreatePostCommandHandler for testing
 type MockCommandHandler struct {
 	mock.Mock
 }

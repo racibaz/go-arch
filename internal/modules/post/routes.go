@@ -10,6 +10,8 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/application/commands"
 	getPostByPostByIdV1Endpoint "github.com/racibaz/go-arch/internal/modules/post/features/gettingpostbyid/v1/adapters/endpoints"
 	"github.com/racibaz/go-arch/internal/modules/post/features/gettingpostbyid/v1/application/query"
+	getPostByPostsV1Endpoint "github.com/racibaz/go-arch/internal/modules/post/features/gettingposts/v1/adapters/endpoints"
+	gettingPostsQuery "github.com/racibaz/go-arch/internal/modules/post/features/gettingposts/v1/application/query"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/messaging/rabbitmq"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/notification/sms"
 	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/observability/logging"
@@ -38,6 +40,8 @@ func BuildPostModule() *PostModule {
 		// Use GORM repository for persistence
 		repository := gormPostRepo.NewGormPostRepository()
 
+		// repository := in_memory.NewInMemoryRepository()
+
 		// Assuming NewZapLogger is a function that initializes a logger
 		logger, _ := logger.NewZapLogger()
 
@@ -55,6 +59,7 @@ func BuildPostModule() *PostModule {
 			messagePublisher,
 		)
 		getPostQueryHandler := query.NewGetPostHandler(repository, logger)
+		getPostsQueryHandler := gettingPostsQuery.NewGetPostsHandler(repository, logger)
 
 		notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
 
@@ -69,6 +74,7 @@ func BuildPostModule() *PostModule {
 			repository,
 			createPostCommandHandler,
 			getPostQueryHandler,
+			getPostsQueryHandler,
 			logger,
 			notificationAdapter,
 		)
@@ -80,13 +86,14 @@ func Routes(router *gin.Engine) {
 	module := BuildPostModule()
 
 	// Collect here restful routes of your module.
-	creatingPostV1Endpoint.MapHttpRoute(router, module.CommandHandler())
-	getPostByPostByIdV1Endpoint.MapHttpRoute(router, module.QueryHandler())
+	creatingPostV1Endpoint.MapHttpRoute(router, module.CreatePostCommandHandler())
+	getPostByPostByIdV1Endpoint.MapHttpRoute(router, module.GetPostByIdQueryHandler())
+	getPostByPostsV1Endpoint.MapHttpRoute(router, module.GetPostsQueryHandler())
 }
 
 func GrpcRoutes(grpcServer *googleGrpc.Server) {
 	module := BuildPostModule()
 
 	// Collect here grpc routes of your module
-	grpc.NewCreatePostHandler(grpcServer, module.CommandHandler())
+	grpc.NewCreatePostHandler(grpcServer, module.CreatePostCommandHandler())
 }

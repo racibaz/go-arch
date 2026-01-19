@@ -36,6 +36,36 @@ definitions:
       type:
         type: string
     type: object
+  github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_adapters_endpoints_http.Post:
+    properties:
+      content:
+        description: "@Description\tContent is the content of the post"
+        type: string
+      description:
+        description: "@Description\tDescription is the description of the post"
+        type: string
+      status:
+        description: "@Description\tStatus is the status of the post"
+        type: string
+      title:
+        description: "@Description\tTitle is the title of the post"
+        type: string
+    type: object
+  github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post:
+    properties:
+      content:
+        description: "@Description\tContent is the content of the post"
+        type: string
+      description:
+        description: "@Description\tDescription is the description of the post"
+        type: string
+      status:
+        description: "@Description\tStatus is the status of the post"
+        type: string
+      title:
+        description: "@Description\tTitle is the title of the post"
+        type: string
+    type: object
   http.CreatePostRequestDto:
     description: CreatePostRequestDto is a data transfer object for creating a post
     properties:
@@ -65,22 +95,16 @@ definitions:
       details of a created post
     properties:
       post:
-        $ref: '#/definitions/http.Post'
+        $ref: '#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_adapters_endpoints_http.Post'
     type: object
-  http.Post:
+  http.GetPostResponseDto:
+    description: GetPostResponseDto is a data transfer object for reporting the details
+      of a post
     properties:
-      content:
-        description: "@Description\tContent is the content of the post"
-        type: string
-      description:
-        description: "@Description\tDescription is the description of the post"
-        type: string
-      status:
-        description: "@Description\tStatus is the status of the post"
-        type: string
-      title:
-        description: "@Description\tTitle is the title of the post"
-        type: string
+      posts:
+        items:
+          $ref: '#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post'
+        type: array
     type: object
 info:
   contact: {}
@@ -101,6 +125,32 @@ paths:
       tags:
       - health
   /posts:
+    get:
+      consumes:
+      - application/json
+      description: It is a method to retrieve a pagination keys such as page and page_size
+        and list posts
+      parameters:
+      - description: page number
+        in: path
+        name: page
+        required: true
+        type: string
+      - description: page size
+        in: path
+        name: page_size
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Post listed successfully
+          schema:
+            $ref: '#/definitions/http.GetPostResponseDto'
+      summary: List posts
+      tags:
+      - posts
     post:
       consumes:
       - application/json

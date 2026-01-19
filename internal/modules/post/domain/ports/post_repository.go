@@ -2,9 +2,9 @@ package ports
 
 import (
 	"context"
-	"github.com/racibaz/go-arch/pkg/helper"
 
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
+	"github.com/racibaz/go-arch/pkg/helper"
 )
 
 // PostRepository Secondary port: PostRepository interface

@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "c3cd132e-4a8a-4540-999f-4d87733c7ef4",
-		"name": "Hexagonal-ddd-tdd-eda-example",
+		"name": "go-arch",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -14,7 +14,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3001/api/v1/posts/2d86263a-eebf-4e7d-867a-0115569d6a3a",
+							"raw": "localhost:3001/api/v1/posts/cbe450eb-19f8-4f47-aa60-6387eb329351",
 							"host": [
 								"localhost"
 							],
@@ -23,7 +23,7 @@
 								"api",
 								"v1",
 								"posts",
-								"2d86263a-eebf-4e7d-867a-0115569d6a3a"
+								"cbe450eb-19f8-4f47-aa60-6387eb329351"
 							]
 						}
 					},
@@ -35,11 +35,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/metrics",
+							"raw": "localhost:3001/metrics",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "3001",
 							"path": [
 								"metrics"
 							]
@@ -53,12 +53,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/health",
+							"raw": "localhost:3001/api/health",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "3001",
 							"path": [
+								"api",
 								"health"
 							]
 						}
@@ -78,7 +79,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"user_id\": \"7b3a4d03-bcb9-47ce-b721-a156edd406f0\",\n    \"title\": \"test test test 333333\",\n    \"description\": \"test 11111111112\",\n    \"content\": \"test 11111111112\"\n\n}",
+							"raw": "{\n    \"user_id\": \"7b3a4d03-bcb9-47ce-b721-a156edd406f0\",\n    \"title\": \"test test test 333335\",\n    \"description\": \"test 11111111112\",\n    \"content\": \"test 11111111112\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -86,15 +87,45 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/v1/posts",
+							"raw": "localhost:3001/api/v1/posts",
 							"host": [
 								"localhost"
 							],
-							"port": "8080",
+							"port": "3001",
 							"path": [
 								"api",
 								"v1",
 								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/api/v1/posts?page=1&page_size=15",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "15"
+								}
 							]
 						}
 					},

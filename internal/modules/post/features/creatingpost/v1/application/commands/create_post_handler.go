@@ -22,7 +22,7 @@ type CreatePostHandler struct {
 	tracer           trace.Tracer
 }
 
-// Ensure RemovePostHandler implements the CommandHandler interface
+// Ensure RemovePostHandler implements the CreatePostCommandHandler interface
 var _ applicationPorts.CommandHandler[CreatePostCommandV1] = (*CreatePostHandler)(nil)
 
 // NewCreatePostHandler initializes a new CreatePostHandler with the provided PostRepository.

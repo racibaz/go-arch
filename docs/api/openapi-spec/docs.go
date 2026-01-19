@@ -39,6 +39,43 @@ const docTemplate = `{
             }
         },
         "/posts": {
+            "get": {
+                "description": "It is a method to retrieve a pagination keys such as page and page_size and list posts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "summary": "List posts",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "page number",
+                        "name": "page",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page size",
+                        "name": "page_size",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post listed successfully",
+                        "schema": {
+                            "$ref": "#/definitions/http.GetPostResponseDto"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "It is a method to create a new post",
                 "consumes": [
@@ -189,6 +226,48 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_adapters_endpoints_http.Post": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "@Description\tContent is the content of the post",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "@Description\tDescription is the description of the post",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "@Description\tStatus is the status of the post",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "@Description\tTitle is the title of the post",
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "@Description\tContent is the content of the post",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "@Description\tDescription is the description of the post",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "@Description\tStatus is the status of the post",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "@Description\tTitle is the title of the post",
+                    "type": "string"
+                }
+            }
+        },
         "http.CreatePostRequestDto": {
             "description": "CreatePostRequestDto is a data transfer object for creating a post",
             "type": "object",
@@ -225,28 +304,19 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "post": {
-                    "$ref": "#/definitions/http.Post"
+                    "$ref": "#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_adapters_endpoints_http.Post"
                 }
             }
         },
-        "http.Post": {
+        "http.GetPostResponseDto": {
+            "description": "GetPostResponseDto is a data transfer object for reporting the details of a post",
             "type": "object",
             "properties": {
-                "content": {
-                    "description": "@Description\tContent is the content of the post",
-                    "type": "string"
-                },
-                "description": {
-                    "description": "@Description\tDescription is the description of the post",
-                    "type": "string"
-                },
-                "status": {
-                    "description": "@Description\tStatus is the status of the post",
-                    "type": "string"
-                },
-                "title": {
-                    "description": "@Description\tTitle is the title of the post",
-                    "type": "string"
+                "posts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post"
+                    }
                 }
             }
         }

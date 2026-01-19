@@ -66,6 +66,7 @@ func (p PostStatus) IsArchived() bool {
 	return p == PostStatusArchived
 }
 
+// todo it should return int instead of PostStatus
 func (p PostStatus) ToInt() (PostStatus, error) {
 	if val, ok := stringToPostStatus[p.String()]; ok {
 		return val, nil
