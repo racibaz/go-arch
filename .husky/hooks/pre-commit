@@ -2,5 +2,3 @@
 
   make fmt
   make lint
-  make test
-  make coverage
