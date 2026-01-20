@@ -1,4 +1,4 @@
 #!/bin/sh
-
+  echo "Pre-commit running..."
   make fmt
   make lint

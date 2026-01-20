@@ -50,6 +50,7 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [📄 C4 Model Diagrams](#-c4-model-diagrams)
 - [📑 Architecture Decision Log (ADL)](#-architecture-decision-log-adl)
 - [🔧 Makefile Commands](#-makefile-commands)
+- [ 🪝 Git Hooks](#-git-hooks)
 - [🧩 Create Your First Module](#-create-your-first-module)
     - [Step 1: Generate the Module](#step-1-generate-the-module)
     - [Step 2: Register Routes](#step-2-register-routes)
@@ -187,6 +188,16 @@ The Architecture Decision Log (ADL) for this project can be found in the `docs/a
 If you need to add new adr, you can use [template.md](docs/adl/template.md) file.
 
 - [ADL.md](docs/adl/adl.md) 👈 index
+
+## 🪝 Git Hooks
+
+When you make commit, "pre-commit" will run before commit with these commands.
+```bash
+#!/bin/sh
+  echo "Pre-commit running..."
+  make fmt
+  make lint
+```
 
 ## 🧩 Create Your First Module
 
