@@ -128,18 +128,7 @@ This project demonstrates clean architectural principles in Go, including:
 
 ## 📝 Notes
 - There are two config files that are .env and config.yaml. You can override config.yaml values with environment variables defined in the .env file.
-
-    1. Using golang-migrate package via Makefile commands.
-       The Command examples:
-        - name=init_schema make db_create_migration
-        - make db_migrate_up
-        - make db_migrate_down
-        - make db_migrate_force
-        - make db_migrate_drop
-        - make db_migrate_version
-       
-    2. If you want to use air (live reload), you can change the `entrypoint.sh` file in the root directory.
-          - change the command `make run` to `exec air` or `exec air -d` 
+- If you want to use air (live reload), you can change the `entrypoint.sh` file in the root directory. Change the command `make run` to `exec air` or `exec air -d`
 
 
 ### 🐳 Docker Hub Link
