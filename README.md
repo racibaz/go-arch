@@ -122,6 +122,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **Architecture Decision Log (ADL)** for documenting architectural decisions
 - **Vertical Slice Architecture** for organizing code by feature
 - **Pagination** for listing records
+- **Husky** for Git Hooks
 - And more...
 
 
@@ -523,6 +524,7 @@ http://127.0.0.1:5601/app/home#/
 - open telemetry: `go.opentelemetry.io/otel`
 - jaeger: `go.opentelemetry.io/otel/exporters/jaeger`
 - golangci-lint: `github.com/golangci/golangci-lint/cmd/golangci-lint`
+- husky: `github.com/automation-co/husky`
 
 
 
