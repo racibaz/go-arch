@@ -135,13 +135,13 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 				"store",
 				fmt.Sprintf("%s/", routePath),
 				http.MethodPost,
-				"api/v1/schemas/posts/create",
+				"/api/v1/schemas/posts/create",
 			),
 			helper.AddHateoas(
 				"update",
 				fmt.Sprintf("%s/%s", routePath, newID),
 				http.MethodPut,
-				"api/v1/schemas/posts/update",
+				"/api/v1/schemas/posts/update",
 			),
 			helper.AddHateoas(
 				"delete",

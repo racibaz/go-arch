@@ -613,13 +613,13 @@ When sending a GET request to retrieve a post by its ID, you might receive a res
                 "rel": "store",
                 "href": "/api/v1/posts/",
                 "type": "POST",
-                "schema": "api/v1/schemas/posts/create"
+                "schema": "/api/v1/schemas/posts/create"
             },
             {
                 "rel": "update",
                 "href": "/api/v1/posts/647174b2-e0a4-45c0-94b0-f69fcb8506f9",
                 "type": "PUT",
-                "schema": "api/v1/schemas/posts/update"
+                "schema": "/api/v1/schemas/posts/update"
             },
             {
                 "rel": "delete",
