@@ -57,11 +57,11 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
     - [Step 3: Add Database Migrations](#step-3-add-database-migrations)
     - [Step 4: Implement Module Logic](#step-4-implement-module-logic)
     - [Module Creation Flow](#module-creation-flow)
-- [⚙️ Application Runtime Modes](#-application-runtime-modes)
+- [🔀 Application Runtime Modes](#-application-runtime-modes)
 - [🪲 Local Debugging Mode](#-local-debugging-mode)
 - [🚀 CI/CD & Quality Automation](#-cicd--quality-automation)
     - [Workflows](#workflows)
-- [⚙️ Generate gRPC Code](#-generate-grpc-code)
+- [📦 Generate gRPC Code](#-generate-grpc-code)
     - [ gRPC Client Example](#-grpc-client-example)
 - [📑 Swagger Documentation UI](#-swagger-documentation-ui)
     - [Generate Swagger Documentation](#-generate-swagger-documentation)
@@ -123,7 +123,7 @@ This project demonstrates clean architectural principles in Go, including:
 - **Architecture Decision Log (ADL)** for documenting architectural decisions
 - **Vertical Slice Architecture** for organizing code by feature
 - **Pagination** for listing records
-- **Husky** for Git Hooks
+- **Git Hooks** with Husky 
 - And more...
 
 
@@ -188,6 +188,47 @@ The Architecture Decision Log (ADL) for this project can be found in the `docs/a
 If you need to add new adr, you can use [template.md](docs/adl/template.md) file.
 
 - [ADL.md](docs/adl/adl.md) 👈 index
+
+
+### 🔧 Makefile Commands
+```bash
+make run
+```
+#### 🛠 Database Migrations
+```bash
+make db_create_migration name=init_schema
+make db_migrate_up
+make db_migrate_down
+make db_migrate_force
+make db_migrate_drop
+make db_migrate_version
+```
+#### 🌱 Database Seeding
+```bash
+make seed
+```
+#### 🧪 Testing & Quality
+```bash
+make mock
+make coverage
+make test
+```
+#### 🧹 Linters
+
+```bash
+make lint
+make ci-lint
+make fmt
+```
+
+#### 📦 Generate gRPC Code
+```bash
+ make generate_proto DIR=yourPath
+ 
+ Example:
+ make generate_proto DIR=internal/modules/post/features/creatingpost/v1/endpoints/grpc/proto
+```
+
 
 ## 🪝 Git Hooks
 
@@ -283,7 +324,7 @@ See [Generate Swagger Documentation](#-generate-swagger-documentation) for detai
 
 
 
-### ⚙️ Application Runtime Modes
+### 🔀 Application Runtime Modes
 You can set the application environment by changing the `APP_ENV` variable in the `.env` file.
 
 
@@ -339,47 +380,6 @@ This project uses GitHub Actions for:
 Fully automated and production-ready 🚀
 
  
-
-
-### 🔧 Makefile Commands
-```bash
-make run
-```
-#### 🛠 Database Migrations
-```bash
-make db_create_migration name=init_schema
-make db_migrate_up
-make db_migrate_down
-make db_migrate_force
-make db_migrate_drop
-make db_migrate_version
-```
-#### 🌱 Database Seeding
-```bash
-make seed
-```
-#### 🧪 Testing & Quality
-```bash
-make mock
-make coverage
-make test
-```
-#### 🧹 Linters
-
-```bash
-make lint
-make ci-lint
-make fmt
-```
-
-#### 🛠️ Generate gRPC Code
-```bash
- make generate_proto DIR=yourPath
- 
- Example:
- make generate_proto DIR=internal/modules/post/features/creatingpost/v1/endpoints/grpc/proto
-```
-
 
 
 #### 🧪 gRPC Client Example
@@ -456,7 +456,7 @@ http://127.0.0.1:3001/swagger/index.html#
   make generate_swagger
 ```
 
-![Swagger UI](https://github.com/user-attachments/assets/2fd68ccb-5e1e-406f-a30f-744aa51a836a)
+![Swagger UI](https://github.com/user-attachments/assets/c3d892aa-0bf0-4633-8918-fe3d945970c6)
 
 
 ### RabbitMQ UI
@@ -634,8 +634,6 @@ When sending a GET request to retrieve a post by its ID, you might receive a res
     "status": 200
 }
 ```
-
-
 
 ## 🧪 Tests & Quality
 
