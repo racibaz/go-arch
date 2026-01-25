@@ -44,7 +44,7 @@ func (e *appError) Error() string {
 // NewValidationError creates a new validation error
 func NewValidationError(message string, cause map[string][]string) *appError {
 	return &appError{
-		Status:  http.StatusUnprocessableEntity,
+		Status:  http.StatusBadRequest,
 		Type:    ErrValidation.Error(),
 		Message: message,
 		Cause:   cause,
@@ -85,7 +85,7 @@ func NewInValidError(message string, cause map[string][]string) *appError {
 // NewErrExistFoundError creates a new exist found error
 func NewErrExistFoundError(message string, cause map[string][]string) *appError {
 	return &appError{
-		Status:  http.StatusConflict,
+		Status:  http.StatusInternalServerError, // StatusInternalServerError
 		Type:    ErrExistFound.Error(),
 		Message: message,
 		Cause:   cause,

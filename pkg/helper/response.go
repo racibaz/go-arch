@@ -20,6 +20,21 @@ func ValidationErrorResponse(c *gin.Context, message string, err error) {
 	return
 }
 
+// ExistFoundErrorResponse sends a standardized error response
+func ExistFoundErrorResponse(c *gin.Context, message string, err error, status int) {
+	errorMap := make(map[string][]string)
+	errorMap["error"] = []string{err.Error()}
+
+	c.JSON(
+		status,
+		errors.NewErrExistFoundError(
+			message,
+			errorMap,
+		))
+
+	return
+}
+
 // ErrorResponse sends a standardized error response
 func ErrorResponse(c *gin.Context, message string, err error, status int) {
 	errorMap := make(map[string][]string)
