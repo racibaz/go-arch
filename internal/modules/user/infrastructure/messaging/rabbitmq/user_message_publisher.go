@@ -25,7 +25,10 @@ func NewUserMessagePublisher(
 	}
 }
 
-func (p *UserMessagePublisher) PublishUserRegistered(ctx context.Context, payload *domain.User) error {
+func (p *UserMessagePublisher) PublishUserRegistered(
+	ctx context.Context,
+	payload *domain.User,
+) error {
 	/*
 		todo : change to user event data and it can be change as grpc proto model
 	*/

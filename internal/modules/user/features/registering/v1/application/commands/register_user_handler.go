@@ -51,7 +51,6 @@ func (h RegisterUserHandler) Handle(ctx context.Context, cmd RegisterUserCommand
 		time.Now(),
 		time.Now(),
 	)
-
 	if err != nil {
 		h.logger.Error("Error creating user: %v", err.Error())
 		return fmt.Errorf("error creating user: %v", err)
@@ -89,5 +88,4 @@ func (h RegisterUserHandler) Handle(ctx context.Context, cmd RegisterUserCommand
 	h.logger.Info("User created successfully with ID: %s", user.ID())
 
 	return nil
-
 }

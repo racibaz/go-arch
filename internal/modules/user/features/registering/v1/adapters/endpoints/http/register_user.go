@@ -37,14 +37,14 @@ func NewRegisterUserHandler(
 
 // Store It creates a new user
 //
-// @Summary	Register User
-// @Schemes
-// @Description	It is a method to create a new user
-// @Tags			users
-// @Accept			json
-// @Produce		json
-// @Param			user	body	RegisterUserRequestDto	true	"User Object"
-// @Router			/users [post]
+//	@Summary	Register User
+//	@Schemes
+//	@Description	It is a method to create a new user
+//	@Tags			users
+//	@Accept			json
+//	@Produce		json
+//	@Param			user	body	RegisterUserRequestDto	true	"User Object"
+//	@Router			/users [post]
 func (h RegisterUserHandler) Store(c *gin.Context) {
 	tracer := otel.Tracer(config.Get().App.Name) // go-arch
 	path := fmt.Sprintf(
@@ -113,7 +113,7 @@ func (h RegisterUserHandler) Store(c *gin.Context) {
 	responsePayload := helper.Response[RegisterUserResponseDto]{
 		Links: []helper.Link{
 			helper.AddHateoas(
-				"self", //todo it can be "me" endpoint in future
+				"self", // todo it can be "me" endpoint in future
 				fmt.Sprintf("%s/%s", routePath, newID),
 				http.MethodGet,
 				""),
@@ -140,5 +140,10 @@ func (h RegisterUserHandler) Store(c *gin.Context) {
 
 	span.SetAttributes(attribute.String("users.id", newID))
 
-	helper.SuccessResponse(c, "User is registered successfully", responsePayload, http.StatusCreated)
+	helper.SuccessResponse(
+		c,
+		"User is registered successfully",
+		responsePayload,
+		http.StatusCreated,
+	)
 }
