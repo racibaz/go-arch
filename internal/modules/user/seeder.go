@@ -3,10 +3,10 @@ package module
 import (
 	"errors"
 	"fmt"
-	"github.com/racibaz/go-arch/internal/modules/user/domain"
 	"log"
 	"time"
 
+	"github.com/racibaz/go-arch/internal/modules/user/domain"
 	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/persistence/gorm/mappers"
 	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/es"

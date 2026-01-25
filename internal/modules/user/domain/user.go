@@ -3,9 +3,10 @@ package domain
 import (
 	"errors"
 	"fmt"
-	"github.com/racibaz/go-arch/pkg/es"
 	"strings"
 	"time"
+
+	"github.com/racibaz/go-arch/pkg/es"
 )
 
 const (

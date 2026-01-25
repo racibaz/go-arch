@@ -1,16 +1,16 @@
 package module
 
 import (
-	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/messaging/rabbitmq"
-	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/observability/logging"
-	eventHandler "github.com/racibaz/go-arch/internal/modules/user/features/_shared/event_handlers"
-	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/notification/sms"
-	gormUserRepo "github.com/racibaz/go-arch/internal/modules/user/infrastructure/persistence/gorm/repositories"
 	"sync"
 
 	"github.com/gin-gonic/gin"
+	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/messaging/rabbitmq"
+	"github.com/racibaz/go-arch/internal/modules/post/infrastructure/observability/logging"
+	eventHandler "github.com/racibaz/go-arch/internal/modules/user/features/_shared/event_handlers"
 	registeringUserV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/adapters/endpoints"
 	commandsV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/application/commands"
+	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/notification/sms"
+	gormUserRepo "github.com/racibaz/go-arch/internal/modules/user/infrastructure/persistence/gorm/repositories"
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/logger"
 	rabbitmqConn "github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
@@ -30,7 +30,6 @@ func BuildModule() *UserModule {
 
 	// Create the instance only once
 	once.Do(func() {
-
 		repository := gormUserRepo.NewGormUserRepository()
 
 		// Assuming NewZapLogger is a function that initializes a logger
@@ -77,6 +76,5 @@ func Routes(router *gin.Engine) {
 }
 
 func GrpcRoutes(grpcServer *googleGrpc.Server) {
-
 	// Collect here grpc routes of your module
 }

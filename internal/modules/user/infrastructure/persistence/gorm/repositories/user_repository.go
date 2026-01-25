@@ -3,12 +3,12 @@ package repositories
 import (
 	"context"
 	"fmt"
-	userMapper "github.com/racibaz/go-arch/internal/modules/user/infrastructure/persistence/gorm/mappers"
 	"sync"
 
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
 	"github.com/racibaz/go-arch/internal/modules/user/domain/ports"
 	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/persistence/gorm/entities"
+	userMapper "github.com/racibaz/go-arch/internal/modules/user/infrastructure/persistence/gorm/mappers"
 	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/helper"
 	"gorm.io/gorm"
@@ -115,16 +115,16 @@ func (repo *GormUserRepository) IsExists(
 }
 
 func (repo *GormUserRepository) Login(ctx context.Context, data any) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (repo *GormUserRepository) Register(ctx context.Context, data any) (*domain.User, error) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (repo *GormUserRepository) Me(ctx context.Context, id string) (*domain.User, error) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }

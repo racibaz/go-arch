@@ -2,6 +2,8 @@ package http
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/shared/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/application/commands"
@@ -12,7 +14,6 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
-	"net/http"
 )
 
 const (
@@ -34,15 +35,15 @@ func NewRegisterUserHandler(
 	}
 }
 
-//	@BasePath	/api/v1
+// @BasePath	/api/v1
 //
-// @Summary		Register User
+// @Summary	Register User
 // @Schemes
 // @Description	It is a method to create a new user
 // @Tags			users
 // @Accept			json
 // @Produce		json
-// @Param			user	body		RegisterUserRequestDto	true	"User Object"
+// @Param			user	body	RegisterUserRequestDto	true	"User Object"
 // @Router			/users [post]
 func (h RegisterUserHandler) Store(c *gin.Context) {
 	tracer := otel.Tracer(config.Get().App.Name) // go-arch
@@ -99,7 +100,12 @@ func (h RegisterUserHandler) Store(c *gin.Context) {
 			span.RecordError(handlerErr)
 		}
 
-		helper.ErrorResponse(c, "user registration failed", handlerErr, http.StatusInternalServerError)
+		helper.ErrorResponse(
+			c,
+			"user registration failed",
+			handlerErr,
+			http.StatusInternalServerError,
+		)
 	}
 
 	responsePayload := helper.Response[RegisterUserResponseDto]{

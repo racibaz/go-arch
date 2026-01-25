@@ -2,6 +2,7 @@ package sms
 
 import (
 	"context"
+
 	"github.com/racibaz/go-arch/internal/modules/user/domain/ports"
 	"github.com/twilio/twilio-go"
 )
@@ -18,17 +19,20 @@ func NewTwilioSmsNotificationAdapter() TwilioSmsNotificationAdapter {
 	return TwilioSmsNotificationAdapter{client: client}
 }
 
-func (t TwilioSmsNotificationAdapter) NotifyUserRegistered(ctx context.Context, UserID string) error {
-	//TODO implement me
+func (t TwilioSmsNotificationAdapter) NotifyUserRegistered(
+	ctx context.Context,
+	UserID string,
+) error {
+	// TODO implement me
 	panic("implement me")
 }
 
 func (t TwilioSmsNotificationAdapter) NotifyUserCanceled(ctx context.Context, UserID string) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (t TwilioSmsNotificationAdapter) NotifyUserReady(ctx context.Context, UserID string) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
