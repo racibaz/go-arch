@@ -18,7 +18,7 @@ import (
 type CreatePostHandler struct {
 	PostRepository   ports.PostRepository
 	logger           logger.Logger
-	messagePublisher messaging.MessagePublisher
+	messagePublisher messaging.PostMessagePublisher
 	tracer           trace.Tracer
 }
 
@@ -29,7 +29,7 @@ var _ applicationPorts.CommandHandler[CreatePostCommandV1] = (*CreatePostHandler
 func NewCreatePostHandler(
 	postRepository ports.PostRepository,
 	logger logger.Logger,
-	messagePublisher messaging.MessagePublisher,
+	messagePublisher messaging.PostMessagePublisher,
 ) *CreatePostHandler {
 	return &CreatePostHandler{
 		PostRepository:   postRepository,
