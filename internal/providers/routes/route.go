@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	postRoutes "github.com/racibaz/go-arch/internal/modules/post"
 	sharedRoutes "github.com/racibaz/go-arch/internal/modules/shared/routes"
+	userRoutes "github.com/racibaz/go-arch/internal/modules/user"
 	googleGrpc "google.golang.org/grpc"
 )
 
@@ -15,6 +16,9 @@ func RegisterRoutes(router *gin.Engine) {
 
 	// Register post module routes
 	postRoutes.Routes(router)
+
+	// Register user module routes
+	userRoutes.Routes(router)
 
 	// You can add more restful routes of your modules
 }

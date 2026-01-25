@@ -202,6 +202,65 @@ const docTemplate = `{
                 "summary": "Get fields of update requirement",
                 "responses": {}
             }
+        },
+        "/schemas/users/register": {
+            "get": {
+                "description": "Get fields of creation requirement",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get fields of creation requirement",
+                "responses": {}
+            }
+        },
+        "/schemas/users/update": {
+            "get": {
+                "description": "Get fields of update requirement",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "summary": "Get fields of update requirement",
+                "responses": {}
+            }
+        },
+        "/users": {
+            "post": {
+                "description": "It is a method to create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Register User",
+                "parameters": [
+                    {
+                        "description": "User Object",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.RegisterUserRequestDto"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
@@ -349,6 +408,38 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post"
                     }
+                }
+            }
+        },
+        "http.RegisterUserRequestDto": {
+            "description": "RegisterUserRequestDto is a data transfer object for user registration requests",
+            "type": "object",
+            "properties": {
+                "user": {
+                    "description": "@Description\tUser represents the user information for registration",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/http.User"
+                        }
+                    ]
+                }
+            }
+        },
+        "http.User": {
+            "description": "User is a data transfer object representing a user",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "description": "@Description\tEmail represents the email of the user",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "@Description\tPassword represents the password of the user",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "@Description\tUserName represents the username of the user",
+                    "type": "string"
                 }
             }
         }
