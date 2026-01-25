@@ -76,6 +76,7 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🚪 API Requests](#-api-requests)
 - [📬 Postman Collection](#-postman-collection)
 - [❌ Validation Error Response Example](#-validation-error-response-example)
+- [❌ Invalid Error Response Example](#-invalid-error-response-example)
 - [✔️ API Response Example](#-api-response-example)
 - [🧪 Test](#-testing--quality)
 - [🤝 Code of Conduct](#-code-of-conduct)
@@ -591,6 +592,22 @@ When sending a POST request to create a post with invalid data, you might receiv
 }
 
 ```
+
+## ❌ Invalid Error Response Example
+When sending a POST request to create a post with an invalid JSON body, you might receive an invalid error response like this:
+```
+{
+    "status": 400,
+    "type": "invalid error",
+    "message": "Invalid request body",
+    "cause": {
+        "error": [
+            "invalid character 'u' looking for beginning of object key string"
+        ]
+    }
+}
+```
+
 
 ## ✔️ API Response Example
 When sending a GET request to retrieve a post by its ID, you might receive a response like this:
