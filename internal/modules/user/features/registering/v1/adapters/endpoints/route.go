@@ -22,7 +22,7 @@ func MapHttpRoute(
 			schemas.GET("/users/update", http.Update)
 		}
 
-		eg := v1.Group("/users")
+		eg := v1.Group("/users/register")
 		{
 			eg.POST("", registerUserHandler.Store)
 		}

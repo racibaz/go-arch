@@ -3,8 +3,8 @@ package commands
 import (
 	"context"
 
-	"github.com/racibaz/go-arch/internal/modules/post/domain/ports"
 	applicationPorts "github.com/racibaz/go-arch/internal/modules/shared/application/ports"
+	"github.com/racibaz/go-arch/internal/modules/user/domain/ports"
 	"github.com/racibaz/go-arch/pkg/logger"
 	"github.com/racibaz/go-arch/pkg/messaging"
 	"go.opentelemetry.io/otel"
@@ -13,9 +13,9 @@ import (
 
 // LoginHandler handles the login commands.
 type LoginHandler struct {
-	UserRepository   ports.PostRepository
+	UserRepository   ports.UserRepository
 	logger           logger.Logger
-	messagePublisher messaging.MessagePublisher
+	messagePublisher messaging.PostMessagePublisher
 	tracer           trace.Tracer
 }
 
@@ -24,9 +24,9 @@ var _ applicationPorts.CommandHandler[LoginCommandV1] = (*LoginHandler)(nil)
 
 // NewLoginHandler creates a new instance of CreatePostHandler with the provided dependencies.
 func NewLoginHandler(
-	userRepository ports.PostRepository,
+	userRepository ports.UserRepository,
 	logger logger.Logger,
-	messagePublisher messaging.MessagePublisher,
+	messagePublisher messaging.PostMessagePublisher,
 ) *LoginHandler {
 	return &LoginHandler{
 		UserRepository:   userRepository,

@@ -95,6 +95,7 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 
 		// If validation fails, extract the validation errors and return a validation error response
 		helper.ValidationErrorResponse(c, ValidationErrMessage, validationErr)
+		return
 	}
 
 	newID := uuid.NewID()
@@ -118,6 +119,7 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 		}
 
 		helper.ErrorResponse(c, "post create failed", handlerErr, http.StatusInternalServerError)
+		return
 	}
 
 	responsePayload := helper.Response[CreatePostResponseDto]{

@@ -22,40 +22,44 @@ type GormUserRepository struct {
 
 var _ ports.UserRepository = (*GormUserRepository)(nil)
 
+// NewGormUserRepository creates a new instance of GormUserRepository
 func NewGormUserRepository() *GormUserRepository {
 	return &GormUserRepository{
 		DB: database.Connection(),
 	}
 }
 
+// Save persists a new user in the database
 func (repo *GormUserRepository) Save(ctx context.Context, user *domain.User) error {
 	var newUser entities.User
 
 	persistenceModel, persistenceErr := userMapper.ToPersistence(user)
 	if persistenceErr != nil {
-		return fmt.Errorf("failed to map post to persistence model: %w", persistenceErr)
+		return fmt.Errorf("failed to map user to persistence model: %w", persistenceErr)
 	}
 
 	err := repo.DB.WithContext(ctx).Create(&persistenceModel).Scan(&newUser).Error
 	if err != nil {
-		return fmt.Errorf("new post creation is failed: %w", err)
+		return fmt.Errorf("new user creation is failed: %w", err)
 	}
 
 	return nil
 }
 
+// GetByID retrieves a user by its ID from the database
 func (repo *GormUserRepository) GetByID(ctx context.Context, id string) (*domain.User, error) {
-	var post domain.User
+	var user domain.User
 
 	if err := repo.DB.WithContext(ctx).
 		Where("id = ?", id).
-		First(&post).Error; err != nil {
+		First(&user).Error; err != nil {
 		return nil, err
 	}
 
-	return &post, nil
+	return &user, nil
 }
 
+// Update modifies an existing user in the database
 func (repo *GormUserRepository) Update(ctx context.Context, user *domain.User) error {
 	err := repo.DB.WithContext(ctx).Updates(user)
 	if err != nil {
@@ -64,6 +68,7 @@ func (repo *GormUserRepository) Update(ctx context.Context, user *domain.User) e
 	return nil
 }
 
+// Delete removes a user from the database by its ID
 func (repo *GormUserRepository) Delete(ctx context.Context, id string) error {
 	err := repo.DB.WithContext(ctx).Delete(&domain.User{}, "id = ?", id)
 	if err != nil {
@@ -73,23 +78,25 @@ func (repo *GormUserRepository) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
+// List retrieves a list of users with pagination support
 func (repo *GormUserRepository) List(
 	ctx context.Context,
 	pagination helper.Pagination,
 ) ([]*domain.User, error) {
-	var posts []*domain.User
+	var users []*domain.User
 
 	err := repo.DB.WithContext(ctx).
 		Scopes(helper.Paginate(pagination)).
-		Find(&posts).
+		Find(&users).
 		Error
 	if err != nil {
 		return nil, err
 	}
 
-	return posts, nil
+	return users, nil
 }
 
+// IsExists checks if a user exists by email
 func (repo *GormUserRepository) IsExists(
 	ctx context.Context,
 	email string,
@@ -107,23 +114,37 @@ func (repo *GormUserRepository) IsExists(
 		return false, err
 	}
 
-	if user.ID() != "" {
+	if user.Email != "" {
 		return true, nil
 	}
 
 	return false, nil
 }
 
+// Login authenticates a user with provided credentials
 func (repo *GormUserRepository) Login(ctx context.Context, data any) error {
 	// TODO implement me
 	panic("implement me")
 }
 
-func (repo *GormUserRepository) Register(ctx context.Context, data any) (*domain.User, error) {
-	// TODO implement me
-	panic("implement me")
+// Register registers a new user in the database
+func (repo *GormUserRepository) Register(ctx context.Context, user *domain.User) error {
+	var newUser entities.User
+
+	persistenceModel, persistenceErr := userMapper.ToPersistence(user)
+	if persistenceErr != nil {
+		return fmt.Errorf("failed to map user to persistence model: %w", persistenceErr)
+	}
+
+	err := repo.DB.WithContext(ctx).Create(&persistenceModel).Scan(&newUser).Error
+	if err != nil {
+		return fmt.Errorf("new user creation is failed: %w", err)
+	}
+
+	return nil
 }
 
+// Me retrieves the currently authenticated user's details
 func (repo *GormUserRepository) Me(ctx context.Context, id string) (*domain.User, error) {
 	// TODO implement me
 	panic("implement me")

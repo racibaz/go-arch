@@ -3,7 +3,8 @@ package messaging
 import (
 	"context"
 
-	"github.com/racibaz/go-arch/internal/modules/post/domain"
+	postDomain "github.com/racibaz/go-arch/internal/modules/post/domain"
+	userDomain "github.com/racibaz/go-arch/internal/modules/user/domain"
 )
 
 const (
@@ -20,6 +21,11 @@ const (
 	PostEventUpdated   = "post.event.updated"
 	PostEventDeleted   = "post.event.deleted"
 	PostEventPublished = "post.event.published"
+
+	UserEventCreated   = "user.event.registered"
+	UserEventUpdated   = "user.event.updated"
+	UserEventDeleted   = "user.event.deleted"
+	UserEventPublished = "user.event.published"
 )
 
 type MessagePayload struct {
@@ -27,8 +33,12 @@ type MessagePayload struct {
 	Data    []byte `json:"data"`
 }
 
-type MessagePublisher interface {
-	PublishPostCreated(ctx context.Context, payload *domain.Post) error
+type PostMessagePublisher interface {
+	PublishPostCreated(ctx context.Context, payload *postDomain.Post) error
+}
+
+type UserMessagePublisher interface {
+	PublishUserRegistered(ctx context.Context, payload *userDomain.User) error
 }
 
 type MessageProcessor interface {

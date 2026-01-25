@@ -35,7 +35,7 @@ func NewRegisterUserHandler(
 	}
 }
 
-// @BasePath	/api/v1
+// Store It creates a new user
 //
 // @Summary	Register User
 // @Schemes
@@ -58,7 +58,7 @@ func (h RegisterUserHandler) Store(c *gin.Context) {
 	defer span.End()
 
 	// Decode the request body into RegisterUserRequestDto
-	userRegisterDto, decodeErr := helper.Decode[RegisterUserRequestDto](c)
+	registerUserDto, decodeErr := helper.Decode[RegisterUserRequestDto](c)
 	if decodeErr != nil {
 
 		if span := trace.SpanFromContext(ctx); span != nil {
@@ -72,7 +72,7 @@ func (h RegisterUserHandler) Store(c *gin.Context) {
 	}
 
 	// Validate the request body
-	if validationErr := helper.Get().Struct(userRegisterDto); validationErr != nil {
+	if validationErr := helper.Get().Struct(registerUserDto); validationErr != nil {
 
 		if span := trace.SpanFromContext(ctx); span != nil {
 			span.SetAttributes(attribute.String("error", ValidationErrMessage))
@@ -82,15 +82,16 @@ func (h RegisterUserHandler) Store(c *gin.Context) {
 
 		// If validation fails, extract the validation errors and return a validation error response
 		helper.ValidationErrorResponse(c, ValidationErrMessage, validationErr)
+		return
 	}
 
 	newID := uuid.NewID()
 
 	handlerErr := h.Handler.Handle(ctx, commands.RegisterUserCommandV1{
 		ID:       newID,
-		UserName: userRegisterDto.User.UserName,
-		Email:    userRegisterDto.User.Email,
-		Password: userRegisterDto.User.Password,
+		UserName: registerUserDto.UserName,
+		Email:    registerUserDto.Email,
+		Password: registerUserDto.Password,
 	})
 	if handlerErr != nil {
 
@@ -100,24 +101,22 @@ func (h RegisterUserHandler) Store(c *gin.Context) {
 			span.RecordError(handlerErr)
 		}
 
-		helper.ErrorResponse(
+		helper.ExistFoundErrorResponse(
 			c,
 			"user registration failed",
 			handlerErr,
 			http.StatusInternalServerError,
 		)
+		return
 	}
 
 	responsePayload := helper.Response[RegisterUserResponseDto]{
-		Data: &RegisterUserResponseDto{
-			User: &User{
-				UserName: userRegisterDto.User.UserName,
-				Email:    userRegisterDto.User.Email,
-				Password: userRegisterDto.User.Password,
-			},
-		},
 		Links: []helper.Link{
-			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, newID), http.MethodGet, ""),
+			helper.AddHateoas(
+				"self", //todo it can be "me" endpoint in future
+				fmt.Sprintf("%s/%s", routePath, newID),
+				http.MethodGet,
+				""),
 			helper.AddHateoas(
 				"store",
 				fmt.Sprintf("%s/", routePath),
@@ -141,5 +140,5 @@ func (h RegisterUserHandler) Store(c *gin.Context) {
 
 	span.SetAttributes(attribute.String("users.id", newID))
 
-	helper.SuccessResponse(c, "User created successfully", responsePayload, http.StatusCreated)
+	helper.SuccessResponse(c, "User is registered successfully", responsePayload, http.StatusCreated)
 }
