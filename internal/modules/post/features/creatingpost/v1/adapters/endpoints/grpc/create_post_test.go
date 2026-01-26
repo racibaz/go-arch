@@ -46,7 +46,7 @@ func TestCreatePostHandler_CreatePost_Success(t *testing.T) {
 	}
 
 	// Mock the handler to return success
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
@@ -77,7 +77,7 @@ func TestCreatePostHandler_CreatePost_HandlerError(t *testing.T) {
 
 	// Mock the handler to return an error
 	expectedError := errors.New("handler error")
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(expectedError).
 		Once()
 
@@ -148,7 +148,7 @@ func TestCreatePostHandler_CreatePost_ResponseStructure(t *testing.T) {
 		Handler: mockHandler,
 	}
 
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
@@ -184,7 +184,7 @@ func TestCreatePostHandler_CreatePost_WithEmptyFields(t *testing.T) {
 		Handler: mockHandler,
 	}
 
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
@@ -213,7 +213,7 @@ func TestCreatePostHandler_CreatePost_Tracing(t *testing.T) {
 		Handler: mockHandler,
 	}
 
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 

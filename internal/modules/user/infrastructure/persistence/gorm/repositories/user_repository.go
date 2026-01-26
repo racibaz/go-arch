@@ -163,8 +163,15 @@ func (repo *GormUserRepository) Register(ctx context.Context, user *domain.User)
 	return nil
 }
 
-// Me retrieves the currently authenticated user's details
+// Me retrieves the current user's information by ID
 func (repo *GormUserRepository) Me(ctx context.Context, id string) (*domain.User, error) {
-	// TODO implement me
-	panic("implement me")
+	var user domain.User
+
+	if err := repo.DB.WithContext(ctx).
+		Where("id = ?", id).
+		First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

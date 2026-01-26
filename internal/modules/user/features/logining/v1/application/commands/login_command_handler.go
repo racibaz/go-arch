@@ -11,7 +11,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-// LoginHandler handles the login commands.
+// LoginHandler handles the login query.
 type LoginHandler struct {
 	UserRepository   ports.UserRepository
 	logger           logger.Logger

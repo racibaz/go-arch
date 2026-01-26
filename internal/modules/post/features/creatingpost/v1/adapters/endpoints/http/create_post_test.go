@@ -44,7 +44,7 @@ func TestCreatePostHandler_Store_Success(t *testing.T) {
 	handler := NewCreatePostHandler(mockHandler)
 
 	// Mock the handler to return success
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
@@ -139,7 +139,7 @@ func TestCreatePostHandler_Store_ValidationError(t *testing.T) {
 	handler := NewCreatePostHandler(mockHandler)
 
 	// Since validation doesn't prevent handler execution (bug), we need to set up the mock
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
@@ -177,7 +177,7 @@ func TestCreatePostHandler_Store_HandlerError(t *testing.T) {
 	handler := NewCreatePostHandler(mockHandler)
 
 	// Mock the handler to return an error
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(errors.New("handler error")).
 		Once()
 
@@ -261,7 +261,7 @@ func TestCreatePostHandler_Store_HATEOASLinks(t *testing.T) {
 	mockHandler := &MockCommandHandler{}
 	handler := NewCreatePostHandler(mockHandler)
 
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
@@ -338,7 +338,7 @@ func TestCreatePostHandler_Store_ResponseStructure(t *testing.T) {
 	mockHandler := &MockCommandHandler{}
 	handler := NewCreatePostHandler(mockHandler)
 
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
