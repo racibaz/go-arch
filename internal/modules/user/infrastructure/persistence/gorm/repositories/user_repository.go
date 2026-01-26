@@ -122,9 +122,28 @@ func (repo *GormUserRepository) IsExists(
 }
 
 // Login authenticates a user with provided credentials
-func (repo *GormUserRepository) Login(ctx context.Context, data any) error {
-	// TODO implement me
-	panic("implement me")
+func (repo *GormUserRepository) Login(
+	ctx context.Context,
+	data ports.LoginData,
+) (*domain.User, error) {
+	var user domain.User
+
+	if err := repo.DB.WithContext(ctx).
+		Where("email = ?", data.Email).
+		Where("password = ?", data.Password).
+		First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	if &user == nil {
+		return nil, fmt.Errorf("invalid credentials")
+	}
+
+	if user.Email == "" {
+		return nil, fmt.Errorf("invalid credentials")
+	}
+
+	return &user, nil
 }
 
 // Register registers a new user in the database

@@ -40,5 +40,19 @@ func (h LoginHandler) Handle(ctx context.Context, cmd LoginCommandV1) error {
 	ctx, span := h.tracer.Start(ctx, "Login - Handler")
 	defer span.End()
 
+	loginData := ports.LoginData{
+		Email:    cmd.Email,
+		Password: cmd.Password,
+	}
+
+	user, loginErr := h.UserRepository.Login(ctx, loginData)
+	if loginErr != nil {
+		h.logger.Error("Login failed: %v", loginErr.Error())
+		return loginErr
+	}
+
+	// Log successful login
+	h.logger.Info("User logged in successfully. Id: %s", user.ID())
+
 	return nil
 }

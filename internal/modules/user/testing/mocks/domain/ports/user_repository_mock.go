@@ -8,6 +8,7 @@ import (
 	"context"
 
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
+	"github.com/racibaz/go-arch/internal/modules/user/domain/ports"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -38,44 +39,53 @@ func (_m *MockUserRepository) EXPECT() *MockUserRepository_Expecter {
 	return &MockUserRepository_Expecter{mock: &_m.Mock}
 }
 
-// Login provides a mock function for the type MockUserRepository
-func (_mock *MockUserRepository) Login(ctx context.Context, data any) error {
-	ret := _mock.Called(ctx, data)
+// IsExists provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) IsExists(ctx context.Context, email string) (bool, error) {
+	ret := _mock.Called(ctx, email)
 
 	if len(ret) == 0 {
-		panic("no return value specified for Login")
+		panic("no return value specified for IsExists")
 	}
 
-	var r0 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, any) error); ok {
-		r0 = returnFunc(ctx, data)
-	} else {
-		r0 = ret.Error(0)
+	var r0 bool
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (bool, error)); ok {
+		return returnFunc(ctx, email)
 	}
-	return r0
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) bool); ok {
+		r0 = returnFunc(ctx, email)
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, email)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
 }
 
-// MockUserRepository_Login_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Login'
-type MockUserRepository_Login_Call struct {
+// MockUserRepository_IsExists_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'IsExists'
+type MockUserRepository_IsExists_Call struct {
 	*mock.Call
 }
 
-// Login is a helper method to define mock.On call
+// IsExists is a helper method to define mock.On call
 //   - ctx context.Context
-//   - data any
-func (_e *MockUserRepository_Expecter) Login(ctx interface{}, data interface{}) *MockUserRepository_Login_Call {
-	return &MockUserRepository_Login_Call{Call: _e.mock.On("Login", ctx, data)}
+//   - email string
+func (_e *MockUserRepository_Expecter) IsExists(ctx interface{}, email interface{}) *MockUserRepository_IsExists_Call {
+	return &MockUserRepository_IsExists_Call{Call: _e.mock.On("IsExists", ctx, email)}
 }
 
-func (_c *MockUserRepository_Login_Call) Run(run func(ctx context.Context, data any)) *MockUserRepository_Login_Call {
+func (_c *MockUserRepository_IsExists_Call) Run(run func(ctx context.Context, email string)) *MockUserRepository_IsExists_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 any
+		var arg1 string
 		if args[1] != nil {
-			arg1 = args[1].(any)
+			arg1 = args[1].(string)
 		}
 		run(
 			arg0,
@@ -85,12 +95,80 @@ func (_c *MockUserRepository_Login_Call) Run(run func(ctx context.Context, data 
 	return _c
 }
 
-func (_c *MockUserRepository_Login_Call) Return(err error) *MockUserRepository_Login_Call {
-	_c.Call.Return(err)
+func (_c *MockUserRepository_IsExists_Call) Return(b bool, err error) *MockUserRepository_IsExists_Call {
+	_c.Call.Return(b, err)
 	return _c
 }
 
-func (_c *MockUserRepository_Login_Call) RunAndReturn(run func(ctx context.Context, data any) error) *MockUserRepository_Login_Call {
+func (_c *MockUserRepository_IsExists_Call) RunAndReturn(run func(ctx context.Context, email string) (bool, error)) *MockUserRepository_IsExists_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// Login provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) Login(ctx context.Context, data ports.LoginData) (*domain.User, error) {
+	ret := _mock.Called(ctx, data)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Login")
+	}
+
+	var r0 *domain.User
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, ports.LoginData) (*domain.User, error)); ok {
+		return returnFunc(ctx, data)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, ports.LoginData) *domain.User); ok {
+		r0 = returnFunc(ctx, data)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.User)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, ports.LoginData) error); ok {
+		r1 = returnFunc(ctx, data)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockUserRepository_Login_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Login'
+type MockUserRepository_Login_Call struct {
+	*mock.Call
+}
+
+// Login is a helper method to define mock.On call
+//   - ctx context.Context
+//   - data ports.LoginData
+func (_e *MockUserRepository_Expecter) Login(ctx interface{}, data interface{}) *MockUserRepository_Login_Call {
+	return &MockUserRepository_Login_Call{Call: _e.mock.On("Login", ctx, data)}
+}
+
+func (_c *MockUserRepository_Login_Call) Run(run func(ctx context.Context, data ports.LoginData)) *MockUserRepository_Login_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 ports.LoginData
+		if args[1] != nil {
+			arg1 = args[1].(ports.LoginData)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockUserRepository_Login_Call) Return(user *domain.User, err error) *MockUserRepository_Login_Call {
+	_c.Call.Return(user, err)
+	return _c
+}
+
+func (_c *MockUserRepository_Login_Call) RunAndReturn(run func(ctx context.Context, data ports.LoginData) (*domain.User, error)) *MockUserRepository_Login_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -164,31 +242,20 @@ func (_c *MockUserRepository_Me_Call) RunAndReturn(run func(ctx context.Context,
 }
 
 // Register provides a mock function for the type MockUserRepository
-func (_mock *MockUserRepository) Register(ctx context.Context, data any) (*domain.User, error) {
-	ret := _mock.Called(ctx, data)
+func (_mock *MockUserRepository) Register(ctx context.Context, user *domain.User) error {
+	ret := _mock.Called(ctx, user)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Register")
 	}
 
-	var r0 *domain.User
-	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, any) (*domain.User, error)); ok {
-		return returnFunc(ctx, data)
-	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, any) *domain.User); ok {
-		r0 = returnFunc(ctx, data)
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *domain.User) error); ok {
+		r0 = returnFunc(ctx, user)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*domain.User)
-		}
+		r0 = ret.Error(0)
 	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, any) error); ok {
-		r1 = returnFunc(ctx, data)
-	} else {
-		r1 = ret.Error(1)
-	}
-	return r0, r1
+	return r0
 }
 
 // MockUserRepository_Register_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Register'
@@ -198,20 +265,20 @@ type MockUserRepository_Register_Call struct {
 
 // Register is a helper method to define mock.On call
 //   - ctx context.Context
-//   - data any
-func (_e *MockUserRepository_Expecter) Register(ctx interface{}, data interface{}) *MockUserRepository_Register_Call {
-	return &MockUserRepository_Register_Call{Call: _e.mock.On("Register", ctx, data)}
+//   - user *domain.User
+func (_e *MockUserRepository_Expecter) Register(ctx interface{}, user interface{}) *MockUserRepository_Register_Call {
+	return &MockUserRepository_Register_Call{Call: _e.mock.On("Register", ctx, user)}
 }
 
-func (_c *MockUserRepository_Register_Call) Run(run func(ctx context.Context, data any)) *MockUserRepository_Register_Call {
+func (_c *MockUserRepository_Register_Call) Run(run func(ctx context.Context, user *domain.User)) *MockUserRepository_Register_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
 			arg0 = args[0].(context.Context)
 		}
-		var arg1 any
+		var arg1 *domain.User
 		if args[1] != nil {
-			arg1 = args[1].(any)
+			arg1 = args[1].(*domain.User)
 		}
 		run(
 			arg0,
@@ -221,12 +288,12 @@ func (_c *MockUserRepository_Register_Call) Run(run func(ctx context.Context, da
 	return _c
 }
 
-func (_c *MockUserRepository_Register_Call) Return(user *domain.User, err error) *MockUserRepository_Register_Call {
-	_c.Call.Return(user, err)
+func (_c *MockUserRepository_Register_Call) Return(err error) *MockUserRepository_Register_Call {
+	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *MockUserRepository_Register_Call) RunAndReturn(run func(ctx context.Context, data any) (*domain.User, error)) *MockUserRepository_Register_Call {
+func (_c *MockUserRepository_Register_Call) RunAndReturn(run func(ctx context.Context, user *domain.User) error) *MockUserRepository_Register_Call {
 	_c.Call.Return(run)
 	return _c
 }
