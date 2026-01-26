@@ -1,6 +1,7 @@
 package module
 
 import (
+	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/hashing"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -35,6 +36,9 @@ func BuildModule() *UserModule {
 		// Assuming NewZapLogger is a function that initializes a logger
 		logger, _ := logger.NewZapLogger()
 
+		// Initialize password hasher
+		passwordHasher := hashing.NewPasswordHasher()
+
 		domainDispatcher := ddd.NewEventDispatcher[ddd.AggregateEvent]()
 
 		rabbitmqConn := rabbitmqConn.Connection()
@@ -47,6 +51,7 @@ func BuildModule() *UserModule {
 			repository,
 			logger,
 			messagePublisher,
+			passwordHasher,
 		)
 
 		notificationAdapter := sms.NewTwilioSmsNotificationAdapter()

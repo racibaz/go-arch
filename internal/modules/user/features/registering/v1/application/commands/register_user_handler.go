@@ -19,6 +19,7 @@ type RegisterUserHandler struct {
 	logger           logger.Logger
 	messagePublisher messaging.UserMessagePublisher
 	tracer           trace.Tracer
+	passwordHasher   ports.PasswordHasher
 }
 
 // Ensure RegisterUserHandler implements the CommandHandler interface
@@ -28,12 +29,14 @@ func NewRegisterUserHandler(
 	userRepository ports.UserRepository,
 	logger logger.Logger,
 	messagePublisher messaging.UserMessagePublisher,
+	passwordHasher ports.PasswordHasher,
 ) *RegisterUserHandler {
 	return &RegisterUserHandler{
 		UserRepository:   userRepository,
 		logger:           logger,
 		messagePublisher: messagePublisher,
 		tracer:           otel.Tracer("RegisterUserHandler"),
+		passwordHasher:   passwordHasher,
 	}
 }
 
@@ -41,12 +44,17 @@ func (h RegisterUserHandler) Handle(ctx context.Context, cmd RegisterUserCommand
 	ctx, span := h.tracer.Start(ctx, "RegisterUser - Handler")
 	defer span.End()
 
+	hashedPassword, hashErr := h.passwordHasher.HashPassword(cmd.Password)
+	if hashErr != nil {
+		h.logger.Error("Error hashing password: %v", hashErr.Error())
+		return fmt.Errorf("error hashing password: %v", hashErr)
+	}
 	// Create a new user using the factory
 	user, err := domain.Create(
 		cmd.ID,
 		cmd.UserName,
 		cmd.Email,
-		cmd.Password,
+		hashedPassword,
 		domain.StatusDraft,
 		time.Now(),
 		time.Now(),
