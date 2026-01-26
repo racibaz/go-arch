@@ -1,13 +1,13 @@
 package module
 
 import (
-	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/hashing"
 	"sync"
 
 	"github.com/gin-gonic/gin"
 	eventHandler "github.com/racibaz/go-arch/internal/modules/user/features/_shared/event_handlers"
 	registeringUserV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/adapters/endpoints"
 	commandsV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/application/commands"
+	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/hashing"
 	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/messaging/rabbitmq"
 	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/notification/sms"
 	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/observability/logging"
