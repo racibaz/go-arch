@@ -31,7 +31,7 @@ func Seed() error {
 				domain.UserAggregate,
 			),
 			Email:     "guest@xyz.com",
-			UserName:  "jackynickname",
+			Name:      "jackynickname",
 			Password:  "jackypassword",
 			Status:    domain.StatusPublished,
 			CreatedAt: time.Now(),
@@ -43,7 +43,7 @@ func Seed() error {
 				domain.UserAggregate,
 			),
 			Email:     "raci@xyz.com",
-			UserName:  "racinickname",
+			Name:      "racinickname",
 			Password:  "racipassword",
 			Status:    domain.StatusPublished,
 			CreatedAt: time.Now(),
@@ -54,7 +54,7 @@ func Seed() error {
 	for _, user := range users {
 		p, err := domain.Create(
 			user.ID(),
-			user.UserName,
+			user.Name,
 			user.Email,
 			user.Password,
 			user.Status,

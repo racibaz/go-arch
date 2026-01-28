@@ -8,7 +8,6 @@ import (
 	"context"
 
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
-	"github.com/racibaz/go-arch/internal/modules/user/domain/ports"
 	mock "github.com/stretchr/testify/mock"
 )
 
@@ -37,6 +36,74 @@ type MockUserRepository_Expecter struct {
 
 func (_m *MockUserRepository) EXPECT() *MockUserRepository_Expecter {
 	return &MockUserRepository_Expecter{mock: &_m.Mock}
+}
+
+// GetUserByEmail provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) GetUserByEmail(ctx context.Context, email string) (*domain.User, error) {
+	ret := _mock.Called(ctx, email)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetUserByEmail")
+	}
+
+	var r0 *domain.User
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*domain.User, error)); ok {
+		return returnFunc(ctx, email)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *domain.User); ok {
+		r0 = returnFunc(ctx, email)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.User)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, email)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockUserRepository_GetUserByEmail_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetUserByEmail'
+type MockUserRepository_GetUserByEmail_Call struct {
+	*mock.Call
+}
+
+// GetUserByEmail is a helper method to define mock.On call
+//   - ctx context.Context
+//   - email string
+func (_e *MockUserRepository_Expecter) GetUserByEmail(ctx interface{}, email interface{}) *MockUserRepository_GetUserByEmail_Call {
+	return &MockUserRepository_GetUserByEmail_Call{Call: _e.mock.On("GetUserByEmail", ctx, email)}
+}
+
+func (_c *MockUserRepository_GetUserByEmail_Call) Run(run func(ctx context.Context, email string)) *MockUserRepository_GetUserByEmail_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockUserRepository_GetUserByEmail_Call) Return(user *domain.User, err error) *MockUserRepository_GetUserByEmail_Call {
+	_c.Call.Return(user, err)
+	return _c
+}
+
+func (_c *MockUserRepository_GetUserByEmail_Call) RunAndReturn(run func(ctx context.Context, email string) (*domain.User, error)) *MockUserRepository_GetUserByEmail_Call {
+	_c.Call.Return(run)
+	return _c
 }
 
 // IsExists provides a mock function for the type MockUserRepository
@@ -101,74 +168,6 @@ func (_c *MockUserRepository_IsExists_Call) Return(b bool, err error) *MockUserR
 }
 
 func (_c *MockUserRepository_IsExists_Call) RunAndReturn(run func(ctx context.Context, email string) (bool, error)) *MockUserRepository_IsExists_Call {
-	_c.Call.Return(run)
-	return _c
-}
-
-// Login provides a mock function for the type MockUserRepository
-func (_mock *MockUserRepository) Login(ctx context.Context, data ports.LoginData) (*domain.User, error) {
-	ret := _mock.Called(ctx, data)
-
-	if len(ret) == 0 {
-		panic("no return value specified for Login")
-	}
-
-	var r0 *domain.User
-	var r1 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, ports.LoginData) (*domain.User, error)); ok {
-		return returnFunc(ctx, data)
-	}
-	if returnFunc, ok := ret.Get(0).(func(context.Context, ports.LoginData) *domain.User); ok {
-		r0 = returnFunc(ctx, data)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*domain.User)
-		}
-	}
-	if returnFunc, ok := ret.Get(1).(func(context.Context, ports.LoginData) error); ok {
-		r1 = returnFunc(ctx, data)
-	} else {
-		r1 = ret.Error(1)
-	}
-	return r0, r1
-}
-
-// MockUserRepository_Login_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Login'
-type MockUserRepository_Login_Call struct {
-	*mock.Call
-}
-
-// Login is a helper method to define mock.On call
-//   - ctx context.Context
-//   - data ports.LoginData
-func (_e *MockUserRepository_Expecter) Login(ctx interface{}, data interface{}) *MockUserRepository_Login_Call {
-	return &MockUserRepository_Login_Call{Call: _e.mock.On("Login", ctx, data)}
-}
-
-func (_c *MockUserRepository_Login_Call) Run(run func(ctx context.Context, data ports.LoginData)) *MockUserRepository_Login_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		var arg0 context.Context
-		if args[0] != nil {
-			arg0 = args[0].(context.Context)
-		}
-		var arg1 ports.LoginData
-		if args[1] != nil {
-			arg1 = args[1].(ports.LoginData)
-		}
-		run(
-			arg0,
-			arg1,
-		)
-	})
-	return _c
-}
-
-func (_c *MockUserRepository_Login_Call) Return(user *domain.User, err error) *MockUserRepository_Login_Call {
-	_c.Call.Return(user, err)
-	return _c
-}
-
-func (_c *MockUserRepository_Login_Call) RunAndReturn(run func(ctx context.Context, data ports.LoginData) (*domain.User, error)) *MockUserRepository_Login_Call {
 	_c.Call.Return(run)
 	return _c
 }

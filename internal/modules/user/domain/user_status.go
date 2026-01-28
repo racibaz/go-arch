@@ -8,18 +8,24 @@ const (
 	StatusDraft UserStatus = iota
 	StatusPublished
 	StatusArchived
+	StatusPendingReview
+	StatusBanned
 )
 
 var postStatusToString = map[UserStatus]string{
-	StatusDraft:     "draft",
-	StatusPublished: "published",
-	StatusArchived:  "archived",
+	StatusDraft:         "draft",
+	StatusPublished:     "published",
+	StatusArchived:      "archived",
+	StatusPendingReview: "pending_review",
+	StatusBanned:        "banned",
 }
 
 var stringToStatus = map[string]UserStatus{
-	"draft":     StatusDraft,
-	"published": StatusPublished,
-	"archived":  StatusArchived,
+	"draft":          StatusDraft,
+	"published":      StatusPublished,
+	"archived":       StatusArchived,
+	"pending_review": StatusPendingReview,
+	"banned":         StatusBanned,
 }
 
 func NewStatus(status UserStatus) UserStatus {
@@ -36,6 +42,10 @@ func (p UserStatus) String() string {
 		return val
 	}
 	return "unknown"
+}
+
+func (p UserStatus) ToInt() int {
+	return int(p)
 }
 
 func IsValidStatus(p UserStatus) bool {
@@ -57,4 +67,12 @@ func (p UserStatus) IsDraft() bool {
 
 func (p UserStatus) IsArchived() bool {
 	return p == StatusArchived
+}
+
+func (p UserStatus) IsPendingReview() bool {
+	return p == StatusPendingReview
+}
+
+func (p UserStatus) IsBanned() bool {
+	return p == StatusBanned
 }

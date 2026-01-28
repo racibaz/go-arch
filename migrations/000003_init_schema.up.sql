@@ -25,14 +25,10 @@ CREATE TABLE public.users (
                               email text,
                               password text,
                               status int,
+                              refresh_token_web TEXT,
+                              refresh_token_web_at DATETIME,
+                              refresh_token_mobile TEXT,
+                              refresh_token_mobile_at DATETIME,
                               created_at timestamptz,
                               updated_at timestamptz
-);
-
-CREATE TABLE public.refresh_tokens (
-                                       user_id uuid REFERENCES public.users(id) ON DELETE CASCADE,
-                                       hashed_token varchar(500) NOT NULL UNIQUE,
-                                       created_at timestamptz,
-                                       expires_at timestamptz,
-                                       PRIMARY KEY (user_id, hashed_token)
 );

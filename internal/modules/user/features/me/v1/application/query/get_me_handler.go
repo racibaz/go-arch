@@ -41,7 +41,7 @@ func (h *GetMeHandler) Handle(
 	// Map domain.User to GetMeByIdQueryResponse
 	userView := GetMeByIdQueryResponse{
 		ID:        user.ID(),
-		UserName:  user.UserName,
+		Name:      user.Name,
 		Email:     user.Email,
 		Status:    user.Status,
 		CreatedAt: user.CreatedAt,

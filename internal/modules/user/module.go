@@ -4,7 +4,7 @@ import (
 	ports2 "github.com/racibaz/go-arch/internal/modules/shared/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
 	userDomainPorts "github.com/racibaz/go-arch/internal/modules/user/domain/ports"
-	"github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/application/commands"
+	"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/logger"
 )

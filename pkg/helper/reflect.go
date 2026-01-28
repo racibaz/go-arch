@@ -21,7 +21,7 @@ func CurrentFuncName() string {
 
 	/*
 		it takes the string
-		"github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/adapters/endpoints/http.RegisterUserHandler.Store"
+		"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/adapters/endpoints/http.RegisterUserHandler.Store"
 		and gives the func name "Store"
 	*/
 

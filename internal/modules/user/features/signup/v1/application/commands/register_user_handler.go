@@ -52,7 +52,7 @@ func (h RegisterUserHandler) Handle(ctx context.Context, cmd RegisterUserCommand
 	// Create a new user using the factory
 	user, err := domain.Create(
 		cmd.ID,
-		cmd.UserName,
+		cmd.Name,
 		cmd.Email,
 		hashedPassword,
 		domain.StatusDraft,

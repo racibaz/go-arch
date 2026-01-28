@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/shared/application/ports"
-	"github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/application/commands"
+	"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/uuid"
@@ -89,7 +89,7 @@ func (h RegisterUserHandler) Store(c *gin.Context) {
 
 	handlerErr := h.Handler.Handle(ctx, commands.RegisterUserCommandV1{
 		ID:       newID,
-		UserName: registerUserDto.UserName,
+		Name:     registerUserDto.Name,
 		Email:    registerUserDto.Email,
 		Password: registerUserDto.Password,
 	})

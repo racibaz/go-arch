@@ -12,7 +12,7 @@ type GetMeByIdQuery struct {
 
 type GetMeByIdQueryResponse struct {
 	ID        string
-	UserName  string
+	Name      string
 	Email     string
 	Status    domain.UserStatus
 	CreatedAt time.Time

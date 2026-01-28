@@ -3,8 +3,8 @@ package endpoints
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/shared/application/ports"
-	"github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/adapters/endpoints/http"
-	"github.com/racibaz/go-arch/internal/modules/user/features/registering/v1/application/commands"
+	"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/adapters/endpoints/http"
+	"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	googleGrpc "google.golang.org/grpc"
 )
 
@@ -18,11 +18,11 @@ func MapHttpRoute(
 	{
 		schemas := v1.Group("/schemas")
 		{
-			schemas.GET("/users/register", http.Register)
-			schemas.GET("/users/update", http.Update)
+			schemas.GET("/auth/signup", http.Register)
+			schemas.GET("/auth/update", http.Update)
 		}
 
-		eg := v1.Group("/users/register")
+		eg := v1.Group("/auth/signup")
 		{
 			eg.POST("", registerUserHandler.Store)
 		}

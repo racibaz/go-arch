@@ -121,31 +121,6 @@ func (repo *GormUserRepository) IsExists(
 	return false, nil
 }
 
-// Login authenticates a user with provided credentials
-func (repo *GormUserRepository) Login(
-	ctx context.Context,
-	data ports.LoginData,
-) (*domain.User, error) {
-	var user domain.User
-
-	if err := repo.DB.WithContext(ctx).
-		Where("email = ?", data.Email).
-		Where("password = ?", data.Password).
-		First(&user).Error; err != nil {
-		return nil, err
-	}
-
-	if &user == nil {
-		return nil, fmt.Errorf("invalid credentials")
-	}
-
-	if user.Email == "" {
-		return nil, fmt.Errorf("invalid credentials")
-	}
-
-	return &user, nil
-}
-
 // Register registers a new user in the database
 func (repo *GormUserRepository) Register(ctx context.Context, user *domain.User) error {
 	var newUser entities.User
@@ -169,6 +144,21 @@ func (repo *GormUserRepository) Me(ctx context.Context, id string) (*domain.User
 
 	if err := repo.DB.WithContext(ctx).
 		Where("id = ?", id).
+		First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (repo *GormUserRepository) GetUserByEmail(
+	ctx context.Context,
+	email string,
+) (*domain.User, error) {
+	var user domain.User
+
+	if err := repo.DB.WithContext(ctx).
+		Where("email = ?", email).
 		First(&user).Error; err != nil {
 		return nil, err
 	}

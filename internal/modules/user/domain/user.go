@@ -14,47 +14,53 @@ const (
 )
 
 var (
-	UserNameMinLength = 3
-	UserNameMaxLength = 20
+	NameMinLength     = 3
+	NameMaxLength     = 20
 	PasswordMinLength = 6
 )
 
 // todo duplicate with post status
 var (
-	ErrNotFound          = errors.New("the user was not found")
-	ErrAlreadyExists     = errors.New("the user already exists")
-	ErrEmptyId           = errors.New("id cannot be empty")
-	ErrMinUserNameLength = errors.New(
-		fmt.Sprintf("username must be at least %d characters long", UserNameMinLength),
+	ErrNotFound      = errors.New("the user was not found")
+	ErrAlreadyExists = errors.New("the user already exists")
+	ErrEmptyId       = errors.New("id cannot be empty")
+	ErrMinNameLength = errors.New(
+		fmt.Sprintf("name must be at least %d characters long", NameMinLength),
 	)
-	ErrMaxUserNameLength = errors.New(
-		fmt.Sprintf("username must not be more than %d characters", UserNameMaxLength),
+	ErrMaxNameLength = errors.New(
+		fmt.Sprintf("name must not be more than %d characters", NameMaxLength),
 	)
 	ErrMinPasswordLength = errors.New(
 		fmt.Sprintf("password must be at least %d characters long", PasswordMinLength),
 	)
-	ErrInvalidStatus = errors.New("status is not valid")
+	ErrInvalidStatus       = errors.New("status is not valid")
+	ErrInvalidCredentials  = errors.New("credentials are not valid")
+	ErrStatusNotAcceptable = errors.New("status is not acceptable")
 )
 
 type User struct {
 	es.Aggregate
-	UserName  string
-	Email     string
-	Password  string
-	Status    UserStatus
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Name                 string
+	Email                string
+	Password             string
+	RefreshTokenWeb      *string
+	RefreshTokenWebAt    *time.Time
+	RefreshTokenMobile   *string
+	RefreshTokenMobileAt *time.Time
+	Status               UserStatus
+	CreatedAt            time.Time
+	UpdatedAt            time.Time
 }
 
 // Create This factory method creates a new Post with default values if you want.
 func Create(
-	id, userName, email, password string,
+	id, name, email, password string,
 	status UserStatus,
 	createdAt, updatedAt time.Time,
 ) (*User, error) {
 	user := &User{
 		Aggregate: es.NewAggregate(id, UserAggregate),
-		UserName:  userName,
+		Name:      name,
 		Email:     email,
 		Password:  password,
 		Status:    status,
@@ -73,7 +79,7 @@ func Create(
 
 func (u *User) sanitize() {
 	// Trim whitespace from the input parameters
-	u.UserName = strings.TrimSpace(u.UserName)
+	u.Name = strings.TrimSpace(u.Name)
 	u.Email = strings.TrimSpace(u.Email)
 	u.Password = strings.TrimSpace(u.Password)
 }
@@ -88,8 +94,8 @@ func (u *User) validate() error {
 		return ErrEmptyId
 	}
 
-	if len(u.UserName) < UserNameMinLength {
-		return ErrMinUserNameLength
+	if len(u.Name) < NameMinLength {
+		return ErrMinNameLength
 	}
 
 	if len(u.Password) < PasswordMinLength {

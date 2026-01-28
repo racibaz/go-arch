@@ -17,7 +17,7 @@ func ToDomain(userEntity *entity.User) (*domain.User, error) {
 
 	return &domain.User{
 		Aggregate: es.NewAggregate(userEntity.ID, domain.UserAggregate),
-		UserName:  userEntity.UserName,
+		Name:      userEntity.Name,
 		Email:     userEntity.Email,
 		Password:  userEntity.Password,
 		Status:    status,
@@ -34,7 +34,7 @@ func ToPersistence(user *domain.User) (*entity.User, error) {
 
 	return &entity.User{
 		ID:        user.ID(),
-		UserName:  user.UserName,
+		Name:      user.Name,
 		Email:     user.Email,
 		Password:  user.Password,
 		Status:    user.Status,
