@@ -179,7 +179,8 @@ func (repo *GormUserRepository) UpdateWebUserRefreshToken(
 	err := repo.DB.WithContext(ctx).
 		Model(&domain.User{}).
 		Where("id::text = ?", id).
-		Update("refresh_token_web", refreshToken).Error
+		Update("refresh_token_web", refreshToken).
+		Update("refresh_token_web_at", gorm.Expr("NOW()")).Error
 	if err != nil {
 		return err
 	}
@@ -194,7 +195,8 @@ func (repo *GormUserRepository) UpdateMobileUserRefreshToken(
 	err := repo.DB.WithContext(ctx).
 		Model(&domain.User{}).
 		Where("id::text = ?", id).
-		Update("refresh_token_mobile", refreshToken).Error
+		Update("refresh_token_mobile", refreshToken).
+		Update("refresh_token_mobile_at", gorm.Expr("NOW()")).Error
 	if err != nil {
 		return err
 	}
