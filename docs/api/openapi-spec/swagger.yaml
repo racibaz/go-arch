@@ -107,26 +107,22 @@ definitions:
         type: array
     type: object
   http.RegisterUserRequestDto:
-    description: RegisterUserRequestDto is a data transfer object for user registration
-      requests
-    properties:
-      user:
-        allOf:
-        - $ref: '#/definitions/http.User'
-        description: "@Description\tUser represents the user information for registration"
-    type: object
-  http.User:
-    description: User is a data transfer object representing a user
     properties:
       email:
         description: "@Description\tEmail represents the email of the user"
         type: string
+      name:
+        description: "@Description\tName represents the name of the user"
+        minLength: 3
+        type: string
       password:
         description: "@Description\tPassword represents the password of the user"
+        minLength: 10
         type: string
-      user_name:
-        description: "@Description\tUserName represents the username of the user"
-        type: string
+    required:
+    - email
+    - name
+    - password
     type: object
 info:
   contact: {}
@@ -235,6 +231,17 @@ paths:
       summary: Get post by id
       tags:
       - posts
+  /schemas/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: It is the schema for login endpoint
+      produces:
+      - application/json
+      responses: {}
+      summary: Login Schema
+      tags:
+      - users
   /schemas/posts/create:
     get:
       consumes:

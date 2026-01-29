@@ -15,6 +15,12 @@ func MapHttpRoute(
 
 	v1 := router.Group("/api/v1")
 	{
+
+		schemas := v1.Group("/schemas")
+		{
+			schemas.GET("/auth/login", http.Login)
+		}
+
 		eg := v1.Group("/auth")
 		{
 			eg.POST("/login", loginHandler.Login)

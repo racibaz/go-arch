@@ -92,7 +92,7 @@ func (h LoginHandler) Login(c *gin.Context) {
 				"self",
 				fmt.Sprintf("%s", routePath),
 				http.MethodPost,
-				"",
+				"/api/v1/schemas/auth/login",
 			),
 		},
 	}

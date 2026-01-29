@@ -171,6 +171,22 @@ const docTemplate = `{
                 }
             }
         },
+        "/schemas/auth/login": {
+            "post": {
+                "description": "It is the schema for login endpoint",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Login Schema",
+                "responses": {}
+            }
+        },
         "/schemas/posts/create": {
             "get": {
                 "description": "Get fields of creation requirement",
@@ -412,34 +428,26 @@ const docTemplate = `{
             }
         },
         "http.RegisterUserRequestDto": {
-            "description": "RegisterUserRequestDto is a data transfer object for user registration requests",
             "type": "object",
-            "properties": {
-                "user": {
-                    "description": "@Description\tUser represents the user information for registration",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/http.User"
-                        }
-                    ]
-                }
-            }
-        },
-        "http.User": {
-            "description": "User is a data transfer object representing a user",
-            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password"
+            ],
             "properties": {
                 "email": {
                     "description": "@Description\tEmail represents the email of the user",
                     "type": "string"
                 },
+                "name": {
+                    "description": "@Description\tName represents the name of the user",
+                    "type": "string",
+                    "minLength": 3
+                },
                 "password": {
                     "description": "@Description\tPassword represents the password of the user",
-                    "type": "string"
-                },
-                "user_name": {
-                    "description": "@Description\tUserName represents the username of the user",
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 10
                 }
             }
         }
