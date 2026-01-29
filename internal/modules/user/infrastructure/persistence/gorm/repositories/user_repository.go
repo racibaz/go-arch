@@ -155,13 +155,48 @@ func (repo *GormUserRepository) GetUserByEmail(
 	ctx context.Context,
 	email string,
 ) (*domain.User, error) {
-	var user domain.User
+	var userEntity entities.User
 
 	if err := repo.DB.WithContext(ctx).
 		Where("email = ?", email).
-		First(&user).Error; err != nil {
+		First(&userEntity).Error; err != nil {
 		return nil, err
 	}
 
-	return &user, nil
+	user, mapErr := userMapper.ToDomain(&userEntity)
+	if mapErr != nil {
+		return nil, fmt.Errorf("failed to map user entity to domain model: %w", mapErr)
+	}
+
+	return user, nil
+}
+
+func (repo *GormUserRepository) UpdateWebUserRefreshToken(
+	ctx context.Context,
+	id string,
+	refreshToken string,
+) error {
+	err := repo.DB.WithContext(ctx).
+		Model(&domain.User{}).
+		Where("id::text = ?", id).
+		Update("refresh_token_web", refreshToken).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *GormUserRepository) UpdateMobileUserRefreshToken(
+	ctx context.Context,
+	id string,
+	refreshToken string,
+) error {
+	err := repo.DB.WithContext(ctx).
+		Model(&domain.User{}).
+		Where("id::text = ?", id).
+		Update("refresh_token_mobile", refreshToken).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }

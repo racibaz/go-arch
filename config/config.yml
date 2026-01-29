@@ -3,6 +3,7 @@ app:
   debug: "true"
   env: "dev" # local, dev, prod, test
   log_level: "debug"
+  jwt_key: "eyJzdWIiOiIxMjM0"
   version: "0.1.9"
   local: "localhost" # for local development
 

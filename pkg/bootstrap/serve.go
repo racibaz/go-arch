@@ -7,6 +7,7 @@ import (
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/grpc"
+	helper "github.com/racibaz/go-arch/pkg/helper"
 	"github.com/racibaz/go-arch/pkg/messaging/rabbitmq"
 	"github.com/racibaz/go-arch/pkg/routing"
 	"github.com/racibaz/go-arch/pkg/trace"
@@ -27,6 +28,9 @@ func Serve() {
 	}()
 
 	log.Println("Tracer initialized")
+
+	// Initialize JWT
+	helper.InitJWT("" + config.Get().App.JWTKey)
 
 	database.Connect()
 

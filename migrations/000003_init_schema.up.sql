@@ -21,14 +21,14 @@ CREATE TABLE public.posts (
 
 CREATE TABLE public.users (
                               id uuid PRIMARY KEY,
-                              user_name text,
+                              name text,
                               email text,
                               password text,
                               status int,
                               refresh_token_web TEXT,
-                              refresh_token_web_at DATETIME,
+                              refresh_token_web_at timestamptz,
                               refresh_token_mobile TEXT,
-                              refresh_token_mobile_at DATETIME,
+                              refresh_token_mobile_at timestamptz,
                               created_at timestamptz,
                               updated_at timestamptz
 );

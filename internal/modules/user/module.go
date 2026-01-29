@@ -4,6 +4,7 @@ import (
 	ports2 "github.com/racibaz/go-arch/internal/modules/shared/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
 	userDomainPorts "github.com/racibaz/go-arch/internal/modules/user/domain/ports"
+	query "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
 	"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/logger"
@@ -11,24 +12,27 @@ import (
 
 // UserModule encapsulates the components related to the User module.
 type UserModule struct {
-	repository                 userDomainPorts.UserRepository
-	registerUserCommandHandler ports2.CommandHandler[commands.RegisterUserCommandV1]
-	logger                     logger.Logger
-	notifier                   userDomainPorts.NotificationAdapter
+	repository           userDomainPorts.UserRepository
+	signupCommandHandler ports2.CommandHandler[commands.RegisterUserCommandV1]
+	loginQueryHandler    ports2.QueryHandler[query.LoginQueryV1, *query.LoginQueryResponse]
+	logger               logger.Logger
+	notifier             userDomainPorts.NotificationAdapter
 }
 
 // NewUserModule initializes a new UserModule with the provided components.
 func NewUserModule(
 	repository userDomainPorts.UserRepository,
 	registerUserCommandHandler ports2.CommandHandler[commands.RegisterUserCommandV1],
+	loginQueryHandler ports2.QueryHandler[query.LoginQueryV1, *query.LoginQueryResponse],
 	logger logger.Logger,
 	notifier userDomainPorts.NotificationAdapter,
 ) *UserModule {
 	return &UserModule{
-		repository:                 repository,
-		registerUserCommandHandler: registerUserCommandHandler,
-		logger:                     logger,
-		notifier:                   notifier,
+		repository:           repository,
+		signupCommandHandler: registerUserCommandHandler,
+		loginQueryHandler:    loginQueryHandler,
+		logger:               logger,
+		notifier:             notifier,
 	}
 }
 
@@ -37,7 +41,11 @@ func (m UserModule) Repository() userDomainPorts.UserRepository {
 }
 
 func (m UserModule) RegisterUserCommandHandler() ports2.CommandHandler[commands.RegisterUserCommandV1] {
-	return m.registerUserCommandHandler
+	return m.signupCommandHandler
+}
+
+func (m UserModule) LoginQueryHandler() ports2.QueryHandler[query.LoginQueryV1, *query.LoginQueryResponse] {
+	return m.loginQueryHandler
 }
 
 func (m UserModule) Notifier() userDomainPorts.NotificationAdapter {

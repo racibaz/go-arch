@@ -31,7 +31,7 @@ func ExistFoundErrorResponse(c *gin.Context, message string, err error, status i
 			message,
 			errorMap,
 		))
-
+	c.Abort()
 	return
 }
 
@@ -47,6 +47,7 @@ func ErrorResponse(c *gin.Context, message string, err error, status int) {
 			errorMap,
 		))
 
+	c.Abort()
 	return
 }
 

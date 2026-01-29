@@ -16,13 +16,17 @@ func ToDomain(userEntity *entity.User) (*domain.User, error) {
 	status := domain.UserStatus(userEntity.Status)
 
 	return &domain.User{
-		Aggregate: es.NewAggregate(userEntity.ID, domain.UserAggregate),
-		Name:      userEntity.Name,
-		Email:     userEntity.Email,
-		Password:  userEntity.Password,
-		Status:    status,
-		CreatedAt: userEntity.CreatedAt,
-		UpdatedAt: userEntity.UpdatedAt,
+		Aggregate:            es.NewAggregate(userEntity.ID, domain.UserAggregate),
+		Name:                 userEntity.Name,
+		Email:                userEntity.Email,
+		Password:             userEntity.Password,
+		Status:               status,
+		RefreshTokenWeb:      userEntity.RefreshTokenWeb,
+		RefreshTokenWebAt:    userEntity.RefreshTokenWebAt,
+		RefreshTokenMobile:   userEntity.RefreshTokenMobile,
+		RefreshTokenMobileAt: userEntity.RefreshTokenMobileAt,
+		CreatedAt:            userEntity.CreatedAt,
+		UpdatedAt:            userEntity.UpdatedAt,
 	}, nil
 }
 
@@ -33,12 +37,16 @@ func ToPersistence(user *domain.User) (*entity.User, error) {
 	}
 
 	return &entity.User{
-		ID:        user.ID(),
-		Name:      user.Name,
-		Email:     user.Email,
-		Password:  user.Password,
-		Status:    user.Status,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
+		ID:                   user.ID(),
+		Name:                 user.Name,
+		Email:                user.Email,
+		Password:             user.Password,
+		Status:               user.Status,
+		RefreshTokenWeb:      user.RefreshTokenWeb,
+		RefreshTokenWebAt:    user.RefreshTokenWebAt,
+		RefreshTokenMobile:   user.RefreshTokenMobile,
+		RefreshTokenMobileAt: user.RefreshTokenMobileAt,
+		CreatedAt:            user.CreatedAt,
+		UpdatedAt:            user.UpdatedAt,
 	}, nil
 }

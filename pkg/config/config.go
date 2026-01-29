@@ -22,6 +22,7 @@ type App struct {
 	Debug    string `mapstructure:"debug"`
 	Env      string `mapstructure:"env"`
 	LogLevel string `mapstructure:"log_level"`
+	JWTKey   string `mapstructure:"jwt_key"`
 	Version  string `mapstructure:"version"`
 	Local    string `mapstructure:"local"`
 }

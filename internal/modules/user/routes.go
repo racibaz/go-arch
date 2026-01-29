@@ -5,6 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	eventHandler "github.com/racibaz/go-arch/internal/modules/user/features/_shared/event_handlers"
+	loginV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/adapters/endpoints"
+	loginV1Query "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
 	registeringUserV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/adapters/endpoints"
 	commandsV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/hashing"
@@ -54,6 +56,13 @@ func BuildModule() *UserModule {
 			passwordHasher,
 		)
 
+		loginQueryHandler := loginV1Query.NewLoginHandler(
+			repository,
+			logger,
+			messagePublisher,
+			passwordHasher,
+		)
+
 		notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
 
 		notificationHandlers := logging.LogEventHandlerAccess[ddd.AggregateEvent](
@@ -66,6 +75,7 @@ func BuildModule() *UserModule {
 		userModuleInstance = NewUserModule(
 			repository,
 			registerUserCommandHandler,
+			loginQueryHandler,
 			logger,
 			notificationAdapter,
 		)
@@ -78,6 +88,7 @@ func Routes(router *gin.Engine) {
 
 	// Collect here restful routes of your module.
 	registeringUserV1Endpoint.MapHttpRoute(router, module.RegisterUserCommandHandler())
+	loginV1Endpoint.MapHttpRoute(router, module.LoginQueryHandler())
 }
 
 func GrpcRoutes(grpcServer *googleGrpc.Server) {

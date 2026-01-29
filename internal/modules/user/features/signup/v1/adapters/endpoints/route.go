@@ -3,6 +3,7 @@ package endpoints
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/shared/application/ports"
+	"github.com/racibaz/go-arch/internal/modules/user/features/_shared/middlewares"
 	"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/adapters/endpoints/http"
 	"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	googleGrpc "google.golang.org/grpc"
@@ -16,6 +17,9 @@ func MapHttpRoute(
 
 	v1 := router.Group("/api/v1")
 	{
+		v1.Use(middlewares.Authenticate())
+		v1.Use(middlewares.Platform())
+
 		schemas := v1.Group("/schemas")
 		{
 			schemas.GET("/auth/signup", http.Register)
