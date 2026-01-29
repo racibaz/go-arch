@@ -3,6 +3,7 @@ package domain
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 
@@ -19,24 +20,30 @@ var (
 	PasswordMinLength = 6
 )
 
-// todo duplicate with post status
 var (
-	ErrNotFound      = errors.New("the user was not found")
-	ErrAlreadyExists = errors.New("the user already exists")
-	ErrEmptyId       = errors.New("id cannot be empty")
-	ErrMinNameLength = errors.New(
-		fmt.Sprintf("name must be at least %d characters long", NameMinLength),
-	)
-	ErrMaxNameLength = errors.New(
-		fmt.Sprintf("name must not be more than %d characters", NameMaxLength),
-	)
-	ErrMinPasswordLength = errors.New(
-		fmt.Sprintf("password must be at least %d characters long", PasswordMinLength),
-	)
+	ErrNotFound            = errors.New("the user was not found")
+	ErrAlreadyExists       = errors.New("the user already exists")
+	ErrEmptyId             = errors.New("id cannot be empty")
+	ErrMinNameLength       = fmt.Errorf("name must be at least %d characters long", NameMinLength)
+	ErrMaxNameLength       = fmt.Errorf("name must not be more than %d characters", NameMaxLength)
+	ErrMinPasswordLength   = fmt.Errorf("password must be at least %d characters long", PasswordMinLength)
 	ErrInvalidStatus       = errors.New("status is not valid")
 	ErrInvalidCredentials  = errors.New("credentials are not valid")
+	ErrInvalidEmail        = errors.New("email is not valid")
 	ErrStatusNotAcceptable = errors.New("status is not acceptable")
 )
+
+var ( // global variables
+	emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+)
+
+// IsValidEmail checks if the email address is valid.
+func IsValidEmail(email string) bool {
+	if len(email) < 3 || len(email) > 254 {
+		return false
+	}
+	return emailRegex.MatchString(email)
+}
 
 type User struct {
 	es.Aggregate
@@ -100,6 +107,10 @@ func (u *User) validate() error {
 
 	if len(u.Password) < PasswordMinLength {
 		return ErrMinPasswordLength
+	}
+
+	if !IsValidEmail(u.Email) {
+		return ErrInvalidEmail
 	}
 
 	if !IsValidStatus(u.Status) {

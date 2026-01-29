@@ -2,7 +2,6 @@ package module
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"time"
 
@@ -81,7 +80,7 @@ func Seed() error {
 		}
 		db.Create(userEntity)
 
-		log.Println(fmt.Sprintf("Seeded User ID: %s", userEntity.ID))
+		log.Printf("Seeded User ID: %s\n", userEntity.ID)
 	}
 
 	log.Println("User Module Seeder Finish..")

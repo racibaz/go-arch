@@ -27,6 +27,12 @@ packages:
       # directory as the original interface.
       dir: "pkg/messaging"
 
+  # Event Dispatcher interfaces
+  github.com/racibaz/go-arch/pkg/ddd:
+    config:
+      all: true
+      dir: "pkg/ddd"
+
   #-----------Shared Module Mocks-----------#
   # Shared domain interfaces
   github.com/racibaz/go-arch/internal/modules/shared/domain/ports:

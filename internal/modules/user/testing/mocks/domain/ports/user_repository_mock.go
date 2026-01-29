@@ -297,12 +297,12 @@ func (_c *MockUserRepository_Register_Call) RunAndReturn(run func(ctx context.Co
 	return _c
 }
 
-// UpdateUserRefreshToken provides a mock function for the type MockUserRepository
-func (_mock *MockUserRepository) UpdateUserRefreshToken(ctx context.Context, id string, refreshToken string) error {
+// UpdateMobileUserRefreshToken provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) UpdateMobileUserRefreshToken(ctx context.Context, id string, refreshToken string) error {
 	ret := _mock.Called(ctx, id, refreshToken)
 
 	if len(ret) == 0 {
-		panic("no return value specified for UpdateUserRefreshToken")
+		panic("no return value specified for UpdateMobileUserRefreshToken")
 	}
 
 	var r0 error
@@ -314,20 +314,20 @@ func (_mock *MockUserRepository) UpdateUserRefreshToken(ctx context.Context, id 
 	return r0
 }
 
-// MockUserRepository_UpdateUserRefreshToken_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateUserRefreshToken'
-type MockUserRepository_UpdateUserRefreshToken_Call struct {
+// MockUserRepository_UpdateMobileUserRefreshToken_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateMobileUserRefreshToken'
+type MockUserRepository_UpdateMobileUserRefreshToken_Call struct {
 	*mock.Call
 }
 
-// UpdateUserRefreshToken is a helper method to define mock.On call
+// UpdateMobileUserRefreshToken is a helper method to define mock.On call
 //   - ctx context.Context
 //   - id string
 //   - refreshToken string
-func (_e *MockUserRepository_Expecter) UpdateUserRefreshToken(ctx interface{}, id interface{}, refreshToken interface{}) *MockUserRepository_UpdateUserRefreshToken_Call {
-	return &MockUserRepository_UpdateUserRefreshToken_Call{Call: _e.mock.On("UpdateUserRefreshToken", ctx, id, refreshToken)}
+func (_e *MockUserRepository_Expecter) UpdateMobileUserRefreshToken(ctx interface{}, id interface{}, refreshToken interface{}) *MockUserRepository_UpdateMobileUserRefreshToken_Call {
+	return &MockUserRepository_UpdateMobileUserRefreshToken_Call{Call: _e.mock.On("UpdateMobileUserRefreshToken", ctx, id, refreshToken)}
 }
 
-func (_c *MockUserRepository_UpdateUserRefreshToken_Call) Run(run func(ctx context.Context, id string, refreshToken string)) *MockUserRepository_UpdateUserRefreshToken_Call {
+func (_c *MockUserRepository_UpdateMobileUserRefreshToken_Call) Run(run func(ctx context.Context, id string, refreshToken string)) *MockUserRepository_UpdateMobileUserRefreshToken_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -350,12 +350,75 @@ func (_c *MockUserRepository_UpdateUserRefreshToken_Call) Run(run func(ctx conte
 	return _c
 }
 
-func (_c *MockUserRepository_UpdateUserRefreshToken_Call) Return(err error) *MockUserRepository_UpdateUserRefreshToken_Call {
+func (_c *MockUserRepository_UpdateMobileUserRefreshToken_Call) Return(err error) *MockUserRepository_UpdateMobileUserRefreshToken_Call {
 	_c.Call.Return(err)
 	return _c
 }
 
-func (_c *MockUserRepository_UpdateUserRefreshToken_Call) RunAndReturn(run func(ctx context.Context, id string, refreshToken string) error) *MockUserRepository_UpdateUserRefreshToken_Call {
+func (_c *MockUserRepository_UpdateMobileUserRefreshToken_Call) RunAndReturn(run func(ctx context.Context, id string, refreshToken string) error) *MockUserRepository_UpdateMobileUserRefreshToken_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateWebUserRefreshToken provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) UpdateWebUserRefreshToken(ctx context.Context, id string, refreshToken string) error {
+	ret := _mock.Called(ctx, id, refreshToken)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateWebUserRefreshToken")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string, string) error); ok {
+		r0 = returnFunc(ctx, id, refreshToken)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockUserRepository_UpdateWebUserRefreshToken_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateWebUserRefreshToken'
+type MockUserRepository_UpdateWebUserRefreshToken_Call struct {
+	*mock.Call
+}
+
+// UpdateWebUserRefreshToken is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+//   - refreshToken string
+func (_e *MockUserRepository_Expecter) UpdateWebUserRefreshToken(ctx interface{}, id interface{}, refreshToken interface{}) *MockUserRepository_UpdateWebUserRefreshToken_Call {
+	return &MockUserRepository_UpdateWebUserRefreshToken_Call{Call: _e.mock.On("UpdateWebUserRefreshToken", ctx, id, refreshToken)}
+}
+
+func (_c *MockUserRepository_UpdateWebUserRefreshToken_Call) Run(run func(ctx context.Context, id string, refreshToken string)) *MockUserRepository_UpdateWebUserRefreshToken_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockUserRepository_UpdateWebUserRefreshToken_Call) Return(err error) *MockUserRepository_UpdateWebUserRefreshToken_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockUserRepository_UpdateWebUserRefreshToken_Call) RunAndReturn(run func(ctx context.Context, id string, refreshToken string) error) *MockUserRepository_UpdateWebUserRefreshToken_Call {
 	_c.Call.Return(run)
 	return _c
 }

@@ -7,11 +7,13 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/post/domain"
 	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/application/commands"
+	"github.com/racibaz/go-arch/pkg/helper"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -39,12 +41,19 @@ func TestNewCreatePostHandler(t *testing.T) {
 }
 
 func TestCreatePostHandler_Store_Success(t *testing.T) {
+	var ( // Declare variables once at the top of the test case
+		response          map[string]interface{}
+		err               error
+		responseDataBytes []byte
+		apiResponse       helper.Response[CreatePostResponseDto]
+	)
+
 	// Given
 	mockHandler := &MockCommandHandler{}
 	handler := NewCreatePostHandler(mockHandler)
 
 	// Mock the handler to return success
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
@@ -70,32 +79,40 @@ func TestCreatePostHandler_Store_Success(t *testing.T) {
 	// Then
 	assert.Equal(t, http.StatusCreated, w.Code)
 
-	var response map[string]interface{}
-	err := json.Unmarshal(w.Body.Bytes(), &response)
+	err = json.Unmarshal(w.Body.Bytes(), &response)
 	assert.NoError(t, err)
 
 	assert.Equal(t, float64(http.StatusCreated), response["status"])
 	assert.Equal(t, "Post created successfully", response["message"])
 
-	// Verify data structure - the response has status, message, and data fields
-	responseData, ok := response["data"].(map[string]interface{})
-	assert.True(t, ok)
+	// Now unmarshal the 'data' part into the specific DTO
+	responseDataBytes, err = json.Marshal(response["data"])
+	assert.NoError(t, err)
 
-	// The Response[T] wrapper has data and links fields
-	actualData, ok := responseData["data"].(map[string]interface{})
-	assert.True(t, ok)
+	err = json.Unmarshal(responseDataBytes, &apiResponse)
+	assert.NoError(t, err)
 
-	post, ok := actualData["post"].(map[string]interface{})
-	assert.True(t, ok)
-	assert.Equal(t, requestBody.Title, post["title"])
-	assert.Equal(t, requestBody.Description, post["description"])
-	assert.Equal(t, requestBody.Content, post["content"])
-	assert.Equal(t, domain.PostStatusDraft.String(), post["status"])
+	// Verify data structure
+	assert.NotNil(t, apiResponse.Data)
+	assert.NotNil(t, apiResponse.Data.Post)
+	assert.Equal(t, requestBody.Title, apiResponse.Data.Post.Title)
+	assert.Equal(t, requestBody.Description, apiResponse.Data.Post.Description)
+	assert.Equal(t, requestBody.Content, apiResponse.Data.Post.Content)
+	assert.Equal(t, domain.PostStatusDraft.String(), apiResponse.Data.Post.Status)
 
 	// Verify HATEOAS links
-	links, ok := responseData["_links"].([]interface{})
-	assert.True(t, ok)
-	assert.Equal(t, 4, len(links)) // self, store, update, delete
+	assert.NotNil(t, apiResponse.Links)
+	assert.Equal(t, 4, len(apiResponse.Links)) // self, store, update, delete
+
+	// Verify self link contains the newly created post ID
+	var selfLinkID string
+	for _, link := range apiResponse.Links {
+		if link.Rel == "self" {
+			selfLinkID = link.Href[strings.LastIndex(link.Href, "/")+1:]
+			break
+		}
+	}
+	assert.NotEmpty(t, selfLinkID)
 
 	mockHandler.AssertExpectations(t)
 }
@@ -138,10 +155,7 @@ func TestCreatePostHandler_Store_ValidationError(t *testing.T) {
 	mockHandler := &MockCommandHandler{}
 	handler := NewCreatePostHandler(mockHandler)
 
-	// Since validation doesn't prevent handler execution (bug), we need to set up the mock
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
-		Return(nil).
-		Once()
+	// No handler call expected for validation error
 
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
@@ -162,13 +176,18 @@ func TestCreatePostHandler_Store_ValidationError(t *testing.T) {
 	router.ServeHTTP(w, req)
 
 	// Then
-	// The validation error response is sent first (400), but execution continues
+	// The validation error response is sent first (400)
 	assert.Equal(t, http.StatusBadRequest, w.Code)
 
-	// Due to the bug where execution continues after validation error,
-	// the response body contains malformed JSON from multiple responses
-	// We can't parse it as valid JSON, but we can verify the handler was called
-	mockHandler.AssertExpectations(t)
+	var response map[string]interface{}
+	err := json.Unmarshal(w.Body.Bytes(), &response)
+	assert.NoError(t, err)
+
+	assert.Equal(t, float64(http.StatusBadRequest), response["status"])
+	assert.Equal(t, ValidationErrMessage, response["message"])
+	assert.Contains(t, response["cause"].(map[string]interface{})["Title"].([]interface{})[0].(string), "min")
+
+	mockHandler.AssertNotCalled(t, "Handle", mock.Anything, mock.Anything)
 }
 
 func TestCreatePostHandler_Store_HandlerError(t *testing.T) {
@@ -177,7 +196,7 @@ func TestCreatePostHandler_Store_HandlerError(t *testing.T) {
 	handler := NewCreatePostHandler(mockHandler)
 
 	// Mock the handler to return an error
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
 		Return(errors.New("handler error")).
 		Once()
 
@@ -261,7 +280,7 @@ func TestCreatePostHandler_Store_HATEOASLinks(t *testing.T) {
 	mockHandler := &MockCommandHandler{}
 	handler := NewCreatePostHandler(mockHandler)
 
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
@@ -338,7 +357,7 @@ func TestCreatePostHandler_Store_ResponseStructure(t *testing.T) {
 	mockHandler := &MockCommandHandler{}
 	handler := NewCreatePostHandler(mockHandler)
 
-	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("query.CreatePostCommandV1")).
+	mockHandler.On("Handle", mock.Anything, mock.AnythingOfType("commands.CreatePostCommandV1")).
 		Return(nil).
 		Once()
 
@@ -372,23 +391,25 @@ func TestCreatePostHandler_Store_ResponseStructure(t *testing.T) {
 	assert.Contains(t, response, "status")
 	assert.Contains(t, response, "message")
 	assert.Contains(t, response, "data")
+	assert.Equal(t, float64(http.StatusCreated), response["status"])
+	assert.Equal(t, "Post created successfully", response["message"])
 
-	// Verify data structure - the response has status, message, and data fields
-	responseData, ok := response["data"].(map[string]interface{})
-	assert.True(t, ok)
-	assert.Contains(t, responseData, "data")
-	assert.Contains(t, responseData, "_links")
+	// Now unmarshal the 'data' part into the specific DTO
+	responseDataBytes, err := json.Marshal(response["data"])
+	assert.NoError(t, err)
 
-	// Verify post data
-	postData, ok := responseData["data"].(map[string]interface{})
-	assert.True(t, ok)
+	var apiResponse helper.Response[CreatePostResponseDto]
+	err = json.Unmarshal(responseDataBytes, &apiResponse)
+	assert.NoError(t, err)
 
-	post, ok := postData["post"].(map[string]interface{})
-	assert.True(t, ok)
-	assert.Contains(t, post, "title")
-	assert.Contains(t, post, "description")
-	assert.Contains(t, post, "content")
-	assert.Contains(t, post, "status")
+	// Verify data structure
+	assert.NotNil(t, apiResponse.Data)
+	assert.NotNil(t, apiResponse.Data.Post)
+	assert.Contains(t, apiResponse.Data.Post.Title, requestBody.Title)
+	assert.Contains(t, apiResponse.Data.Post.Description, requestBody.Description)
+	assert.Contains(t, apiResponse.Data.Post.Content, requestBody.Content)
+	assert.Contains(t, apiResponse.Data.Post.Status, domain.PostStatusDraft.String())
 
+	assert.NotNil(t, apiResponse.Links)
 	mockHandler.AssertExpectations(t)
 }
