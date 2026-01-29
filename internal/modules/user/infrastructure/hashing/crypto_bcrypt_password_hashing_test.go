@@ -33,18 +33,18 @@ func TestPasswordHasher_HashPassword(t *testing.T) {
 		expectedError string // partial match for error message
 	}{
 		{
-			name:     "valid password",
-			password: "myStrongPassword123",
+			name:        "valid password",
+			password:    "myStrongPassword123",
 			expectError: false,
 		},
 		{
-			name:     "empty password",
-			password: "",
+			name:        "empty password",
+			password:    "",
 			expectError: false, // bcrypt handles empty passwords, generates a hash
 		},
 		{
-			name:     "short password",
-			password: "short",
+			name:        "short password",
+			password:    "short",
 			expectError: false, // bcrypt generates hash regardless of length
 		},
 	}

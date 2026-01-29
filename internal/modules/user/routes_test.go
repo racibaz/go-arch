@@ -1,16 +1,15 @@
 package module
 
 import (
-	"testing"
 	"sync"
+	"testing"
 
-	"github.com/stretchr/testify/assert"
-
-	userCommands "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	userQueries "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
+	userCommands "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
+	userNotification "github.com/racibaz/go-arch/internal/modules/user/infrastructure/notification/sms"
 	gormUserRepo "github.com/racibaz/go-arch/internal/modules/user/infrastructure/persistence/gorm/repositories"
 	"github.com/racibaz/go-arch/pkg/logger"
-	userNotification "github.com/racibaz/go-arch/internal/modules/user/infrastructure/notification/sms"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestBuildModule(t *testing.T) {

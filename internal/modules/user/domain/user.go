@@ -21,20 +21,24 @@ var (
 )
 
 var (
-	ErrNotFound            = errors.New("the user was not found")
-	ErrAlreadyExists       = errors.New("the user already exists")
-	ErrEmptyId             = errors.New("id cannot be empty")
-	ErrMinNameLength       = fmt.Errorf("name must be at least %d characters long", NameMinLength)
-	ErrMaxNameLength       = fmt.Errorf("name must not be more than %d characters", NameMaxLength)
-	ErrMinPasswordLength   = fmt.Errorf("password must be at least %d characters long", PasswordMinLength)
+	ErrNotFound          = errors.New("the user was not found")
+	ErrAlreadyExists     = errors.New("the user already exists")
+	ErrEmptyId           = errors.New("id cannot be empty")
+	ErrMinNameLength     = fmt.Errorf("name must be at least %d characters long", NameMinLength)
+	ErrMaxNameLength     = fmt.Errorf("name must not be more than %d characters", NameMaxLength)
+	ErrMinPasswordLength = fmt.Errorf(
+		"password must be at least %d characters long",
+		PasswordMinLength,
+	)
 	ErrInvalidStatus       = errors.New("status is not valid")
 	ErrInvalidCredentials  = errors.New("credentials are not valid")
 	ErrInvalidEmail        = errors.New("email is not valid")
 	ErrStatusNotAcceptable = errors.New("status is not acceptable")
 )
 
-var ( // global variables
-	emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+// global variables
+var emailRegex = regexp.MustCompile(
+	"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
 )
 
 // IsValidEmail checks if the email address is valid.

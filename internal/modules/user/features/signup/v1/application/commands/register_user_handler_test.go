@@ -63,10 +63,22 @@ func TestRegisterUserHandler_Handle(t *testing.T) {
 				Password: "password123",
 			},
 			setupMocks: func(mockRepo *userDomainPortsMocks.MockUserRepository, mockLogger *loggerMocks.MockLogger, mockPublisher *messagingMocks.MockUserMessagePublisher, mockHasher *userDomainPortsMocks.MockPasswordHasher) {
-				mockHasher.EXPECT().HashPassword(mock.AnythingOfType("string")).Return("hashedpassword", nil).Once()
-				mockRepo.EXPECT().IsExists(mock.Anything, mock.AnythingOfType("string")).Return(false, nil).Once()
-				mockRepo.EXPECT().Register(mock.Anything, mock.AnythingOfType("*domain.User")).Return(nil).Once()
-				mockPublisher.EXPECT().PublishUserRegistered(mock.Anything, mock.AnythingOfType("*domain.User")).Return(nil).Once()
+				mockHasher.EXPECT().
+					HashPassword(mock.AnythingOfType("string")).
+					Return("hashedpassword", nil).
+					Once()
+				mockRepo.EXPECT().
+					IsExists(mock.Anything, mock.AnythingOfType("string")).
+					Return(false, nil).
+					Once()
+				mockRepo.EXPECT().
+					Register(mock.Anything, mock.AnythingOfType("*domain.User")).
+					Return(nil).
+					Once()
+				mockPublisher.EXPECT().
+					PublishUserRegistered(mock.Anything, mock.AnythingOfType("*domain.User")).
+					Return(nil).
+					Once()
 				mockLogger.EXPECT().Info(mock.Anything, mock.Anything).Maybe()
 				mockLogger.EXPECT().Error(mock.Anything, mock.Anything).Maybe()
 			},
@@ -81,7 +93,10 @@ func TestRegisterUserHandler_Handle(t *testing.T) {
 				Password: "password123",
 			},
 			setupMocks: func(mockRepo *userDomainPortsMocks.MockUserRepository, mockLogger *loggerMocks.MockLogger, mockPublisher *messagingMocks.MockUserMessagePublisher, mockHasher *userDomainPortsMocks.MockPasswordHasher) {
-				mockHasher.EXPECT().HashPassword(mock.AnythingOfType("string")).Return("", errors.New("hashing failed")).Once()
+				mockHasher.EXPECT().
+					HashPassword(mock.AnythingOfType("string")).
+					Return("", errors.New("hashing failed")).
+					Once()
 				mockLogger.EXPECT().Error(mock.Anything, mock.Anything).Maybe()
 			},
 			expectedErr: fmt.Errorf("error hashing password: %w", errors.New("hashing failed")),
@@ -95,7 +110,10 @@ func TestRegisterUserHandler_Handle(t *testing.T) {
 				Password: "password123",
 			},
 			setupMocks: func(mockRepo *userDomainPortsMocks.MockUserRepository, mockLogger *loggerMocks.MockLogger, mockPublisher *messagingMocks.MockUserMessagePublisher, mockHasher *userDomainPortsMocks.MockPasswordHasher) {
-				mockHasher.EXPECT().HashPassword(mock.AnythingOfType("string")).Return("hashedpassword", nil).Once()
+				mockHasher.EXPECT().
+					HashPassword(mock.AnythingOfType("string")).
+					Return("hashedpassword", nil).
+					Once()
 				mockLogger.EXPECT().Error(mock.Anything, mock.Anything).Maybe()
 			},
 			expectedErr: fmt.Errorf("error creating user: %w", domain.ErrInvalidEmail),
@@ -109,8 +127,14 @@ func TestRegisterUserHandler_Handle(t *testing.T) {
 				Password: "password123",
 			},
 			setupMocks: func(mockRepo *userDomainPortsMocks.MockUserRepository, mockLogger *loggerMocks.MockLogger, mockPublisher *messagingMocks.MockUserMessagePublisher, mockHasher *userDomainPortsMocks.MockPasswordHasher) {
-				mockHasher.EXPECT().HashPassword(mock.AnythingOfType("string")).Return("hashedpassword", nil).Once()
-				mockRepo.EXPECT().IsExists(mock.Anything, mock.AnythingOfType("string")).Return(true, nil).Once()
+				mockHasher.EXPECT().
+					HashPassword(mock.AnythingOfType("string")).
+					Return("hashedpassword", nil).
+					Once()
+				mockRepo.EXPECT().
+					IsExists(mock.Anything, mock.AnythingOfType("string")).
+					Return(true, nil).
+					Once()
 				mockLogger.EXPECT().Info(mock.Anything, mock.Anything).Maybe()
 			},
 			expectedErr: domain.ErrAlreadyExists,
@@ -124,8 +148,14 @@ func TestRegisterUserHandler_Handle(t *testing.T) {
 				Password: "password123",
 			},
 			setupMocks: func(mockRepo *userDomainPortsMocks.MockUserRepository, mockLogger *loggerMocks.MockLogger, mockPublisher *messagingMocks.MockUserMessagePublisher, mockHasher *userDomainPortsMocks.MockPasswordHasher) {
-				mockHasher.EXPECT().HashPassword(mock.AnythingOfType("string")).Return("hashedpassword", nil).Once()
-				mockRepo.EXPECT().IsExists(mock.Anything, mock.AnythingOfType("string")).Return(false, errors.New("db error")).Once()
+				mockHasher.EXPECT().
+					HashPassword(mock.AnythingOfType("string")).
+					Return("hashedpassword", nil).
+					Once()
+				mockRepo.EXPECT().
+					IsExists(mock.Anything, mock.AnythingOfType("string")).
+					Return(false, errors.New("db error")).
+					Once()
 				mockLogger.EXPECT().Error(mock.Anything, mock.Anything).Maybe()
 			},
 			expectedErr: fmt.Errorf("error checking if user exists: %w", errors.New("db error")),
@@ -139,9 +169,18 @@ func TestRegisterUserHandler_Handle(t *testing.T) {
 				Password: "password123",
 			},
 			setupMocks: func(mockRepo *userDomainPortsMocks.MockUserRepository, mockLogger *loggerMocks.MockLogger, mockPublisher *messagingMocks.MockUserMessagePublisher, mockHasher *userDomainPortsMocks.MockPasswordHasher) {
-				mockHasher.EXPECT().HashPassword(mock.AnythingOfType("string")).Return("hashedpassword", nil).Once()
-				mockRepo.EXPECT().IsExists(mock.Anything, mock.AnythingOfType("string")).Return(false, nil).Once()
-				mockRepo.EXPECT().Register(mock.Anything, mock.AnythingOfType("*domain.User")).Return(errors.New("repo save error")).Once()
+				mockHasher.EXPECT().
+					HashPassword(mock.AnythingOfType("string")).
+					Return("hashedpassword", nil).
+					Once()
+				mockRepo.EXPECT().
+					IsExists(mock.Anything, mock.AnythingOfType("string")).
+					Return(false, nil).
+					Once()
+				mockRepo.EXPECT().
+					Register(mock.Anything, mock.AnythingOfType("*domain.User")).
+					Return(errors.New("repo save error")).
+					Once()
 				mockLogger.EXPECT().Error(mock.Anything, mock.Anything).Maybe()
 			},
 			expectedErr: errors.New("repo save error"),
@@ -155,13 +194,28 @@ func TestRegisterUserHandler_Handle(t *testing.T) {
 				Password: "password123",
 			},
 			setupMocks: func(mockRepo *userDomainPortsMocks.MockUserRepository, mockLogger *loggerMocks.MockLogger, mockPublisher *messagingMocks.MockUserMessagePublisher, mockHasher *userDomainPortsMocks.MockPasswordHasher) {
-				mockHasher.EXPECT().HashPassword(mock.AnythingOfType("string")).Return("hashedpassword", nil).Once()
-				mockRepo.EXPECT().IsExists(mock.Anything, mock.AnythingOfType("string")).Return(false, nil).Once()
-				mockRepo.EXPECT().Register(mock.Anything, mock.AnythingOfType("*domain.User")).Return(nil).Once()
-				mockPublisher.EXPECT().PublishUserRegistered(mock.Anything, mock.AnythingOfType("*domain.User")).Return(errors.New("publish error")).Once()
+				mockHasher.EXPECT().
+					HashPassword(mock.AnythingOfType("string")).
+					Return("hashedpassword", nil).
+					Once()
+				mockRepo.EXPECT().
+					IsExists(mock.Anything, mock.AnythingOfType("string")).
+					Return(false, nil).
+					Once()
+				mockRepo.EXPECT().
+					Register(mock.Anything, mock.AnythingOfType("*domain.User")).
+					Return(nil).
+					Once()
+				mockPublisher.EXPECT().
+					PublishUserRegistered(mock.Anything, mock.AnythingOfType("*domain.User")).
+					Return(errors.New("publish error")).
+					Once()
 				mockLogger.EXPECT().Error(mock.Anything, mock.Anything).Maybe()
 			},
-			expectedErr: fmt.Errorf("failed to publish the user created event: %w", errors.New("publish error")),
+			expectedErr: fmt.Errorf(
+				"failed to publish the user created event: %w",
+				errors.New("publish error"),
+			),
 		},
 	}
 

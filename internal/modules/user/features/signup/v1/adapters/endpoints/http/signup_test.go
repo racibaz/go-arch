@@ -17,7 +17,9 @@ import (
 
 func TestNewRegisterUserHandler(t *testing.T) {
 	// Given
-	mockCommandHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](t)
+	mockCommandHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](
+		t,
+	)
 
 	// When
 	handler := NewRegisterUserHandler(mockCommandHandler)
@@ -46,12 +48,15 @@ func TestRegisterUserHandler_Store(t *testing.T) {
 			},
 			expectedStatus: http.StatusCreated,
 			setupMocks: func(m *sharedPortsMocks.MockCommandHandler[userCommands.RegisterUserCommandV1]) {
-				m.EXPECT().Handle(mock.Anything, mock.AnythingOfType("commands.RegisterUserCommandV1")).Return(nil).Once()
+				m.EXPECT().
+					Handle(mock.Anything, mock.AnythingOfType("commands.RegisterUserCommandV1")).
+					Return(nil).
+					Once()
 			},
 			expectedResponse: "User is registered successfully",
 		},
 		{
-			name: "malformed json - decode error",
+			name:           "malformed json - decode error",
 			expectedStatus: http.StatusBadRequest,
 			setupMocks: func(m *sharedPortsMocks.MockCommandHandler[userCommands.RegisterUserCommandV1]) {
 				// No handler call expected for decode error
@@ -80,7 +85,10 @@ func TestRegisterUserHandler_Store(t *testing.T) {
 			},
 			expectedStatus: http.StatusInternalServerError,
 			setupMocks: func(m *sharedPortsMocks.MockCommandHandler[userCommands.RegisterUserCommandV1]) {
-				m.EXPECT().Handle(mock.Anything, mock.AnythingOfType("commands.RegisterUserCommandV1")).Return(errors.New("internal server error")).Once()
+				m.EXPECT().
+					Handle(mock.Anything, mock.AnythingOfType("commands.RegisterUserCommandV1")).
+					Return(errors.New("internal server error")).
+					Once()
 			},
 			expectedResponse: "user registration failed",
 		},
@@ -89,7 +97,9 @@ func TestRegisterUserHandler_Store(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Given
-			mockCommandHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](t)
+			mockCommandHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](
+				t,
+			)
 			setupMocksForRegisterUserHandler(mockCommandHandler, tc.setupMocks)
 
 			receiver := NewRegisterUserHandler(mockCommandHandler)
@@ -103,7 +113,11 @@ func TestRegisterUserHandler_Store(t *testing.T) {
 			// Create a new HTTP request
 			var req *http.Request
 			if tc.name == "malformed json - decode error" {
-				req, err = http.NewRequest(http.MethodPost, routePath, bytes.NewBufferString("{invalid json"))
+				req, err = http.NewRequest(
+					http.MethodPost,
+					routePath,
+					bytes.NewBufferString("{invalid json"),
+				)
 			} else {
 				req, err = http.NewRequest(http.MethodPost, routePath, bytes.NewBuffer(jsonBody))
 			}
@@ -124,7 +138,10 @@ func TestRegisterUserHandler_Store(t *testing.T) {
 }
 
 // Helper to setup mocks with correct generic type
-func setupMocksForRegisterUserHandler(m *sharedPortsMocks.MockCommandHandler[userCommands.RegisterUserCommandV1], setup func(*sharedPortsMocks.MockCommandHandler[userCommands.RegisterUserCommandV1])) {
+func setupMocksForRegisterUserHandler(
+	m *sharedPortsMocks.MockCommandHandler[userCommands.RegisterUserCommandV1],
+	setup func(*sharedPortsMocks.MockCommandHandler[userCommands.RegisterUserCommandV1]),
+) {
 	if setup != nil {
 		setup(m)
 	}

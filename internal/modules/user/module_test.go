@@ -4,12 +4,11 @@ import (
 	"testing"
 
 	sharedPortsMocks "github.com/racibaz/go-arch/internal/modules/shared/testing/mocks/application/ports"
-	userCommands "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	userQueries "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
+	userCommands "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	userPortsMocks "github.com/racibaz/go-arch/internal/modules/user/testing/mocks/domain/ports"
-	loggerMocks "github.com/racibaz/go-arch/pkg/logger"
 	"github.com/racibaz/go-arch/pkg/ddd"
-
+	loggerMocks "github.com/racibaz/go-arch/pkg/logger"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -17,8 +16,12 @@ import (
 func TestNewUserModule(t *testing.T) {
 	// Given
 	mockRepo := userPortsMocks.NewMockUserRepository(t)
-	mockSignupHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](t)
-	mockLoginHandler := sharedPortsMocks.NewMockQueryHandler[userQueries.LoginQueryV1, *userQueries.LoginQueryResponse](t)
+	mockSignupHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](
+		t,
+	)
+	mockLoginHandler := sharedPortsMocks.NewMockQueryHandler[userQueries.LoginQueryV1, *userQueries.LoginQueryResponse](
+		t,
+	)
 	mockLogger := loggerMocks.NewMockLogger(t)
 	mockNotifier := userPortsMocks.NewMockNotificationAdapter(t)
 
@@ -43,8 +46,12 @@ func TestNewUserModule(t *testing.T) {
 func TestUserModule_Accessors(t *testing.T) {
 	// Given
 	mockRepo := userPortsMocks.NewMockUserRepository(t)
-	mockSignupHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](t)
-	mockLoginHandler := sharedPortsMocks.NewMockQueryHandler[userQueries.LoginQueryV1, *userQueries.LoginQueryResponse](t)
+	mockSignupHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](
+		t,
+	)
+	mockLoginHandler := sharedPortsMocks.NewMockQueryHandler[userQueries.LoginQueryV1, *userQueries.LoginQueryResponse](
+		t,
+	)
 	mockLogger := loggerMocks.NewMockLogger(t)
 	mockNotifier := userPortsMocks.NewMockNotificationAdapter(t)
 

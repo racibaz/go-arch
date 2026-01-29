@@ -185,7 +185,11 @@ func TestCreatePostHandler_Store_ValidationError(t *testing.T) {
 
 	assert.Equal(t, float64(http.StatusBadRequest), response["status"])
 	assert.Equal(t, ValidationErrMessage, response["message"])
-	assert.Contains(t, response["cause"].(map[string]interface{})["Title"].([]interface{})[0].(string), "min")
+	assert.Contains(
+		t,
+		response["cause"].(map[string]interface{})["Title"].([]interface{})[0].(string),
+		"min",
+	)
 
 	mockHandler.AssertNotCalled(t, "Handle", mock.Anything, mock.Anything)
 }
