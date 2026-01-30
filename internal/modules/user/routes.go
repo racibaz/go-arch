@@ -7,6 +7,8 @@ import (
 	eventHandler "github.com/racibaz/go-arch/internal/modules/user/features/_shared/event_handlers"
 	loginV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/adapters/endpoints"
 	loginV1Query "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
+	logoutV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/logout/v1/adapters/endpoints"
+	logoutV1Command "github.com/racibaz/go-arch/internal/modules/user/features/logout/v1/application/commands"
 	registeringUserV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/adapters/endpoints"
 	commandsV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/hashing"
@@ -63,6 +65,12 @@ func BuildModule() *UserModule {
 			passwordHasher,
 		)
 
+		logoutCommandHandler := logoutV1Command.NewLogoutHandler(
+			repository,
+			logger,
+			messagePublisher,
+		)
+
 		notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
 
 		notificationHandlers := logging.LogEventHandlerAccess[ddd.AggregateEvent](
@@ -76,6 +84,7 @@ func BuildModule() *UserModule {
 			repository,
 			registerUserCommandHandler,
 			loginQueryHandler,
+			logoutCommandHandler,
 			logger,
 			notificationAdapter,
 		)
@@ -89,6 +98,7 @@ func Routes(router *gin.Engine) {
 	// Collect here restful routes of your module.
 	registeringUserV1Endpoint.MapHttpRoute(router, module.RegisterUserCommandHandler())
 	loginV1Endpoint.MapHttpRoute(router, module.LoginQueryHandler())
+	logoutV1Endpoint.MapHttpRoute(router, module.LogoutCommandHandler())
 }
 
 func GrpcRoutes(grpcServer *googleGrpc.Server) {

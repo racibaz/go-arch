@@ -151,7 +151,7 @@ func (repo *GormUserRepository) Me(ctx context.Context, id string) (*domain.User
 	return &user, nil
 }
 
-func (repo *GormUserRepository) GetUserByEmail(
+func (repo *GormUserRepository) GetByEmail(
 	ctx context.Context,
 	email string,
 ) (*domain.User, error) {
@@ -197,6 +197,36 @@ func (repo *GormUserRepository) UpdateMobileUserRefreshToken(
 		Where("id::text = ?", id).
 		Update("refresh_token_mobile", refreshToken).
 		Update("refresh_token_mobile_at", gorm.Expr("NOW()")).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *GormUserRepository) DeleteWebUserRefreshToken(
+	ctx context.Context,
+	id string,
+) error {
+	err := repo.DB.WithContext(ctx).
+		Model(&domain.User{}).
+		Where("id::text = ?", id).
+		Update("refresh_token_web", gorm.Expr("null")).
+		Update("refresh_token_web_at", gorm.Expr("null")).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repo *GormUserRepository) DeleteMobileUserRefreshToken(
+	ctx context.Context,
+	id string,
+) error {
+	err := repo.DB.WithContext(ctx).
+		Model(&domain.User{}).
+		Where("id::text = ?", id).
+		Update("refresh_token_mobile", gorm.Expr("null")).
+		Update("refresh_token_mobile_at", gorm.Expr("null")).Error
 	if err != nil {
 		return err
 	}

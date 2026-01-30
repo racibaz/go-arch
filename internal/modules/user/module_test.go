@@ -5,6 +5,7 @@ import (
 
 	sharedPortsMocks "github.com/racibaz/go-arch/internal/modules/shared/testing/mocks/application/ports"
 	userQueries "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
+	logoutCommands "github.com/racibaz/go-arch/internal/modules/user/features/logout/v1/application/commands"
 	userCommands "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	userPortsMocks "github.com/racibaz/go-arch/internal/modules/user/testing/mocks/domain/ports"
 	"github.com/racibaz/go-arch/pkg/ddd"
@@ -19,6 +20,9 @@ func TestNewUserModule(t *testing.T) {
 	mockSignupHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](
 		t,
 	)
+	mockLogoutHandler := sharedPortsMocks.NewMockCommandHandler[logoutCommands.LogoutCommandV1](
+		t,
+	)
 	mockLoginHandler := sharedPortsMocks.NewMockQueryHandler[userQueries.LoginQueryV1, *userQueries.LoginQueryResponse](
 		t,
 	)
@@ -30,6 +34,7 @@ func TestNewUserModule(t *testing.T) {
 		mockRepo,
 		mockSignupHandler,
 		mockLoginHandler,
+		mockLogoutHandler,
 		mockLogger,
 		mockNotifier,
 	)
@@ -49,6 +54,9 @@ func TestUserModule_Accessors(t *testing.T) {
 	mockSignupHandler := sharedPortsMocks.NewMockCommandHandler[userCommands.RegisterUserCommandV1](
 		t,
 	)
+	mockLogoutHandler := sharedPortsMocks.NewMockCommandHandler[logoutCommands.LogoutCommandV1](
+		t,
+	)
 	mockLoginHandler := sharedPortsMocks.NewMockQueryHandler[userQueries.LoginQueryV1, *userQueries.LoginQueryResponse](
 		t,
 	)
@@ -59,6 +67,7 @@ func TestUserModule_Accessors(t *testing.T) {
 		mockRepo,
 		mockSignupHandler,
 		mockLoginHandler,
+		mockLogoutHandler,
 		mockLogger,
 		mockNotifier,
 	)

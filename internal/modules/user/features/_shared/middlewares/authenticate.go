@@ -49,6 +49,8 @@ func Authenticate() gin.HandlerFunc {
 			return
 		}
 
+		// TODO check if refresh token is available in db or cache
+
 		if tokenPlatform != platform {
 			helper.ErrorResponse(
 				c,

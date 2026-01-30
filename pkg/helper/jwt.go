@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/racibaz/go-arch/pkg/config"
 )
 
 var jwtKey []byte
@@ -32,12 +33,21 @@ func GenerateJWT(userID, name, platform string) (string, error) {
 		return "", errors.New("invalid platform for token")
 	}
 
+	timeout := time.Duration(0)
+	config := config.Get()
+
+	if platform == PlatformWeb {
+		timeout = time.Duration(config.App.JWTWebTimeout)
+	} else if platform == PlatformMobile {
+		timeout = time.Duration(config.App.JWTMobileTimeout)
+	}
+
 	claims := &CustomClaims{
 		UserID:   userID,
 		Name:     name,
 		Platform: platform,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(2 * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(timeout * time.Minute)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			Subject:   fmt.Sprint(userID),
 		},

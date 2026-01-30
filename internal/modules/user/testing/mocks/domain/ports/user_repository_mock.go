@@ -38,12 +38,126 @@ func (_m *MockUserRepository) EXPECT() *MockUserRepository_Expecter {
 	return &MockUserRepository_Expecter{mock: &_m.Mock}
 }
 
-// GetUserByEmail provides a mock function for the type MockUserRepository
-func (_mock *MockUserRepository) GetUserByEmail(ctx context.Context, email string) (*domain.User, error) {
+// DeleteMobileUserRefreshToken provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) DeleteMobileUserRefreshToken(ctx context.Context, id string) error {
+	ret := _mock.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteMobileUserRefreshToken")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, id)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockUserRepository_DeleteMobileUserRefreshToken_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteMobileUserRefreshToken'
+type MockUserRepository_DeleteMobileUserRefreshToken_Call struct {
+	*mock.Call
+}
+
+// DeleteMobileUserRefreshToken is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *MockUserRepository_Expecter) DeleteMobileUserRefreshToken(ctx interface{}, id interface{}) *MockUserRepository_DeleteMobileUserRefreshToken_Call {
+	return &MockUserRepository_DeleteMobileUserRefreshToken_Call{Call: _e.mock.On("DeleteMobileUserRefreshToken", ctx, id)}
+}
+
+func (_c *MockUserRepository_DeleteMobileUserRefreshToken_Call) Run(run func(ctx context.Context, id string)) *MockUserRepository_DeleteMobileUserRefreshToken_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockUserRepository_DeleteMobileUserRefreshToken_Call) Return(err error) *MockUserRepository_DeleteMobileUserRefreshToken_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockUserRepository_DeleteMobileUserRefreshToken_Call) RunAndReturn(run func(ctx context.Context, id string) error) *MockUserRepository_DeleteMobileUserRefreshToken_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteWebUserRefreshToken provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) DeleteWebUserRefreshToken(ctx context.Context, id string) error {
+	ret := _mock.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteWebUserRefreshToken")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) error); ok {
+		r0 = returnFunc(ctx, id)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockUserRepository_DeleteWebUserRefreshToken_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteWebUserRefreshToken'
+type MockUserRepository_DeleteWebUserRefreshToken_Call struct {
+	*mock.Call
+}
+
+// DeleteWebUserRefreshToken is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *MockUserRepository_Expecter) DeleteWebUserRefreshToken(ctx interface{}, id interface{}) *MockUserRepository_DeleteWebUserRefreshToken_Call {
+	return &MockUserRepository_DeleteWebUserRefreshToken_Call{Call: _e.mock.On("DeleteWebUserRefreshToken", ctx, id)}
+}
+
+func (_c *MockUserRepository_DeleteWebUserRefreshToken_Call) Run(run func(ctx context.Context, id string)) *MockUserRepository_DeleteWebUserRefreshToken_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockUserRepository_DeleteWebUserRefreshToken_Call) Return(err error) *MockUserRepository_DeleteWebUserRefreshToken_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockUserRepository_DeleteWebUserRefreshToken_Call) RunAndReturn(run func(ctx context.Context, id string) error) *MockUserRepository_DeleteWebUserRefreshToken_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetByEmail provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
 	ret := _mock.Called(ctx, email)
 
 	if len(ret) == 0 {
-		panic("no return value specified for GetUserByEmail")
+		panic("no return value specified for GetByEmail")
 	}
 
 	var r0 *domain.User
@@ -66,19 +180,19 @@ func (_mock *MockUserRepository) GetUserByEmail(ctx context.Context, email strin
 	return r0, r1
 }
 
-// MockUserRepository_GetUserByEmail_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetUserByEmail'
-type MockUserRepository_GetUserByEmail_Call struct {
+// MockUserRepository_GetByEmail_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetByEmail'
+type MockUserRepository_GetByEmail_Call struct {
 	*mock.Call
 }
 
-// GetUserByEmail is a helper method to define mock.On call
+// GetByEmail is a helper method to define mock.On call
 //   - ctx context.Context
 //   - email string
-func (_e *MockUserRepository_Expecter) GetUserByEmail(ctx interface{}, email interface{}) *MockUserRepository_GetUserByEmail_Call {
-	return &MockUserRepository_GetUserByEmail_Call{Call: _e.mock.On("GetUserByEmail", ctx, email)}
+func (_e *MockUserRepository_Expecter) GetByEmail(ctx interface{}, email interface{}) *MockUserRepository_GetByEmail_Call {
+	return &MockUserRepository_GetByEmail_Call{Call: _e.mock.On("GetByEmail", ctx, email)}
 }
 
-func (_c *MockUserRepository_GetUserByEmail_Call) Run(run func(ctx context.Context, email string)) *MockUserRepository_GetUserByEmail_Call {
+func (_c *MockUserRepository_GetByEmail_Call) Run(run func(ctx context.Context, email string)) *MockUserRepository_GetByEmail_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -96,12 +210,80 @@ func (_c *MockUserRepository_GetUserByEmail_Call) Run(run func(ctx context.Conte
 	return _c
 }
 
-func (_c *MockUserRepository_GetUserByEmail_Call) Return(user *domain.User, err error) *MockUserRepository_GetUserByEmail_Call {
+func (_c *MockUserRepository_GetByEmail_Call) Return(user *domain.User, err error) *MockUserRepository_GetByEmail_Call {
 	_c.Call.Return(user, err)
 	return _c
 }
 
-func (_c *MockUserRepository_GetUserByEmail_Call) RunAndReturn(run func(ctx context.Context, email string) (*domain.User, error)) *MockUserRepository_GetUserByEmail_Call {
+func (_c *MockUserRepository_GetByEmail_Call) RunAndReturn(run func(ctx context.Context, email string) (*domain.User, error)) *MockUserRepository_GetByEmail_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetByID provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) GetByID(ctx context.Context, id string) (*domain.User, error) {
+	ret := _mock.Called(ctx, id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetByID")
+	}
+
+	var r0 *domain.User
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*domain.User, error)); ok {
+		return returnFunc(ctx, id)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *domain.User); ok {
+		r0 = returnFunc(ctx, id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.User)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, id)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockUserRepository_GetByID_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetByID'
+type MockUserRepository_GetByID_Call struct {
+	*mock.Call
+}
+
+// GetByID is a helper method to define mock.On call
+//   - ctx context.Context
+//   - id string
+func (_e *MockUserRepository_Expecter) GetByID(ctx interface{}, id interface{}) *MockUserRepository_GetByID_Call {
+	return &MockUserRepository_GetByID_Call{Call: _e.mock.On("GetByID", ctx, id)}
+}
+
+func (_c *MockUserRepository_GetByID_Call) Run(run func(ctx context.Context, id string)) *MockUserRepository_GetByID_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockUserRepository_GetByID_Call) Return(user *domain.User, err error) *MockUserRepository_GetByID_Call {
+	_c.Call.Return(user, err)
+	return _c
+}
+
+func (_c *MockUserRepository_GetByID_Call) RunAndReturn(run func(ctx context.Context, id string) (*domain.User, error)) *MockUserRepository_GetByID_Call {
 	_c.Call.Return(run)
 	return _c
 }

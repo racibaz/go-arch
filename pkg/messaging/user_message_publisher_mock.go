@@ -95,6 +95,63 @@ func (_c *MockUserMessagePublisher_PublishUserLoggedIn_Call) RunAndReturn(run fu
 	return _c
 }
 
+// PublishUserLoggedOut provides a mock function for the type MockUserMessagePublisher
+func (_mock *MockUserMessagePublisher) PublishUserLoggedOut(ctx context.Context, payload *domain.User) error {
+	ret := _mock.Called(ctx, payload)
+
+	if len(ret) == 0 {
+		panic("no return value specified for PublishUserLoggedOut")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, *domain.User) error); ok {
+		r0 = returnFunc(ctx, payload)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockUserMessagePublisher_PublishUserLoggedOut_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'PublishUserLoggedOut'
+type MockUserMessagePublisher_PublishUserLoggedOut_Call struct {
+	*mock.Call
+}
+
+// PublishUserLoggedOut is a helper method to define mock.On call
+//   - ctx context.Context
+//   - payload *domain.User
+func (_e *MockUserMessagePublisher_Expecter) PublishUserLoggedOut(ctx interface{}, payload interface{}) *MockUserMessagePublisher_PublishUserLoggedOut_Call {
+	return &MockUserMessagePublisher_PublishUserLoggedOut_Call{Call: _e.mock.On("PublishUserLoggedOut", ctx, payload)}
+}
+
+func (_c *MockUserMessagePublisher_PublishUserLoggedOut_Call) Run(run func(ctx context.Context, payload *domain.User)) *MockUserMessagePublisher_PublishUserLoggedOut_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 *domain.User
+		if args[1] != nil {
+			arg1 = args[1].(*domain.User)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockUserMessagePublisher_PublishUserLoggedOut_Call) Return(err error) *MockUserMessagePublisher_PublishUserLoggedOut_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockUserMessagePublisher_PublishUserLoggedOut_Call) RunAndReturn(run func(ctx context.Context, payload *domain.User) error) *MockUserMessagePublisher_PublishUserLoggedOut_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // PublishUserRegistered provides a mock function for the type MockUserMessagePublisher
 func (_mock *MockUserMessagePublisher) PublishUserRegistered(ctx context.Context, payload *domain.User) error {
 	ret := _mock.Called(ctx, payload)

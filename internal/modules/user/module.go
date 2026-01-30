@@ -5,6 +5,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
 	userDomainPorts "github.com/racibaz/go-arch/internal/modules/user/domain/ports"
 	query "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
+	logoutCommands "github.com/racibaz/go-arch/internal/modules/user/features/logout/v1/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	"github.com/racibaz/go-arch/pkg/ddd"
 	"github.com/racibaz/go-arch/pkg/logger"
@@ -15,6 +16,7 @@ type UserModule struct {
 	repository           userDomainPorts.UserRepository
 	signupCommandHandler ports2.CommandHandler[commands.RegisterUserCommandV1]
 	loginQueryHandler    ports2.QueryHandler[query.LoginQueryV1, *query.LoginQueryResponse]
+	logoutCommandHandler ports2.CommandHandler[logoutCommands.LogoutCommandV1]
 	logger               logger.Logger
 	notifier             userDomainPorts.NotificationAdapter
 }
@@ -24,6 +26,7 @@ func NewUserModule(
 	repository userDomainPorts.UserRepository,
 	registerUserCommandHandler ports2.CommandHandler[commands.RegisterUserCommandV1],
 	loginQueryHandler ports2.QueryHandler[query.LoginQueryV1, *query.LoginQueryResponse],
+	logoutCommandHandler ports2.CommandHandler[logoutCommands.LogoutCommandV1],
 	logger logger.Logger,
 	notifier userDomainPorts.NotificationAdapter,
 ) *UserModule {
@@ -31,6 +34,7 @@ func NewUserModule(
 		repository:           repository,
 		signupCommandHandler: registerUserCommandHandler,
 		loginQueryHandler:    loginQueryHandler,
+		logoutCommandHandler: logoutCommandHandler,
 		logger:               logger,
 		notifier:             notifier,
 	}
@@ -46,6 +50,10 @@ func (m UserModule) RegisterUserCommandHandler() ports2.CommandHandler[commands.
 
 func (m UserModule) LoginQueryHandler() ports2.QueryHandler[query.LoginQueryV1, *query.LoginQueryResponse] {
 	return m.loginQueryHandler
+}
+
+func (m UserModule) LogoutCommandHandler() ports2.CommandHandler[logoutCommands.LogoutCommandV1] {
+	return m.logoutCommandHandler
 }
 
 func (m UserModule) Notifier() userDomainPorts.NotificationAdapter {

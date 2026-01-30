@@ -27,6 +27,7 @@ const (
 	UserEventDeleted   = "user.event.deleted"
 	UserEventPublished = "user.event.published"
 	UserEventLoggedIn  = "user.event.loggedIn"
+	UserEventLoggedOut = "user.event.loggedOut"
 )
 
 type MessagePayload struct {
@@ -41,6 +42,7 @@ type PostMessagePublisher interface {
 type UserMessagePublisher interface {
 	PublishUserRegistered(ctx context.Context, payload *userDomain.User) error
 	PublishUserLoggedIn(ctx context.Context, payload *userDomain.User) error
+	PublishUserLoggedOut(ctx context.Context, payload *userDomain.User) error
 }
 
 type MessageProcessor interface {

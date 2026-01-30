@@ -96,7 +96,7 @@ func (suite *PostModuleTestSuite) TestPostModule_Repository() {
 }
 
 func (suite *PostModuleTestSuite) TestPostModule_CommandHandler() {
-	suite.Run("should return configured command handler", func() {
+	suite.Run("should return configured commands handler", func() {
 		// Given
 		postModule := NewPostModule(
 			suite.mockRepo,

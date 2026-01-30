@@ -46,7 +46,7 @@ func (h LoginHandler) Handle(ctx context.Context, cmd LoginQueryV1) (*LoginQuery
 	ctx, span := h.tracer.Start(ctx, "Login - Handler")
 	defer span.End()
 
-	existingUser, getUserByEmailErr := h.userRepository.GetUserByEmail(ctx, cmd.Email)
+	existingUser, getUserByEmailErr := h.userRepository.GetByEmail(ctx, cmd.Email)
 	if getUserByEmailErr != nil {
 		h.logger.Error("User Not Found By Email: %v", getUserByEmailErr.Error())
 		return nil, getUserByEmailErr
@@ -107,7 +107,7 @@ func (h LoginHandler) Handle(ctx context.Context, cmd LoginQueryV1) (*LoginQuery
 
 	return &LoginQueryResponse{
 		AccessToken:  accessToken,
-		RefreshToken: accessToken,
+		RefreshToken: refreshToken,
 		UserID:       existingUser.ID(),
 	}, nil
 }
