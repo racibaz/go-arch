@@ -160,6 +160,33 @@
                 }
             }
         },
+        "/refresh_token": {
+            "post": {
+                "description": "Refreshes the authentication token for a user using a valid refresh token.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Refresh User Token",
+                "parameters": [
+                    {
+                        "description": "Refresh Token Request DTO",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.RefreshTokenRequestDto"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/schemas/auth/login": {
             "post": {
                 "description": "It is the schema for login endpoint",
@@ -413,6 +440,19 @@
                     "items": {
                         "$ref": "#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post"
                     }
+                }
+            }
+        },
+        "http.RefreshTokenRequestDto": {
+            "type": "object",
+            "required": [
+                "refresh_token"
+            ],
+            "properties": {
+                "refresh_token": {
+                    "description": "@Description\tThe refresh token used to obtain a new access token.",
+                    "type": "string",
+                    "minLength": 3
                 }
             }
         },

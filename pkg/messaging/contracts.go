@@ -22,12 +22,13 @@ const (
 	PostEventDeleted   = "post.event.deleted"
 	PostEventPublished = "post.event.published"
 
-	UserEventCreated   = "user.event.registered"
-	UserEventUpdated   = "user.event.updated"
-	UserEventDeleted   = "user.event.deleted"
-	UserEventPublished = "user.event.published"
-	UserEventLoggedIn  = "user.event.loggedIn"
-	UserEventLoggedOut = "user.event.loggedOut"
+	UserEventCreated             = "user.event.registered"
+	UserEventUpdated             = "user.event.updated"
+	UserEventDeleted             = "user.event.deleted"
+	UserEventPublished           = "user.event.published"
+	UserEventLoggedIn            = "user.event.loggedIn"
+	UserEventLoggedOut           = "user.event.loggedOut"
+	UserEventRefreshTokenUpdated = "user.event.refreshTokenUpdated"
 )
 
 type MessagePayload struct {
@@ -43,6 +44,7 @@ type UserMessagePublisher interface {
 	PublishUserRegistered(ctx context.Context, payload *userDomain.User) error
 	PublishUserLoggedIn(ctx context.Context, payload *userDomain.User) error
 	PublishUserLoggedOut(ctx context.Context, payload *userDomain.User) error
+	PublishUserRefreshTokenUpdated(ctx context.Context, payload *userDomain.User) error
 }
 
 type MessageProcessor interface {

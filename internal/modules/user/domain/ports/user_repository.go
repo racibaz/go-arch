@@ -17,4 +17,6 @@ type UserRepository interface {
 	UpdateMobileUserRefreshToken(ctx context.Context, id, refreshToken string) error
 	DeleteWebUserRefreshToken(ctx context.Context, id string) error
 	DeleteMobileUserRefreshToken(ctx context.Context, id string) error
+	GetUserByRefreshTokenAtWeb(ctx context.Context, refreshToken string) (*domain.User, error)
+	GetUserByRefreshTokenAtMobile(ctx context.Context, refreshToken string) (*domain.User, error)
 }

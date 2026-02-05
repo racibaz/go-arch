@@ -106,6 +106,16 @@ definitions:
           $ref: '#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post'
         type: array
     type: object
+  http.RefreshTokenRequestDto:
+    properties:
+      refresh_token:
+        description: "@Description\tThe refresh token used to obtain a new access
+          token."
+        minLength: 3
+        type: string
+    required:
+    - refresh_token
+    type: object
   http.RegisterUserRequestDto:
     properties:
       email:
@@ -231,6 +241,25 @@ paths:
       summary: Get post by id
       tags:
       - posts
+  /refresh_token:
+    post:
+      consumes:
+      - application/json
+      description: Refreshes the authentication token for a user using a valid refresh
+        token.
+      parameters:
+      - description: Refresh Token Request DTO
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/http.RefreshTokenRequestDto'
+      produces:
+      - application/json
+      responses: {}
+      summary: Refresh User Token
+      tags:
+      - users
   /schemas/auth/login:
     post:
       consumes:

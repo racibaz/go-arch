@@ -28,7 +28,7 @@ func TestNewRegisterUserHandler(t *testing.T) {
 
 	// Then
 	assert.NotNil(t, handler)
-	assert.Equal(t, mockRepo, handler.UserRepository)
+	assert.Equal(t, mockRepo, handler.userRepository)
 	assert.Equal(t, mockLogger, handler.logger)
 	assert.Equal(t, mockPublisher, handler.messagePublisher)
 	assert.Equal(t, mockHasher, handler.passwordHasher)

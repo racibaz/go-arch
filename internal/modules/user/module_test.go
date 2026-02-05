@@ -6,6 +6,7 @@ import (
 	sharedPortsMocks "github.com/racibaz/go-arch/internal/modules/shared/testing/mocks/application/ports"
 	userQueries "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
 	logoutCommands "github.com/racibaz/go-arch/internal/modules/user/features/logout/v1/application/commands"
+	refreshTokenQueries "github.com/racibaz/go-arch/internal/modules/user/features/refreshToken/v1/application/query"
 	userCommands "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	userPortsMocks "github.com/racibaz/go-arch/internal/modules/user/testing/mocks/domain/ports"
 	"github.com/racibaz/go-arch/pkg/ddd"
@@ -26,6 +27,11 @@ func TestNewUserModule(t *testing.T) {
 	mockLoginHandler := sharedPortsMocks.NewMockQueryHandler[userQueries.LoginQueryV1, *userQueries.LoginQueryResponse](
 		t,
 	)
+
+	mockRefreshTokenHandler := sharedPortsMocks.NewMockQueryHandler[refreshTokenQueries.RefreshTokenQueryV1, *refreshTokenQueries.RefreshTokenQueryResponseV1](
+		t,
+	)
+
 	mockLogger := loggerMocks.NewMockLogger(t)
 	mockNotifier := userPortsMocks.NewMockNotificationAdapter(t)
 
@@ -35,6 +41,7 @@ func TestNewUserModule(t *testing.T) {
 		mockSignupHandler,
 		mockLoginHandler,
 		mockLogoutHandler,
+		mockRefreshTokenHandler,
 		mockLogger,
 		mockNotifier,
 	)
@@ -60,6 +67,11 @@ func TestUserModule_Accessors(t *testing.T) {
 	mockLoginHandler := sharedPortsMocks.NewMockQueryHandler[userQueries.LoginQueryV1, *userQueries.LoginQueryResponse](
 		t,
 	)
+
+	mockRefreshTokenHandler := sharedPortsMocks.NewMockQueryHandler[refreshTokenQueries.RefreshTokenQueryV1, *refreshTokenQueries.RefreshTokenQueryResponseV1](
+		t,
+	)
+
 	mockLogger := loggerMocks.NewMockLogger(t)
 	mockNotifier := userPortsMocks.NewMockNotificationAdapter(t)
 
@@ -68,6 +80,7 @@ func TestUserModule_Accessors(t *testing.T) {
 		mockSignupHandler,
 		mockLoginHandler,
 		mockLogoutHandler,
+		mockRefreshTokenHandler,
 		mockLogger,
 		mockNotifier,
 	)

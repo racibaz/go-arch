@@ -19,7 +19,7 @@ func Authenticate() gin.HandlerFunc {
 			helper.ErrorResponse(
 				c,
 				"Unauthorized",
-				errors.New("Authorization field is empty"),
+				errors.New("authorization field is empty"),
 				http.StatusUnauthorized,
 			)
 			return
@@ -30,7 +30,7 @@ func Authenticate() gin.HandlerFunc {
 			helper.ErrorResponse(
 				c,
 				"Invalid platform",
-				errors.New("Invalid platform"),
+				errors.New("invalid platform"),
 				http.StatusBadRequest,
 			)
 			return
@@ -43,7 +43,7 @@ func Authenticate() gin.HandlerFunc {
 			helper.ErrorResponse(
 				c,
 				"Unauthorized",
-				errors.New("Unauthorized"),
+				errors.New("unauthorized"),
 				http.StatusUnauthorized,
 			)
 			return
@@ -55,7 +55,7 @@ func Authenticate() gin.HandlerFunc {
 			helper.ErrorResponse(
 				c,
 				"Unauthorized",
-				errors.New("Unauthorized"),
+				errors.New("unauthorized"),
 				http.StatusUnauthorized,
 			)
 			return

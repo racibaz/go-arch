@@ -20,6 +20,7 @@ type GormUserRepository struct {
 	sync.Mutex
 }
 
+// Ensure GormUserRepository implements the UserRepository interface
 var _ ports.UserRepository = (*GormUserRepository)(nil)
 
 // NewGormUserRepository creates a new instance of GormUserRepository
@@ -231,4 +232,44 @@ func (repo *GormUserRepository) DeleteMobileUserRefreshToken(
 		return err
 	}
 	return nil
+}
+
+func (repo *GormUserRepository) GetUserByRefreshTokenAtWeb(
+	ctx context.Context,
+	refreshToken string,
+) (*domain.User, error) {
+	var userEntity entities.User
+
+	if err := repo.DB.WithContext(ctx).
+		Where("refresh_token_web = ?", refreshToken).
+		First(&userEntity).Error; err != nil {
+		return nil, err
+	}
+
+	user, mapErr := userMapper.ToDomain(&userEntity)
+	if mapErr != nil {
+		return nil, fmt.Errorf("failed to map user entity to domain model: %w", mapErr)
+	}
+
+	return user, nil
+}
+
+func (repo *GormUserRepository) GetUserByRefreshTokenAtMobile(
+	ctx context.Context,
+	refreshToken string,
+) (*domain.User, error) {
+	var userEntity entities.User
+
+	if err := repo.DB.WithContext(ctx).
+		Where("refresh_token_mobile = ?", refreshToken).
+		First(&userEntity).Error; err != nil {
+		return nil, err
+	}
+
+	user, mapErr := userMapper.ToDomain(&userEntity)
+	if mapErr != nil {
+		return nil, fmt.Errorf("failed to map user entity to domain model: %w", mapErr)
+	}
+
+	return user, nil
 }

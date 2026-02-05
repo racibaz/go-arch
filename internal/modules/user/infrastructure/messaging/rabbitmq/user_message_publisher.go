@@ -77,3 +77,22 @@ func (p *UserMessagePublisher) PublishUserLoggedOut(
 		Data:    payloadJSON,
 	})
 }
+
+func (p *UserMessagePublisher) PublishUserRefreshTokenUpdated(
+	ctx context.Context,
+	payload *domain.User,
+) error {
+	payloadJSON, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+
+	return p.rabbitmq.PublishMessage(
+		ctx,
+		messaging.UserEventRefreshTokenUpdated,
+		messaging.MessagePayload{
+			OwnerID: payload.ID(), // todo it can get auth user id
+			Data:    payloadJSON,
+		},
+	)
+}

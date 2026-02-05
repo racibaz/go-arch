@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	InValidPlatform = "Invalid platform provided"
+	InValidPlatform = "invalid platform provided"
 )
 
 func Platform() gin.HandlerFunc {

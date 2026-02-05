@@ -288,6 +288,142 @@ func (_c *MockUserRepository_GetByID_Call) RunAndReturn(run func(ctx context.Con
 	return _c
 }
 
+// GetUserByRefreshTokenAtMobile provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) GetUserByRefreshTokenAtMobile(ctx context.Context, refreshToken string) (*domain.User, error) {
+	ret := _mock.Called(ctx, refreshToken)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetUserByRefreshTokenAtMobile")
+	}
+
+	var r0 *domain.User
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*domain.User, error)); ok {
+		return returnFunc(ctx, refreshToken)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *domain.User); ok {
+		r0 = returnFunc(ctx, refreshToken)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.User)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, refreshToken)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockUserRepository_GetUserByRefreshTokenAtMobile_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetUserByRefreshTokenAtMobile'
+type MockUserRepository_GetUserByRefreshTokenAtMobile_Call struct {
+	*mock.Call
+}
+
+// GetUserByRefreshTokenAtMobile is a helper method to define mock.On call
+//   - ctx context.Context
+//   - refreshToken string
+func (_e *MockUserRepository_Expecter) GetUserByRefreshTokenAtMobile(ctx interface{}, refreshToken interface{}) *MockUserRepository_GetUserByRefreshTokenAtMobile_Call {
+	return &MockUserRepository_GetUserByRefreshTokenAtMobile_Call{Call: _e.mock.On("GetUserByRefreshTokenAtMobile", ctx, refreshToken)}
+}
+
+func (_c *MockUserRepository_GetUserByRefreshTokenAtMobile_Call) Run(run func(ctx context.Context, refreshToken string)) *MockUserRepository_GetUserByRefreshTokenAtMobile_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockUserRepository_GetUserByRefreshTokenAtMobile_Call) Return(user *domain.User, err error) *MockUserRepository_GetUserByRefreshTokenAtMobile_Call {
+	_c.Call.Return(user, err)
+	return _c
+}
+
+func (_c *MockUserRepository_GetUserByRefreshTokenAtMobile_Call) RunAndReturn(run func(ctx context.Context, refreshToken string) (*domain.User, error)) *MockUserRepository_GetUserByRefreshTokenAtMobile_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// GetUserByRefreshTokenAtWeb provides a mock function for the type MockUserRepository
+func (_mock *MockUserRepository) GetUserByRefreshTokenAtWeb(ctx context.Context, refreshToken string) (*domain.User, error) {
+	ret := _mock.Called(ctx, refreshToken)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetUserByRefreshTokenAtWeb")
+	}
+
+	var r0 *domain.User
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*domain.User, error)); ok {
+		return returnFunc(ctx, refreshToken)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *domain.User); ok {
+		r0 = returnFunc(ctx, refreshToken)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*domain.User)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = returnFunc(ctx, refreshToken)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockUserRepository_GetUserByRefreshTokenAtWeb_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'GetUserByRefreshTokenAtWeb'
+type MockUserRepository_GetUserByRefreshTokenAtWeb_Call struct {
+	*mock.Call
+}
+
+// GetUserByRefreshTokenAtWeb is a helper method to define mock.On call
+//   - ctx context.Context
+//   - refreshToken string
+func (_e *MockUserRepository_Expecter) GetUserByRefreshTokenAtWeb(ctx interface{}, refreshToken interface{}) *MockUserRepository_GetUserByRefreshTokenAtWeb_Call {
+	return &MockUserRepository_GetUserByRefreshTokenAtWeb_Call{Call: _e.mock.On("GetUserByRefreshTokenAtWeb", ctx, refreshToken)}
+}
+
+func (_c *MockUserRepository_GetUserByRefreshTokenAtWeb_Call) Run(run func(ctx context.Context, refreshToken string)) *MockUserRepository_GetUserByRefreshTokenAtWeb_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 string
+		if args[1] != nil {
+			arg1 = args[1].(string)
+		}
+		run(
+			arg0,
+			arg1,
+		)
+	})
+	return _c
+}
+
+func (_c *MockUserRepository_GetUserByRefreshTokenAtWeb_Call) Return(user *domain.User, err error) *MockUserRepository_GetUserByRefreshTokenAtWeb_Call {
+	_c.Call.Return(user, err)
+	return _c
+}
+
+func (_c *MockUserRepository_GetUserByRefreshTokenAtWeb_Call) RunAndReturn(run func(ctx context.Context, refreshToken string) (*domain.User, error)) *MockUserRepository_GetUserByRefreshTokenAtWeb_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // IsExists provides a mock function for the type MockUserRepository
 func (_mock *MockUserRepository) IsExists(ctx context.Context, email string) (bool, error) {
 	ret := _mock.Called(ctx, email)

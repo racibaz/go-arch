@@ -15,7 +15,7 @@ import (
 )
 
 type RegisterUserHandler struct {
-	UserRepository   ports.UserRepository
+	userRepository   ports.UserRepository
 	logger           logger.Logger
 	messagePublisher messaging.UserMessagePublisher
 	tracer           trace.Tracer
@@ -32,7 +32,7 @@ func NewRegisterUserHandler(
 	passwordHasher ports.PasswordHasher,
 ) *RegisterUserHandler {
 	return &RegisterUserHandler{
-		UserRepository:   userRepository,
+		userRepository:   userRepository,
 		logger:           logger,
 		messagePublisher: messagePublisher,
 		tracer:           otel.Tracer("RegisterUserHandler"),
@@ -65,7 +65,7 @@ func (h RegisterUserHandler) Handle(ctx context.Context, cmd RegisterUserCommand
 	}
 
 	// check is the user exists in db?
-	isExists, isExistsErr := h.UserRepository.IsExists(ctx, user.Email)
+	isExists, isExistsErr := h.userRepository.IsExists(ctx, user.Email)
 	if isExistsErr != nil {
 		h.logger.Error("Error saving user: %v", isExistsErr.Error())
 		return fmt.Errorf("error checking if user exists: %v", isExistsErr)
@@ -81,7 +81,7 @@ func (h RegisterUserHandler) Handle(ctx context.Context, cmd RegisterUserCommand
 	}
 
 	// Save the new user to the repository
-	savingErr := h.UserRepository.Register(ctx, user)
+	savingErr := h.userRepository.Register(ctx, user)
 
 	if savingErr != nil {
 		h.logger.Error("Error saving user: %v", savingErr)
