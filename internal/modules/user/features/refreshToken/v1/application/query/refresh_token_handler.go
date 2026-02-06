@@ -50,9 +50,18 @@ func (h RefreshHandler) Handle(
 		cmd.RefreshToken,
 		cmd.Platform,
 	)
+
 	if getUserByRefreshTokenErr != nil {
-		h.logger.Error("User Not Found By Email: %v", getUserByRefreshTokenErr.Error())
+		h.logger.Error("user not found by refresh token: %v", getUserByRefreshTokenErr.Error())
 		return nil, getUserByRefreshTokenErr
+	}
+
+	_, expirationTimeErr := h.CheckRefreshTokenExpireTime(ctx, existingUser, cmd.Platform)
+	if expirationTimeErr != nil {
+		return nil, fmt.Errorf(
+			"failed to check refresh token expiration time: %v",
+			expirationTimeErr,
+		)
 	}
 
 	accessToken, generateJwtErr := helper.GenerateJWT(
@@ -98,6 +107,35 @@ func (h RefreshHandler) Handle(
 		RefreshToken: refreshToken,
 		UserID:       existingUser.ID(),
 	}, nil
+}
+
+func (h RefreshHandler) CheckRefreshTokenExpireTime(
+	ctx context.Context,
+	user *domain.User,
+	platform string,
+) (bool, error) {
+	switch platform {
+	case helper.PlatformWeb:
+
+		isValid, err := helper.CheckExpirationTime(*user.RefreshTokenWeb)
+		if err != nil {
+			return false, err
+		}
+
+		return isValid, nil
+
+	case helper.PlatformMobile:
+
+		isValid, err := helper.CheckExpirationTime(*user.RefreshTokenMobile)
+		if err != nil {
+			return false, err
+		}
+
+		return isValid, nil
+
+	default:
+		return false, fmt.Errorf("invalid platform: %s", platform)
+	}
 }
 
 func (h RefreshHandler) GetUserByRefreshToken(

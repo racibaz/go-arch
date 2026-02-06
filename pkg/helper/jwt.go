@@ -102,3 +102,45 @@ func GenerateRefreshToken() (string, error) {
 
 	return base64.URLEncoding.EncodeToString(b), nil
 }
+
+func CheckExpirationTime(tokenString string) (bool, error) {
+	if tokenString == "" {
+		return false, fmt.Errorf("token is empty")
+	}
+
+	token, err := jwt.ParseWithClaims(
+		tokenString,
+		&CustomClaims{},
+		func(t *jwt.Token) (any, error) {
+			if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, errors.New("unexpected signing method")
+			}
+			return jwtKey, nil
+		},
+	)
+	if err != nil {
+		return false, err
+	}
+
+	if claims, ok := token.Claims.(*CustomClaims); ok {
+		return claims.ExpiresAt.Time.Before(time.Now()), nil
+	}
+
+	return false, errors.New("invalid claims type")
+}
+
+func Parse(tokenString string) (*jwt.Token, error) {
+	parser := jwt.NewParser()
+
+	jwtToken, err := parser.Parse(tokenString, func(t *jwt.Token) (any, error) {
+		if t.Method != jwt.SigningMethodHS256 {
+			return nil, errors.New("unexpected signing method")
+		}
+		return jwtKey, nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse token: %w", err)
+	}
+
+	return jwtToken, nil
+}
