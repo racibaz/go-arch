@@ -194,28 +194,22 @@ paths:
       summary: health
       tags:
       - health
-  /me:
-    get:
+  /auth/signup:
+    post:
       consumes:
       - application/json
-      description: Get current user information
+      description: It is a method to create a new user
       parameters:
-      - description: Me Request Object
+      - description: the user registration request body
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/http.MeRequestDto'
+          $ref: '#/definitions/http.RegisterUserRequestDto'
       produces:
       - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/helper.Response-http_MeResponseDto'
-      security:
-      - BearerAuth: []
-      summary: Me
+      responses: {}
+      summary: Signup User
       tags:
       - users
   /posts:
@@ -327,7 +321,7 @@ paths:
       tags:
       - users
   /schemas/auth/login:
-    post:
+    get:
       consumes:
       - application/json
       description: It is the schema for login endpoint
@@ -381,22 +375,28 @@ paths:
       summary: Get fields of update requirement
       tags:
       - posts
-  /users:
-    post:
+  /users/me:
+    get:
       consumes:
       - application/json
-      description: It is a method to create a new user
+      description: Get current user information
       parameters:
-      - description: User Object
+      - description: Me Request Object
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/http.RegisterUserRequestDto'
+          $ref: '#/definitions/http.MeRequestDto'
       produces:
       - application/json
-      responses: {}
-      summary: Register User
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helper.Response-http_MeResponseDto'
+      security:
+      - BearerAuth: []
+      summary: Get current user information
       tags:
       - users
 swagger: "2.0"

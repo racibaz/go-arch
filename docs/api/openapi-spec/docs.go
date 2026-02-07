@@ -38,14 +38,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/me": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Get current user information",
+        "/auth/signup": {
+            "post": {
+                "description": "It is a method to create a new user",
                 "consumes": [
                     "application/json"
                 ],
@@ -55,26 +50,19 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "Me",
+                "summary": "Signup User",
                 "parameters": [
                     {
-                        "description": "Me Request Object",
+                        "description": "the user registration request body",
                         "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http.MeRequestDto"
+                            "$ref": "#/definitions/http.RegisterUserRequestDto"
                         }
                     }
                 ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/helper.Response-http_MeResponseDto"
-                        }
-                    }
-                }
+                "responses": {}
             }
         },
         "/posts": {
@@ -238,7 +226,7 @@ const docTemplate = `{
             }
         },
         "/schemas/auth/login": {
-            "post": {
+            "get": {
                 "description": "It is the schema for login endpoint",
                 "consumes": [
                     "application/json"
@@ -317,9 +305,14 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/users": {
-            "post": {
-                "description": "It is a method to create a new user",
+        "/users/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get current user information",
                 "consumes": [
                     "application/json"
                 ],
@@ -329,19 +322,26 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "Register User",
+                "summary": "Get current user information",
                 "parameters": [
                     {
-                        "description": "User Object",
+                        "description": "Me Request Object",
                         "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/http.RegisterUserRequestDto"
+                            "$ref": "#/definitions/http.MeRequestDto"
                         }
                     }
                 ],
-                "responses": {}
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response-http_MeResponseDto"
+                        }
+                    }
+                }
             }
         }
     },
