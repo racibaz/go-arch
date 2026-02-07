@@ -3,6 +3,7 @@ package endpoints
 import (
 	"github.com/gin-gonic/gin"
 	ports2 "github.com/racibaz/go-arch/internal/modules/shared/application/ports"
+	"github.com/racibaz/go-arch/internal/modules/user/features/_shared/middlewares"
 	"github.com/racibaz/go-arch/internal/modules/user/features/login/v1/adapters/endpoints/http"
 	query "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
 )
@@ -23,7 +24,8 @@ func MapHttpRoute(
 
 		eg := v1.Group("/auth")
 		{
-			eg.POST("/login", loginHandler.Login)
+			eg.POST("/login", loginHandler.Login).
+				Use(middlewares.Platform())
 		}
 	}
 }

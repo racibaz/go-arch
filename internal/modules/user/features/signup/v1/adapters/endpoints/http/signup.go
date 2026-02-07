@@ -37,14 +37,14 @@ func NewRegisterUserHandler(
 
 // Store It creates a new user
 //
-//	@Summary	Register User
+//	@Summary	Signup User
 //	@Schemes
 //	@Description	It is a method to create a new user
 //	@Tags			users
 //	@Accept			json
 //	@Produce		json
-//	@Param			user	body	RegisterUserRequestDto	true	"User Object"
-//	@Router			/users [post]
+//	@Param			user	body	RegisterUserRequestDto	true	"the user registration request body"
+//	@Router			/auth/signup [post]
 func (h RegisterUserHandler) Store(c *gin.Context) {
 	tracer := otel.Tracer(config.Get().App.Name) // go-arch
 	path := fmt.Sprintf(

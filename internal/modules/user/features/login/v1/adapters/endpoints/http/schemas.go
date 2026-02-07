@@ -13,7 +13,7 @@ import (
 //	@Tags			users
 //	@Accept			json
 //	@Produce		json
-//	@Router			/schemas/auth/login [post]
+//	@Router			/schemas/auth/login [get]
 func Login(c *gin.Context) {
 	helper.SchemaResponse(c,
 		helper.BuildSchemaFromStruct(LoginRequestDto{}),

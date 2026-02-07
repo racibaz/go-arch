@@ -2,6 +2,7 @@ package http
 
 import (
 	"fmt"
+	"github.com/racibaz/go-arch/internal/modules/user/domain"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -36,14 +37,14 @@ func NewMeHttpHandler(
 
 // Me
 //
-//	@Summary	Me
+//	@Summary	Get current user information
 //	@Schemes
 //	@Description			Get current user information
 //	@Tags					users
 //	@Accept					json
 //	@Produce				json
 //	@Param					user	body	MeRequestDto	true	"Me Request Object"
-//	@Router					/me [get]
+//	@Router					/users/me [get]
 //	@Success				200	{object}	helper.Response[MeResponseDto]
 //	@Security				BearerAuth
 //	@SecurityDefinitions	BearerAuth
@@ -111,10 +112,16 @@ func (h MeHttpHandler) Me(c *gin.Context) {
 		Data: &MeResponseDto{
 			Name:      result.Name,
 			Email:     result.Email,
-			Status:    "",
+			Status:    domain.StatusToString[result.Status],
 			CreatedAt: result.CreatedAt.String(),
 		},
-		Links: []helper.Link{},
+		Links: []helper.Link{
+			helper.AddHateoas(
+				"self",
+				fmt.Sprintf("%s/%s", routePath, "/me"),
+				http.MethodGet,
+				""),
+		},
 	}
 
 	span.SetAttributes(attribute.String("users.id", result.ID))

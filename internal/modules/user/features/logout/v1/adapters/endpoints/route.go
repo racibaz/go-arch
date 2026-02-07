@@ -14,13 +14,13 @@ func MapHttpRoute(
 ) {
 	logoutHandler := http.NewLogoutHandler(commandHandler)
 
-	router.Use(middlewares.Authenticate())
-
 	v1 := router.Group("/api/v1")
 	{
 		eg := v1.Group("/auth")
 		{
-			eg.POST("/logout", logoutHandler.Logout)
+
+			eg.POST("/logout", logoutHandler.Logout).
+				Use(middlewares.Authenticate())
 		}
 	}
 }

@@ -12,7 +12,7 @@ const (
 	StatusBanned
 )
 
-var postStatusToString = map[UserStatus]string{
+var StatusToString = map[UserStatus]string{
 	StatusDraft:         "draft",
 	StatusPublished:     "published",
 	StatusArchived:      "archived",
@@ -38,7 +38,7 @@ func NewStatus(status UserStatus) UserStatus {
 }
 
 func (p UserStatus) String() string {
-	if val, ok := postStatusToString[p]; ok {
+	if val, ok := StatusToString[p]; ok {
 		return val
 	}
 	return "unknown"
@@ -49,7 +49,7 @@ func (p UserStatus) ToInt() int {
 }
 
 func IsValidStatus(p UserStatus) bool {
-	_, ok := postStatusToString[p]
+	_, ok := StatusToString[p]
 	return ok
 }
 

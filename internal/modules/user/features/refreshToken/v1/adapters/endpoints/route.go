@@ -14,14 +14,12 @@ func MapHttpRoute(
 ) {
 	refreshTokenHandler := http.NewRefreshTokenHandler(queryHandler)
 
-	router.Use(middlewares.Authenticate())
-
 	v1 := router.Group("/api/v1")
 	{
-
 		eg := v1.Group("/auth")
 		{
-			eg.POST("/refresh-token", refreshTokenHandler.RefreshToken)
+			eg.POST("/refresh-token", refreshTokenHandler.RefreshToken).
+				Use(middlewares.Authenticate())
 		}
 	}
 }

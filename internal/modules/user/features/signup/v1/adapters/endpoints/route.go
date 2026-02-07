@@ -17,8 +17,6 @@ func MapHttpRoute(
 
 	v1 := router.Group("/api/v1")
 	{
-		v1.Use(middlewares.Authenticate())
-		v1.Use(middlewares.Platform())
 
 		schemas := v1.Group("/schemas")
 		{
@@ -28,7 +26,8 @@ func MapHttpRoute(
 
 		eg := v1.Group("/auth/signup")
 		{
-			eg.POST("", registerUserHandler.Store)
+			eg.POST("", registerUserHandler.Store).
+				Use(middlewares.Platform())
 		}
 	}
 }
