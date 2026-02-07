@@ -38,6 +38,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get current user information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Me",
+                "parameters": [
+                    {
+                        "description": "Me Request Object",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/http.MeRequestDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/helper.Response-http_MeResponseDto"
+                        }
+                    }
+                }
+            }
+        },
         "/posts": {
             "get": {
                 "description": "It is a method to retrieve a pagination keys such as page and page_size and list posts",
@@ -360,45 +399,34 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_adapters_endpoints_http.Post": {
+        "helper.Link": {
             "type": "object",
             "properties": {
-                "content": {
-                    "description": "@Description\tContent is the content of the post",
+                "href": {
                     "type": "string"
                 },
-                "description": {
-                    "description": "@Description\tDescription is the description of the post",
+                "rel": {
                     "type": "string"
                 },
-                "status": {
-                    "description": "@Description\tStatus is the status of the post",
+                "schema": {
                     "type": "string"
                 },
-                "title": {
-                    "description": "@Description\tTitle is the title of the post",
+                "type": {
                     "type": "string"
                 }
             }
         },
-        "github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post": {
+        "helper.Response-http_MeResponseDto": {
             "type": "object",
             "properties": {
-                "content": {
-                    "description": "@Description\tContent is the content of the post",
-                    "type": "string"
+                "_links": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/helper.Link"
+                    }
                 },
-                "description": {
-                    "description": "@Description\tDescription is the description of the post",
-                    "type": "string"
-                },
-                "status": {
-                    "description": "@Description\tStatus is the status of the post",
-                    "type": "string"
-                },
-                "title": {
-                    "description": "@Description\tTitle is the title of the post",
-                    "type": "string"
+                "data": {
+                    "$ref": "#/definitions/http.MeResponseDto"
                 }
             }
         },
@@ -437,8 +465,21 @@ const docTemplate = `{
             "description": "CreatePostResponseDto is a data transfer object for reporting the details of a created post",
             "type": "object",
             "properties": {
-                "post": {
-                    "$ref": "#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_adapters_endpoints_http.Post"
+                "content": {
+                    "description": "@Description\tContent is the content of the post",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "@Description\tDescription is the description of the post",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "@Description\tStatus is the status of the post",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "@Description\tTitle is the title of the post",
+                    "type": "string"
                 }
             }
         },
@@ -449,8 +490,63 @@ const docTemplate = `{
                 "posts": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post"
+                        "$ref": "#/definitions/http.Post"
                     }
+                }
+            }
+        },
+        "http.MeRequestDto": {
+            "type": "object",
+            "required": [
+                "refresh_token"
+            ],
+            "properties": {
+                "refresh_token": {
+                    "description": "@Description\tThe refresh token used to obtain a new access token.",
+                    "type": "string",
+                    "minLength": 10
+                }
+            }
+        },
+        "http.MeResponseDto": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "@Description\tCreatedAt represents the date and time when the user was created",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "@Description\tEmail represents the email of the user",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "@Description\tName represents the name of the user",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "@Description\tStatus represents the status of the user (e.g., active, inactive)",
+                    "type": "string"
+                }
+            }
+        },
+        "http.Post": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "@Description\tContent is the content of the post",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "@Description\tDescription is the description of the post",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "@Description\tStatus is the status of the post",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "@Description\tTitle is the title of the post",
+                    "type": "string"
                 }
             }
         },
@@ -463,7 +559,7 @@ const docTemplate = `{
                 "refresh_token": {
                     "description": "@Description\tThe refresh token used to obtain a new access token.",
                     "type": "string",
-                    "minLength": 3
+                    "minLength": 10
                 }
             }
         },
