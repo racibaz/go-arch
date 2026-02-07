@@ -45,9 +45,6 @@ func NewMeHttpHandler(
 //	@Param					user	body	MeRequestDto	true	"Me Request Object"
 //	@Router					/me [get]
 //	@Success				200	{object}	helper.Response[MeResponseDto]
-//	@Failure				400	{object}	helper.ErrorResponse
-//	@Failure				401	{object}	helper.ErrorResponse
-//	@Failure				500	{object}	helper.ErrorResponse
 //	@Security				BearerAuth
 //	@SecurityDefinitions	BearerAuth
 func (h MeHttpHandler) Me(c *gin.Context) {
