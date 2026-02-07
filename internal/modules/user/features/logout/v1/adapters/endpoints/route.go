@@ -18,7 +18,6 @@ func MapHttpRoute(
 	{
 		eg := v1.Group("/auth")
 		{
-
 			eg.POST("/logout", logoutHandler.Logout).
 				Use(middlewares.Authenticate())
 		}

@@ -2,11 +2,11 @@ package http
 
 import (
 	"fmt"
-	"github.com/racibaz/go-arch/internal/modules/user/domain"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/shared/application/ports"
+	"github.com/racibaz/go-arch/internal/modules/user/domain"
 	"github.com/racibaz/go-arch/internal/modules/user/features/me/v1/application/query"
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/helper"
