@@ -6,11 +6,11 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
 )
 
-type GetMeByIdQuery struct {
-	ID string
+type MeQueryHandlerQuery struct {
+	RefreshToken string
 }
 
-type GetMeByIdQueryResponse struct {
+type MeQueryHandlerResponse struct {
 	ID        string
 	Name      string
 	Email     string

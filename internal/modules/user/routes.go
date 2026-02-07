@@ -9,6 +9,8 @@ import (
 	loginV1Query "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
 	logoutV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/logout/v1/adapters/endpoints"
 	logoutV1Command "github.com/racibaz/go-arch/internal/modules/user/features/logout/v1/application/commands"
+	meV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/me/v1/adapters/endpoints"
+	meV1Query "github.com/racibaz/go-arch/internal/modules/user/features/me/v1/application/query"
 	refreshTokenV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/refreshToken/v1/adapters/endpoints"
 	refreshTokenV1Query "github.com/racibaz/go-arch/internal/modules/user/features/refreshToken/v1/application/query"
 	registeringUserV1Endpoint "github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/adapters/endpoints"
@@ -79,6 +81,11 @@ func BuildModule() *UserModule {
 			messagePublisher,
 		)
 
+		meQueryHandler := meV1Query.NewMeQueryHandler(
+			repository,
+			logger,
+		)
+
 		notificationAdapter := sms.NewTwilioSmsNotificationAdapter()
 
 		notificationHandlers := logging.LogEventHandlerAccess[ddd.AggregateEvent](
@@ -94,6 +101,7 @@ func BuildModule() *UserModule {
 			loginQueryHandler,
 			logoutCommandHandler,
 			refreshTokenQueryHandler,
+			meQueryHandler,
 			logger,
 			notificationAdapter,
 		)
@@ -109,6 +117,7 @@ func Routes(router *gin.Engine) {
 	loginV1Endpoint.MapHttpRoute(router, module.LoginQueryHandler())
 	logoutV1Endpoint.MapHttpRoute(router, module.LogoutCommandHandler())
 	refreshTokenV1Endpoint.MapHttpRoute(router, module.RefreshTokenHandler())
+	meV1Endpoint.MapHttpRoute(router, module.MeHandler())
 }
 
 func GrpcRoutes(grpcServer *googleGrpc.Server) {

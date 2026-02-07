@@ -9,37 +9,37 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-// GetMeHandler handles the retrieval of the current user's information.
-type GetMeHandler struct {
-	UserRepository ports.UserRepository
+// MeQueryHandler handles the retrieval of the current user's information.
+type MeQueryHandler struct {
+	userRepository ports.UserRepository
 	logger         logger.Logger
 	tracer         trace.Tracer
 }
 
-// NewGetMeHandler creates a new instance of GetMeHandler.
-func NewGetMeHandler(userRepository ports.UserRepository, logger logger.Logger) *GetMeHandler {
-	return &GetMeHandler{
-		UserRepository: userRepository,
+// NewMeQueryHandler creates a new instance of MeQueryHandler.
+func NewMeQueryHandler(userRepository ports.UserRepository, logger logger.Logger) *MeQueryHandler {
+	return &MeQueryHandler{
+		userRepository: userRepository,
 		logger:         logger,
-		tracer:         otel.Tracer("GetMeHandler"),
+		tracer:         otel.Tracer("MeQueryHandler"),
 	}
 }
 
 // Handle processes the GetMeByIdQuery and returns the user's information.
-func (h *GetMeHandler) Handle(
+func (h *MeQueryHandler) Handle(
 	ctx context.Context,
-	query GetMeByIdQuery,
-) (GetMeByIdQueryResponse, error) {
-	ctx, span := h.tracer.Start(ctx, "GetMe - Handler")
+	query MeQueryHandlerQuery,
+) (*MeQueryHandlerResponse, error) {
+	ctx, span := h.tracer.Start(ctx, "Me - Handler")
 	defer span.End()
 
-	user, err := h.UserRepository.Me(ctx, query.ID)
+	user, err := h.userRepository.Me(ctx, query.RefreshToken)
 	if err != nil {
-		return GetMeByIdQueryResponse{}, err
+		return nil, err
 	}
 
-	// Map domain.User to GetMeByIdQueryResponse
-	userView := GetMeByIdQueryResponse{
+	// Map the user domain model to the response DTO
+	responsePayload := MeQueryHandlerResponse{
 		ID:        user.ID(),
 		Name:      user.Name,
 		Email:     user.Email,
@@ -48,5 +48,5 @@ func (h *GetMeHandler) Handle(
 		UpdatedAt: user.UpdatedAt,
 	}
 
-	return userView, err
+	return &responsePayload, err
 }

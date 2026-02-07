@@ -6,6 +6,7 @@ import (
 	userDomainPorts "github.com/racibaz/go-arch/internal/modules/user/domain/ports"
 	loginV1Query "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
 	logoutCommands "github.com/racibaz/go-arch/internal/modules/user/features/logout/v1/application/commands"
+	meQueryV1 "github.com/racibaz/go-arch/internal/modules/user/features/me/v1/application/query"
 	refreshTokenQueryV1 "github.com/racibaz/go-arch/internal/modules/user/features/refreshToken/v1/application/query"
 	"github.com/racibaz/go-arch/internal/modules/user/features/signup/v1/application/commands"
 	"github.com/racibaz/go-arch/pkg/ddd"
@@ -19,6 +20,7 @@ type UserModule struct {
 	loginQueryHandler    ports2.QueryHandler[loginV1Query.LoginQueryV1, *loginV1Query.LoginQueryResponse]
 	logoutCommandHandler ports2.CommandHandler[logoutCommands.LogoutCommandV1]
 	refreshTokenHandler  ports2.QueryHandler[refreshTokenQueryV1.RefreshTokenQueryV1, *refreshTokenQueryV1.RefreshTokenQueryResponseV1]
+	meHandler            ports2.QueryHandler[meQueryV1.MeQueryHandlerQuery, *meQueryV1.MeQueryHandlerResponse]
 	logger               logger.Logger
 	notifier             userDomainPorts.NotificationAdapter
 }
@@ -30,6 +32,7 @@ func NewUserModule(
 	loginQueryHandler ports2.QueryHandler[loginV1Query.LoginQueryV1, *loginV1Query.LoginQueryResponse],
 	logoutCommandHandler ports2.CommandHandler[logoutCommands.LogoutCommandV1],
 	refreshTokenHandler ports2.QueryHandler[refreshTokenQueryV1.RefreshTokenQueryV1, *refreshTokenQueryV1.RefreshTokenQueryResponseV1],
+	meHandler ports2.QueryHandler[meQueryV1.MeQueryHandlerQuery, *meQueryV1.MeQueryHandlerResponse],
 	logger logger.Logger,
 	notifier userDomainPorts.NotificationAdapter,
 ) *UserModule {
@@ -39,6 +42,7 @@ func NewUserModule(
 		loginQueryHandler:    loginQueryHandler,
 		logoutCommandHandler: logoutCommandHandler,
 		refreshTokenHandler:  refreshTokenHandler,
+		meHandler:            meHandler,
 		logger:               logger,
 		notifier:             notifier,
 	}
@@ -62,6 +66,10 @@ func (m UserModule) LogoutCommandHandler() ports2.CommandHandler[logoutCommands.
 
 func (m UserModule) RefreshTokenHandler() ports2.QueryHandler[refreshTokenQueryV1.RefreshTokenQueryV1, *refreshTokenQueryV1.RefreshTokenQueryResponseV1] {
 	return m.refreshTokenHandler
+}
+
+func (m UserModule) MeHandler() ports2.QueryHandler[meQueryV1.MeQueryHandlerQuery, *meQueryV1.MeQueryHandlerResponse] {
+	return m.meHandler
 }
 
 func (m UserModule) Notifier() userDomainPorts.NotificationAdapter {

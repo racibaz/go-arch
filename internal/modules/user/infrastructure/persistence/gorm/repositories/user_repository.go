@@ -139,12 +139,13 @@ func (repo *GormUserRepository) Register(ctx context.Context, user *domain.User)
 	return nil
 }
 
-// Me retrieves the current user's information by ID
-func (repo *GormUserRepository) Me(ctx context.Context, id string) (*domain.User, error) {
+// Me retrieves the current user's information by refreshToken
+func (repo *GormUserRepository) Me(ctx context.Context, refreshToken string) (*domain.User, error) {
 	var user domain.User
 
 	if err := repo.DB.WithContext(ctx).
-		Where("id = ?", id).
+		Where("refresh_token_web = ?", refreshToken).
+		Or("refresh_token_mobile = ?", refreshToken).
 		First(&user).Error; err != nil {
 		return nil, err
 	}
