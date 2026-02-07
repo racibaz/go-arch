@@ -18,8 +18,8 @@ func MapHttpRoute(
 	{
 		eg := v1.Group("/auth")
 		{
-			eg.POST("/refresh-token", refreshTokenHandler.RefreshToken).
-				Use(middlewares.Authenticate())
+			eg.Use(middlewares.Authenticate()).
+				POST("/refresh-token", refreshTokenHandler.RefreshToken)
 		}
 	}
 }

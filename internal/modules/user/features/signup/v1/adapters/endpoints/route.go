@@ -26,8 +26,8 @@ func MapHttpRoute(
 
 		eg := v1.Group("/auth/signup")
 		{
-			eg.POST("", registerUserHandler.Store).
-				Use(middlewares.Platform())
+			eg.Use(middlewares.Platform()).
+				POST("", registerUserHandler.Store)
 		}
 	}
 }

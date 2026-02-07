@@ -52,7 +52,7 @@ func (repo *GormUserRepository) GetByID(ctx context.Context, id string) (*domain
 	var user domain.User
 
 	if err := repo.DB.WithContext(ctx).
-		Where("id = ?", id).
+		Where("id::text = ?", id).
 		First(&user).Error; err != nil {
 		return nil, err
 	}

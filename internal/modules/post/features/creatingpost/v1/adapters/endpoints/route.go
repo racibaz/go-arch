@@ -6,6 +6,7 @@ import (
 	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/adapters/endpoints/http"
 	"github.com/racibaz/go-arch/internal/modules/post/features/creatingpost/v1/application/commands"
 	"github.com/racibaz/go-arch/internal/modules/shared/application/ports"
+	"github.com/racibaz/go-arch/internal/modules/user/features/_shared/middlewares"
 	googleGrpc "google.golang.org/grpc"
 )
 
@@ -25,7 +26,8 @@ func MapHttpRoute(
 
 		eg := v1.Group("/posts")
 		{
-			eg.POST("", createPostHandler.Store)
+			eg.Use(middlewares.Authenticate()).
+				POST("", createPostHandler.Store)
 		}
 	}
 }
