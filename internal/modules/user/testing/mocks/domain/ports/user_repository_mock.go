@@ -491,8 +491,8 @@ func (_c *MockUserRepository_IsExists_Call) RunAndReturn(run func(ctx context.Co
 }
 
 // Me provides a mock function for the type MockUserRepository
-func (_mock *MockUserRepository) Me(ctx context.Context, id string) (*domain.User, error) {
-	ret := _mock.Called(ctx, id)
+func (_mock *MockUserRepository) Me(ctx context.Context, refreshToken string) (*domain.User, error) {
+	ret := _mock.Called(ctx, refreshToken)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Me")
@@ -501,17 +501,17 @@ func (_mock *MockUserRepository) Me(ctx context.Context, id string) (*domain.Use
 	var r0 *domain.User
 	var r1 error
 	if returnFunc, ok := ret.Get(0).(func(context.Context, string) (*domain.User, error)); ok {
-		return returnFunc(ctx, id)
+		return returnFunc(ctx, refreshToken)
 	}
 	if returnFunc, ok := ret.Get(0).(func(context.Context, string) *domain.User); ok {
-		r0 = returnFunc(ctx, id)
+		r0 = returnFunc(ctx, refreshToken)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*domain.User)
 		}
 	}
 	if returnFunc, ok := ret.Get(1).(func(context.Context, string) error); ok {
-		r1 = returnFunc(ctx, id)
+		r1 = returnFunc(ctx, refreshToken)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -525,12 +525,12 @@ type MockUserRepository_Me_Call struct {
 
 // Me is a helper method to define mock.On call
 //   - ctx context.Context
-//   - id string
-func (_e *MockUserRepository_Expecter) Me(ctx interface{}, id interface{}) *MockUserRepository_Me_Call {
-	return &MockUserRepository_Me_Call{Call: _e.mock.On("Me", ctx, id)}
+//   - refreshToken string
+func (_e *MockUserRepository_Expecter) Me(ctx interface{}, refreshToken interface{}) *MockUserRepository_Me_Call {
+	return &MockUserRepository_Me_Call{Call: _e.mock.On("Me", ctx, refreshToken)}
 }
 
-func (_c *MockUserRepository_Me_Call) Run(run func(ctx context.Context, id string)) *MockUserRepository_Me_Call {
+func (_c *MockUserRepository_Me_Call) Run(run func(ctx context.Context, refreshToken string)) *MockUserRepository_Me_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -553,7 +553,7 @@ func (_c *MockUserRepository_Me_Call) Return(user *domain.User, err error) *Mock
 	return _c
 }
 
-func (_c *MockUserRepository_Me_Call) RunAndReturn(run func(ctx context.Context, id string) (*domain.User, error)) *MockUserRepository_Me_Call {
+func (_c *MockUserRepository_Me_Call) RunAndReturn(run func(ctx context.Context, refreshToken string) (*domain.User, error)) *MockUserRepository_Me_Call {
 	_c.Call.Return(run)
 	return _c
 }
