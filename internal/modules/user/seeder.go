@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
+	"github.com/racibaz/go-arch/internal/modules/user/domain/ports"
+	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/hashing"
 	"github.com/racibaz/go-arch/internal/modules/user/infrastructure/persistence/gorm/mappers"
 	"github.com/racibaz/go-arch/pkg/database"
 	"github.com/racibaz/go-arch/pkg/es"
@@ -18,6 +20,7 @@ func Seed() error {
 
 	// Get database connection
 	db := database.Connection()
+	var passwordhasher ports.PasswordHasher = hashing.NewPasswordHasher()
 
 	if db == nil {
 		return errors.New("database connection is nil")
@@ -29,9 +32,15 @@ func Seed() error {
 				"2d86263a-eebf-4e7d-867a-0115569d6a3a",
 				domain.UserAggregate,
 			),
-			Email:     "guest@xyz.com",
-			Name:      "jackynickname",
-			Password:  "jackypassword",
+			Email: "guest@xyz.com",
+			Name:  "jackynickname",
+			Password: func() string {
+				h, err := passwordhasher.HashPassword("jackypassword")
+				if err != nil {
+					panic(err)
+				}
+				return h
+			}(),
 			Status:    domain.StatusPublished,
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
@@ -41,9 +50,15 @@ func Seed() error {
 				"13dd0ee4-67ed-4dfc-81ef-9cb6684446d0",
 				domain.UserAggregate,
 			),
-			Email:     "raci@xyz.com",
-			Name:      "racinickname",
-			Password:  "racipassword",
+			Email: "raci@xyz.com",
+			Name:  "racinickname",
+			Password: func() string {
+				h, err := passwordhasher.HashPassword("racipassword")
+				if err != nil {
+					panic(err)
+				}
+				return h
+			}(),
 			Status:    domain.StatusPublished,
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
