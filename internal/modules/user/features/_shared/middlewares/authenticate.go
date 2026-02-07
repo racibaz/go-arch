@@ -11,9 +11,6 @@ import (
 
 func Authenticate() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// todo remove this print
-		println("Authenticate middleware called")
-
 		authHeader := strings.TrimSpace(c.GetHeader(string(helper.CtxAuthorization)))
 		if authHeader == "" || !strings.HasPrefix(strings.ToLower(authHeader), "bearer ") {
 			helper.ErrorResponse(
@@ -48,8 +45,6 @@ func Authenticate() gin.HandlerFunc {
 			)
 			return
 		}
-
-		// TODO check if refresh token is available in db or cache
 
 		if tokenPlatform != platform {
 			helper.ErrorResponse(

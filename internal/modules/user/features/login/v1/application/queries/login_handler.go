@@ -52,6 +52,8 @@ func (h LoginHandler) Handle(ctx context.Context, cmd LoginQueryV1) (*LoginQuery
 		return nil, getUserByEmailErr
 	}
 
+	// todo check user status
+
 	hashedPassword, hashErr := h.passwordHasher.HashPassword(cmd.Password)
 	if hashErr != nil {
 		h.logger.Error("Error hashing password: %v", hashErr.Error())

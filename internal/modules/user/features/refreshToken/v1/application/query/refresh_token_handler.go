@@ -3,6 +3,7 @@ package query
 import (
 	"context"
 	"fmt"
+	"time"
 
 	applicationPorts "github.com/racibaz/go-arch/internal/modules/shared/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
@@ -45,7 +46,7 @@ func (h RefreshHandler) Handle(
 	ctx, span := h.tracer.Start(ctx, "RefreshHandler - Handler")
 	defer span.End()
 
-	existingUser, getUserByRefreshTokenErr := h.GetUserByRefreshToken(
+	existingUser, getUserByRefreshTokenErr := h.getUserByRefreshToken(
 		ctx,
 		cmd.RefreshToken,
 		cmd.Platform,
@@ -56,7 +57,7 @@ func (h RefreshHandler) Handle(
 		return nil, getUserByRefreshTokenErr
 	}
 
-	_, expirationTimeErr := h.CheckRefreshTokenExpireTime(ctx, existingUser, cmd.Platform)
+	_, expirationTimeErr := h.checkRefreshTokenExpireTime(existingUser, cmd.Platform)
 	if expirationTimeErr != nil {
 		return nil, fmt.Errorf(
 			"failed to check refresh token expiration time: %v",
@@ -81,7 +82,7 @@ func (h RefreshHandler) Handle(
 		)
 	}
 
-	updateRefreshTokenErr := h.UpdateRefreshToken(
+	updateRefreshTokenErr := h.updateRefreshToken(
 		ctx,
 		existingUser.ID(),
 		refreshToken,
@@ -109,36 +110,31 @@ func (h RefreshHandler) Handle(
 	}, nil
 }
 
-func (h RefreshHandler) CheckRefreshTokenExpireTime(
-	ctx context.Context,
+func (h RefreshHandler) isRefreshTokenWebValid(refreshTokenAt *time.Time) bool {
+	if refreshTokenAt == nil {
+		return false
+	}
+
+	return refreshTokenAt.After(time.Now())
+}
+
+func (h RefreshHandler) checkRefreshTokenExpireTime(
 	user *domain.User,
 	platform string,
 ) (bool, error) {
 	switch platform {
 	case helper.PlatformWeb:
-
-		isValid, err := helper.CheckExpirationTime(*user.RefreshTokenWeb)
-		if err != nil {
-			return false, err
-		}
-
-		return isValid, nil
+		return h.isRefreshTokenWebValid(user.RefreshTokenWebAt), nil
 
 	case helper.PlatformMobile:
-
-		isValid, err := helper.CheckExpirationTime(*user.RefreshTokenMobile)
-		if err != nil {
-			return false, err
-		}
-
-		return isValid, nil
+		return h.isRefreshTokenWebValid(user.RefreshTokenMobileAt), nil
 
 	default:
 		return false, fmt.Errorf("invalid platform: %s", platform)
 	}
 }
 
-func (h RefreshHandler) GetUserByRefreshToken(
+func (h RefreshHandler) getUserByRefreshToken(
 	ctx context.Context,
 	refreshToken, platform string,
 ) (*domain.User, error) {
@@ -153,7 +149,7 @@ func (h RefreshHandler) GetUserByRefreshToken(
 }
 
 // todo it is code duplicated with login_handler.go, consider refactoring later
-func (h RefreshHandler) UpdateRefreshToken(
+func (h RefreshHandler) updateRefreshToken(
 	ctx context.Context,
 	id, refreshToken, platform string,
 ) error {

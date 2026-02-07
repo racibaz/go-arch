@@ -77,7 +77,7 @@ func (h LoginHandler) Login(c *gin.Context) {
 			span.RecordError(handlerErr)
 		}
 
-		helper.ErrorResponse(c, NotFoundErrMessage, handlerErr, http.StatusInternalServerError)
+		helper.ErrorResponse(c, NotFoundErrMessage, handlerErr, http.StatusUnauthorized)
 		return
 	}
 

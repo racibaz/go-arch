@@ -6,6 +6,7 @@ The Architecture Decision Log (ADL) is a collection of records that document sig
 - [ADR-0001-keep-an-architecture-decision-log.md](adr/0001-keep-an-architecture-decision-record.md)
 - [ADR-0002-use-a-vertical-slice-architecture.md ](adr/0002-use-a-vertical-slice-architecture.md)
 - [ADR-0003-use-a-cqrs.md](adr/0003-use-cqrs-pattern.md)
+- [ADR-0004-use-jwt-token-hmac](adr/0004-use-jwt-token-hmac)
 
 
 

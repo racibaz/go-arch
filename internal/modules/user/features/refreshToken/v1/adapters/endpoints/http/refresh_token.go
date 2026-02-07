@@ -91,16 +91,16 @@ func (h RefreshTokenHandler) RefreshToken(c *gin.Context) {
 	if handlerErr != nil {
 
 		if span := trace.SpanFromContext(ctx); span != nil {
-			span.SetAttributes(attribute.String("error", "refresh token update failed"))
-			span.SetStatus(codes.Error, "refresh token update failed")
+			span.SetAttributes(attribute.String("error", handlerErr.Error()))
+			span.SetStatus(codes.Error, handlerErr.Error())
 			span.RecordError(handlerErr)
 		}
 
-		helper.ExistFoundErrorResponse(
+		helper.UnauthorizedErrorResponse(
 			c,
-			"refresh token update failed",
+			handlerErr.Error(),
 			handlerErr,
-			http.StatusInternalServerError,
+			http.StatusUnauthorized,
 		)
 		return
 	}

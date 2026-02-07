@@ -35,6 +35,21 @@ func ExistFoundErrorResponse(c *gin.Context, message string, err error, status i
 	return
 }
 
+// UnauthorizedErrorResponse sends a standardized unauthorized error response
+func UnauthorizedErrorResponse(c *gin.Context, message string, err error, status int) {
+	errorMap := make(map[string][]string)
+	errorMap["error"] = []string{err.Error()}
+
+	c.JSON(
+		status,
+		errors.NewUnauthorizedError(
+			message,
+			errorMap,
+		))
+	c.Abort()
+	return
+}
+
 // ErrorResponse sends a standardized error response
 func ErrorResponse(c *gin.Context, message string, err error, status int) {
 	errorMap := make(map[string][]string)
