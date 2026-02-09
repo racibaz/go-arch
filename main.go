@@ -14,5 +14,5 @@ func run() {
 	cmd.Execute()
 
 	// If you want to use local debugging without cobra cli
-	//bootstrap.Serve()
+	// bootstrap.Serve()
 }
