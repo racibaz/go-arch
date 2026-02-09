@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/shared/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/user/domain"
-	"github.com/racibaz/go-arch/internal/modules/user/features/me/v1/application/query"
+	"github.com/racibaz/go-arch/internal/modules/user/features/me/v1/application/queries"
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/helper"
 	"go.opentelemetry.io/otel"
@@ -24,11 +24,11 @@ const (
 )
 
 type MeHttpHandler struct {
-	Handler ports.QueryHandler[query.MeQueryHandlerQuery, *query.MeQueryHandlerResponse]
+	Handler ports.QueryHandler[queries.MeQueryHandlerQuery, *queries.MeQueryHandlerResponse]
 }
 
 func NewMeHttpHandler(
-	handler ports.QueryHandler[query.MeQueryHandlerQuery, *query.MeQueryHandlerResponse],
+	handler ports.QueryHandler[queries.MeQueryHandlerQuery, *queries.MeQueryHandlerResponse],
 ) *MeHttpHandler {
 	return &MeHttpHandler{
 		Handler: handler,
@@ -88,7 +88,7 @@ func (h MeHttpHandler) Me(c *gin.Context) {
 		return
 	}
 
-	result, handlerErr := h.Handler.Handle(ctx, query.MeQueryHandlerQuery{
+	result, handlerErr := h.Handler.Handle(ctx, queries.MeQueryHandlerQuery{
 		RefreshToken: meRequestDto.RefreshToken,
 	})
 	if handlerErr != nil {

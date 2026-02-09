@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	ports2 "github.com/racibaz/go-arch/internal/modules/shared/application/ports"
-	query "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
+	loginV1Query "github.com/racibaz/go-arch/internal/modules/user/features/login/v1/application/queries"
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/helper"
 	_ "github.com/swaggo/files"
@@ -26,11 +26,11 @@ const (
 )
 
 type LoginHandler struct {
-	Handler ports2.QueryHandler[query.LoginQueryV1, *query.LoginQueryResponse]
+	Handler ports2.QueryHandler[loginV1Query.LoginQueryV1, *loginV1Query.LoginQueryResponse]
 }
 
 func NewLoginHandler(
-	handler ports2.QueryHandler[query.LoginQueryV1, *query.LoginQueryResponse],
+	handler ports2.QueryHandler[loginV1Query.LoginQueryV1, *loginV1Query.LoginQueryResponse],
 ) *LoginHandler {
 	return &LoginHandler{
 		Handler: handler,
@@ -63,7 +63,7 @@ func (h LoginHandler) Login(c *gin.Context) {
 	}
 
 	// Call the handler
-	loginResult, handlerErr := h.Handler.Handle(ctx, query.LoginQueryV1{
+	loginResult, handlerErr := h.Handler.Handle(ctx, loginV1Query.LoginQueryV1{
 		Email:    loginRequestDto.Email,
 		Password: loginRequestDto.Password,
 		Platform: helper.Platform(c), // Get platform from request

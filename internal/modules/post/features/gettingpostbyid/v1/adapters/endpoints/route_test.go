@@ -20,7 +20,7 @@ func TestMapHttpRoute(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
 
-	// Create mock query handler
+	// Create mock queries handler
 	mockQueryHandler := sharedPorts.NewMockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse](
 		t,
 	)

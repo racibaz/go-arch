@@ -1,4 +1,4 @@
-package query
+package queries
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-// LoginHandler handles the login query.
+// LoginHandler handles the login queries.
 type LoginHandler struct {
 	userRepository   ports.UserRepository
 	logger           logger.Logger

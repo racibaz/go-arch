@@ -1,4 +1,4 @@
-package query
+package queries
 
 type RefreshTokenQueryV1 struct {
 	RefreshToken string

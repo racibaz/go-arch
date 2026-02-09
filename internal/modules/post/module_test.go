@@ -96,7 +96,7 @@ func (suite *PostModuleTestSuite) TestPostModule_Repository() {
 }
 
 func (suite *PostModuleTestSuite) TestPostModule_CommandHandler() {
-	suite.Run("should return configured query handler", func() {
+	suite.Run("should return configured queries handler", func() {
 		// Given
 		postModule := NewPostModule(
 			suite.mockRepo,
@@ -117,7 +117,7 @@ func (suite *PostModuleTestSuite) TestPostModule_CommandHandler() {
 }
 
 func (suite *PostModuleTestSuite) TestPostModule_QueryHandler() {
-	suite.Run("should return configured query handler", func() {
+	suite.Run("should return configured queries handler", func() {
 		// Given
 		postModule := NewPostModule(
 			suite.mockRepo,

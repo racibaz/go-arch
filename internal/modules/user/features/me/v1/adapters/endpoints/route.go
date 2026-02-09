@@ -5,7 +5,7 @@ import (
 	ports2 "github.com/racibaz/go-arch/internal/modules/shared/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/user/features/_shared/middlewares"
 	"github.com/racibaz/go-arch/internal/modules/user/features/me/v1/adapters/endpoints/http"
-	query "github.com/racibaz/go-arch/internal/modules/user/features/me/v1/application/query"
+	query "github.com/racibaz/go-arch/internal/modules/user/features/me/v1/application/queries"
 )
 
 func MapHttpRoute(

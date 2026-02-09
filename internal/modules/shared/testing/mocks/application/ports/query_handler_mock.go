@@ -72,7 +72,7 @@ type MockQueryHandler_Handle_Call[Q any, R any] struct {
 
 // Handle is a helper method to define mock.On call
 //   - ctx context.Context
-//   - query Q
+//   - queries Q
 func (_e *MockQueryHandler_Expecter[Q, R]) Handle(ctx interface{}, query interface{}) *MockQueryHandler_Handle_Call[Q, R] {
 	return &MockQueryHandler_Handle_Call[Q, R]{Call: _e.mock.On("Handle", ctx, query)}
 }

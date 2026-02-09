@@ -1,4 +1,4 @@
-package query
+package queries
 
 type LoginQueryV1 struct {
 	Email    string

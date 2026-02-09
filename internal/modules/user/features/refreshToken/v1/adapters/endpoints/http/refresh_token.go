@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/racibaz/go-arch/internal/modules/shared/application/ports"
-	"github.com/racibaz/go-arch/internal/modules/user/features/refreshToken/v1/application/query"
+	"github.com/racibaz/go-arch/internal/modules/user/features/refreshToken/v1/application/queries"
 	"github.com/racibaz/go-arch/pkg/config"
 	"github.com/racibaz/go-arch/pkg/helper"
 	"go.opentelemetry.io/otel"
@@ -23,11 +23,11 @@ const (
 )
 
 type RefreshTokenHandler struct {
-	Handler ports.QueryHandler[query.RefreshTokenQueryV1, *query.RefreshTokenQueryResponseV1]
+	Handler ports.QueryHandler[queries.RefreshTokenQueryV1, *queries.RefreshTokenQueryResponseV1]
 }
 
 func NewRefreshTokenHandler(
-	handler ports.QueryHandler[query.RefreshTokenQueryV1, *query.RefreshTokenQueryResponseV1],
+	handler ports.QueryHandler[queries.RefreshTokenQueryV1, *queries.RefreshTokenQueryResponseV1],
 ) *RefreshTokenHandler {
 	return &RefreshTokenHandler{
 		Handler: handler,
@@ -84,7 +84,7 @@ func (h RefreshTokenHandler) RefreshToken(c *gin.Context) {
 		return
 	}
 
-	result, handlerErr := h.Handler.Handle(ctx, query.RefreshTokenQueryV1{
+	result, handlerErr := h.Handler.Handle(ctx, queries.RefreshTokenQueryV1{
 		RefreshToken: refreshTokenDto.RefreshToken,
 		Platform:     helper.Platform(c),
 	})

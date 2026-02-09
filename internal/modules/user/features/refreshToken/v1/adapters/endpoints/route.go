@@ -5,12 +5,12 @@ import (
 	ports2 "github.com/racibaz/go-arch/internal/modules/shared/application/ports"
 	"github.com/racibaz/go-arch/internal/modules/user/features/_shared/middlewares"
 	"github.com/racibaz/go-arch/internal/modules/user/features/refreshToken/v1/adapters/endpoints/http"
-	"github.com/racibaz/go-arch/internal/modules/user/features/refreshToken/v1/application/query"
+	"github.com/racibaz/go-arch/internal/modules/user/features/refreshToken/v1/application/queries"
 )
 
 func MapHttpRoute(
 	router *gin.Engine,
-	queryHandler ports2.QueryHandler[query.RefreshTokenQueryV1, *query.RefreshTokenQueryResponseV1],
+	queryHandler ports2.QueryHandler[queries.RefreshTokenQueryV1, *queries.RefreshTokenQueryResponseV1],
 ) {
 	refreshTokenHandler := http.NewRefreshTokenHandler(queryHandler)
 
