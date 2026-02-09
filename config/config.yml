@@ -8,7 +8,7 @@ app:
   jwt_web_timeout: 120
   # in minutes
   jwt_mobile_timeout: 120
-  version: "0.1.9"
+  version: "0.1.11"
   local: "localhost" # for local development
 
 
