@@ -3,8 +3,14 @@ app:
   debug: "true"
   env: "dev" # local, dev, prod, test
   log_level: "debug"
-  version: "0.1.9"
+  jwt_key: "eyJzdWIiOiIxMjM0"
+  # in minutes
+  jwt_web_timeout: 120
+  # in minutes
+  jwt_mobile_timeout: 120
+  version: "0.1.11"
   local: "localhost" # for local development
+
 
 server:
   host: "0.0.0.0"

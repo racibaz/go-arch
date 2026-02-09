@@ -124,5 +124,5 @@ func (h GetPostHandler) Show(c *gin.Context) {
 		},
 	}
 
-	helper.SuccessResponse(c, "Show post", responsePayload, http.StatusOK)
+	helper.SuccessResponse(c, "Login post", responsePayload, http.StatusOK)
 }

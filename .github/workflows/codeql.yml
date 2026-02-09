@@ -2,7 +2,7 @@
 # to commit it to your repository.
 #
 # You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom query or build logic.
+# or to provide custom queries or build logic.
 #
 # ******** NOTE ********
 # We have attempted to detect the languages in your repository. Please check
@@ -76,12 +76,12 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
-        # If you wish to specify custom query, you can do so here or in a config file.
-        # By default, query listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these query and those in the config file.
+        # If you wish to specify custom queries, you can do so here or in a config file.
+        # By default, queries listed here will override any specified in a config file.
+        # Prefix the list here with "+" to use these queries and those in the config file.
 
-        # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        # query: security-extended,security-and-quality
+        # For more details on CodeQL's queries packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+        # queries: security-extended,security-and-quality
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above

@@ -20,7 +20,7 @@ func TestMapHttpRoute(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
 
-	// Create mock query handler
+	// Create mock queries handler
 	mockQueryHandler := sharedPorts.NewMockQueryHandler[query.GetPostByIdQuery, query.GetPostByIdQueryResponse](
 		t,
 	)
@@ -185,7 +185,7 @@ func TestMapHttpRoute_MultipleCalls(t *testing.T) {
 	// Call MapHttpRoute second time - should panic because route is already registered
 	assert.Panics(t, func() {
 		MapHttpRoute(router, mockQueryHandler2)
-	}, "Should panic when registering duplicate route")
+	}, "Should panic when signup duplicate route")
 
 	// Routes should still be registered (panic happens after registration attempt)
 	routesAfter := router.Routes()

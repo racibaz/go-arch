@@ -36,35 +36,25 @@ definitions:
       type:
         type: string
     type: object
-  github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_adapters_endpoints_http.Post:
+  helper.Link:
     properties:
-      content:
-        description: "@Description\tContent is the content of the post"
+      href:
         type: string
-      description:
-        description: "@Description\tDescription is the description of the post"
+      rel:
         type: string
-      status:
-        description: "@Description\tStatus is the status of the post"
+      schema:
         type: string
-      title:
-        description: "@Description\tTitle is the title of the post"
+      type:
         type: string
     type: object
-  github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post:
+  helper.Response-http_MeResponseDto:
     properties:
-      content:
-        description: "@Description\tContent is the content of the post"
-        type: string
-      description:
-        description: "@Description\tDescription is the description of the post"
-        type: string
-      status:
-        description: "@Description\tStatus is the status of the post"
-        type: string
-      title:
-        description: "@Description\tTitle is the title of the post"
-        type: string
+      _links:
+        items:
+          $ref: '#/definitions/helper.Link'
+        type: array
+      data:
+        $ref: '#/definitions/http.MeResponseDto'
     type: object
   http.CreatePostRequestDto:
     description: CreatePostRequestDto is a data transfer object for creating a post
@@ -94,8 +84,18 @@ definitions:
     description: CreatePostResponseDto is a data transfer object for reporting the
       details of a created post
     properties:
-      post:
-        $ref: '#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_creatingpost_v1_adapters_endpoints_http.Post'
+      content:
+        description: "@Description\tContent is the content of the post"
+        type: string
+      description:
+        description: "@Description\tDescription is the description of the post"
+        type: string
+      status:
+        description: "@Description\tStatus is the status of the post"
+        type: string
+      title:
+        description: "@Description\tTitle is the title of the post"
+        type: string
     type: object
   http.GetPostResponseDto:
     description: GetPostResponseDto is a data transfer object for reporting the details
@@ -103,8 +103,78 @@ definitions:
     properties:
       posts:
         items:
-          $ref: '#/definitions/github_com_racibaz_go-arch_internal_modules_post_features_gettingposts_v1_adapters_endpoints_http.Post'
+          $ref: '#/definitions/http.Post'
         type: array
+    type: object
+  http.MeRequestDto:
+    properties:
+      refresh_token:
+        description: "@Description\tThe refresh token used to obtain a new access
+          token."
+        minLength: 10
+        type: string
+    required:
+    - refresh_token
+    type: object
+  http.MeResponseDto:
+    properties:
+      created_at:
+        description: "@Description\tCreatedAt represents the date and time when the
+          user was created"
+        type: string
+      email:
+        description: "@Description\tEmail represents the email of the user"
+        type: string
+      name:
+        description: "@Description\tName represents the name of the user"
+        type: string
+      status:
+        description: "@Description\tStatus represents the status of the user (e.g.,
+          active, inactive)"
+        type: string
+    type: object
+  http.Post:
+    properties:
+      content:
+        description: "@Description\tContent is the content of the post"
+        type: string
+      description:
+        description: "@Description\tDescription is the description of the post"
+        type: string
+      status:
+        description: "@Description\tStatus is the status of the post"
+        type: string
+      title:
+        description: "@Description\tTitle is the title of the post"
+        type: string
+    type: object
+  http.RefreshTokenRequestDto:
+    properties:
+      refresh_token:
+        description: "@Description\tThe refresh token used to obtain a new access
+          token."
+        minLength: 10
+        type: string
+    required:
+    - refresh_token
+    type: object
+  http.RegisterUserRequestDto:
+    properties:
+      email:
+        description: "@Description\tEmail represents the email of the user"
+        type: string
+      name:
+        description: "@Description\tName represents the name of the user"
+        minLength: 3
+        type: string
+      password:
+        description: "@Description\tPassword represents the password of the user"
+        minLength: 10
+        type: string
+    required:
+    - email
+    - name
+    - password
     type: object
 info:
   contact: {}
@@ -124,6 +194,24 @@ paths:
       summary: health
       tags:
       - health
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: It is a method to create a new user
+      parameters:
+      - description: the user registration request body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/http.RegisterUserRequestDto'
+      produces:
+      - application/json
+      responses: {}
+      summary: Signup User
+      tags:
+      - users
   /posts:
     get:
       consumes:
@@ -213,6 +301,36 @@ paths:
       summary: Get post by id
       tags:
       - posts
+  /refresh_token:
+    post:
+      consumes:
+      - application/json
+      description: Refreshes the authentication token for a user using a valid refresh
+        token.
+      parameters:
+      - description: Refresh Token Request DTO
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/http.RefreshTokenRequestDto'
+      produces:
+      - application/json
+      responses: {}
+      summary: Refresh User Token
+      tags:
+      - users
+  /schemas/auth/login:
+    get:
+      consumes:
+      - application/json
+      description: It is the schema for login endpoint
+      produces:
+      - application/json
+      responses: {}
+      summary: Login Schema
+      tags:
+      - users
   /schemas/posts/create:
     get:
       consumes:
@@ -235,4 +353,50 @@ paths:
       summary: Get fields of update requirement
       tags:
       - posts
+  /schemas/users/register:
+    get:
+      consumes:
+      - application/json
+      description: Get fields of creation requirement
+      produces:
+      - application/json
+      responses: {}
+      summary: Get fields of creation requirement
+      tags:
+      - users
+  /schemas/users/update:
+    get:
+      consumes:
+      - application/json
+      description: Get fields of update requirement
+      produces:
+      - application/json
+      responses: {}
+      summary: Get fields of update requirement
+      tags:
+      - posts
+  /users/me:
+    get:
+      consumes:
+      - application/json
+      description: Get current user information
+      parameters:
+      - description: Me Request Object
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/http.MeRequestDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helper.Response-http_MeResponseDto'
+      security:
+      - BearerAuth: []
+      summary: Get current user information
+      tags:
+      - users
 swagger: "2.0"

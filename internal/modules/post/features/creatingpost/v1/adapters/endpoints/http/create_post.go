@@ -95,6 +95,7 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 
 		// If validation fails, extract the validation errors and return a validation error response
 		helper.ValidationErrorResponse(c, ValidationErrMessage, validationErr)
+		return
 	}
 
 	newID := uuid.NewID()
@@ -118,16 +119,15 @@ func (h CreatePostHandler) Store(c *gin.Context) {
 		}
 
 		helper.ErrorResponse(c, "post create failed", handlerErr, http.StatusInternalServerError)
+		return
 	}
 
 	responsePayload := helper.Response[CreatePostResponseDto]{
 		Data: &CreatePostResponseDto{
-			Post: &Post{
-				Title:       createPostRequestDto.Title,
-				Description: createPostRequestDto.Description,
-				Content:     createPostRequestDto.Content,
-				Status:      domain.PostStatusDraft.String(),
-			},
+			Title:       createPostRequestDto.Title,
+			Description: createPostRequestDto.Description,
+			Content:     createPostRequestDto.Content,
+			Status:      domain.PostStatusDraft.String(),
 		},
 		Links: []helper.Link{
 			helper.AddHateoas("self", fmt.Sprintf("%s/%s", routePath, newID), http.MethodGet, ""),

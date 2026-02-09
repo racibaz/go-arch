@@ -27,6 +27,12 @@ packages:
       # directory as the original interface.
       dir: "pkg/messaging"
 
+  # Event Dispatcher interfaces
+  github.com/racibaz/go-arch/pkg/ddd:
+    config:
+      all: true
+      dir: "pkg/ddd"
+
   #-----------Shared Module Mocks-----------#
   # Shared domain interfaces
   github.com/racibaz/go-arch/internal/modules/shared/domain/ports:
@@ -64,3 +70,19 @@ packages:
       dir: "internal/modules/post/testing/mocks/features/_shared/ports"
 
 
+  #-----------User Module Mocks-----------#
+  # User domain interfaces
+  github.com/racibaz/go-arch/internal/modules/user/domain/ports:
+    config:
+      all: true
+      # Make use of the template variables to place the mock in the same
+      # directory as the original interface.
+      dir: "internal/modules/user/testing/mocks/domain/ports"
+
+  # Post application interfaces
+  github.com/racibaz/go-arch/internal/modules/user/features/_shared/ports:
+    config:
+      all: true
+      # Make use of the template variables to place the mock in the same
+      # directory as the original interface.
+      dir: "internal/modules/user/testing/mocks/features/_shared/ports"

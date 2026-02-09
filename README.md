@@ -76,6 +76,7 @@ Use Go-Arch as a starting point boilerplate to launch Go services rapidly: fork,
 - [🚪 API Requests](#-api-requests)
 - [📬 Postman Collection](#-postman-collection)
 - [❌ Validation Error Response Example](#-validation-error-response-example)
+- [❌ Invalid Error Response Example](#-invalid-error-response-example)
 - [✔️ API Response Example](#-api-response-example)
 - [🧪 Test](#-testing--quality)
 - [🤝 Code of Conduct](#-code-of-conduct)
@@ -529,6 +530,7 @@ http://127.0.0.1:5601/app/home#/
 
 
 ## 🛠 Roadmap / TODO
+
 - [x] Implement state-change pattern
 - [x] Module Code Generator
 - [x] Push Docker Image to Docker Hub via GitHub Actions
@@ -540,6 +542,8 @@ http://127.0.0.1:5601/app/home#/
 - [x] Alternative migration usage with cmd/migrate CLI app and golang-migrate package
 - [x] GitHub Actions Workflow for CI
 - [x] Implement vertical slice architecture
+- [x] Add Auth Module
+- [x] Implement API versioning
 - [ ] Add more unit tests
 - [ ] Add more integration tests
 - [ ] Add more end-to-end tests
@@ -548,12 +552,10 @@ http://127.0.0.1:5601/app/home#/
 - [ ] Add more gRPC services
 - [ ] MongoDB integration
 - [ ] Add correlationId support
-- [ ] Add Auth Module
 - [ ] Kubernetes deployment manifests
 - [ ] Helm charts for easy deployment
 - [ ] Support for more notification channels (e.g., Email, Push Notifications)
 - [ ] Implement rate limiting
-- [ ] Implement API versioning
 - [ ] Implement feature toggles
 
 
@@ -565,10 +567,16 @@ http://127.0.0.1:5601/app/home#/
 | `/api/v1/posts`                     |   `POST`    |         `Create a post`         |
 | `/api/v1/posts/{{post_id}}`         |    `GET`    |          `Get a post`           |
 | `/api/v1/posts?page=1&page_size=15` |    `GET`    |          `List posts`           |
-| `/api/health`                       |    `GET`    |        `Health endpoint`        |
-| `/metrics`                          |    `GET`    |         `List metrics`          |
 | `/api/v1/schemas/posts/create`      |    `GET`    | `List of creation requirements` |
-| `/api/v1/schemas/posts/update`      |    `GET`    |  `List of update requirements`  |
+| `/api/v1/schemas/posts/update`      |    `GET`    |  `List of update requirements`  |     
+| `/api/health`                       |    `GET`    |        `Health endpoint`        |
+| `/metrics`                          |    `GET`    |         `List metrics`          | 
+| `/api/v1/auth/login`                |   `POST`    |             `Login`             |               
+| `/api/v1/auth/signin`               |   `POST`    |       `Register the user`       |               
+| `/api/v1/users/me`                  |    `GET`    |     `Get the current user`      |
+| `/api/v1/auth/refresh-token`        |   `POST`    |     `Get new refresh token`     |
+| `/api/v1/auth/logout`               |   `POST`    |            `Logout`             |
+               
 
 ## 📬 Postman Collection
 [Download](docs/postman/go-arch.postman_collection.json)
@@ -591,6 +599,22 @@ When sending a POST request to create a post with invalid data, you might receiv
 }
 
 ```
+
+## ❌ Invalid Error Response Example
+When sending a POST request to create a post with an invalid JSON body, you might receive an invalid error response like this:
+```
+{
+    "status": 400,
+    "type": "invalid error",
+    "message": "Invalid request body",
+    "cause": {
+        "error": [
+            "invalid character 'u' looking for beginning of object key string"
+        ]
+    }
+}
+```
+
 
 ## ✔️ API Response Example
 When sending a GET request to retrieve a post by its ID, you might receive a response like this:

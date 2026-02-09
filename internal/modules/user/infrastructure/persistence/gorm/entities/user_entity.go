@@ -1,0 +1,21 @@
+package entities
+
+import (
+	"time"
+
+	"github.com/racibaz/go-arch/internal/modules/user/domain"
+)
+
+type User struct {
+	ID                   string            `gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
+	Name                 string            `gorm:"type:varchar(191);not null"`
+	Email                string            `gorm:"type:varchar(191);not null"`
+	Password             string            `gorm:"type:varchar(191);not null"`
+	Status               domain.UserStatus `gorm:"type:int;not null"`
+	RefreshTokenWeb      *string           `gorm:"type:varchar(191);"`
+	RefreshTokenWebAt    *time.Time        `gorm:""`
+	RefreshTokenMobile   *string           `gorm:"type:varchar(191);"`
+	RefreshTokenMobileAt *time.Time        `gorm:""`
+	CreatedAt            time.Time         `gorm:"autoCreateTime:true"`
+	UpdatedAt            time.Time         `gorm:"autoUpdateTime:true"`
+}

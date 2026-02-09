@@ -18,12 +18,15 @@ type Config struct {
 }
 
 type App struct {
-	Name     string `mapstructure:"name"`
-	Debug    string `mapstructure:"debug"`
-	Env      string `mapstructure:"env"`
-	LogLevel string `mapstructure:"log_level"`
-	Version  string `mapstructure:"version"`
-	Local    string `mapstructure:"local"`
+	Name             string `mapstructure:"name"`
+	Debug            string `mapstructure:"debug"`
+	Env              string `mapstructure:"env"`
+	LogLevel         string `mapstructure:"log_level"`
+	JWTKey           string `mapstructure:"jwt_key"`
+	JWTWebTimeout    int    `mapstructure:"jwt_web_timeout"`
+	JWTMobileTimeout int    `mapstructure:"jwt_mobile_timeout"`
+	Version          string `mapstructure:"version"`
+	Local            string `mapstructure:"local"`
 }
 
 type Server struct {

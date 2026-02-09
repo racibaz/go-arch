@@ -20,6 +20,36 @@ func ValidationErrorResponse(c *gin.Context, message string, err error) {
 	return
 }
 
+// ExistFoundErrorResponse sends a standardized error response
+func ExistFoundErrorResponse(c *gin.Context, message string, err error, status int) {
+	errorMap := make(map[string][]string)
+	errorMap["error"] = []string{err.Error()}
+
+	c.JSON(
+		status,
+		errors.NewErrExistFoundError(
+			message,
+			errorMap,
+		))
+	c.Abort()
+	return
+}
+
+// UnauthorizedErrorResponse sends a standardized unauthorized error response
+func UnauthorizedErrorResponse(c *gin.Context, message string, err error, status int) {
+	errorMap := make(map[string][]string)
+	errorMap["error"] = []string{err.Error()}
+
+	c.JSON(
+		status,
+		errors.NewUnauthorizedError(
+			message,
+			errorMap,
+		))
+	c.Abort()
+	return
+}
+
 // ErrorResponse sends a standardized error response
 func ErrorResponse(c *gin.Context, message string, err error, status int) {
 	errorMap := make(map[string][]string)
@@ -32,6 +62,7 @@ func ErrorResponse(c *gin.Context, message string, err error, status int) {
 			errorMap,
 		))
 
+	c.Abort()
 	return
 }
 
