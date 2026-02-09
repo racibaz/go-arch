@@ -71,51 +71,63 @@ func (pr *InMemoryRepository) GetByID(ctx context.Context, id string) (*domain.U
 }
 
 func (pr *InMemoryRepository) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (pr *InMemoryRepository) Register(ctx context.Context, user *domain.User) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (pr *InMemoryRepository) Me(ctx context.Context, refreshToken string) (*domain.User, error) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (pr *InMemoryRepository) IsExists(ctx context.Context, email string) (bool, error) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
-func (pr *InMemoryRepository) UpdateWebUserRefreshToken(ctx context.Context, id, refreshToken string) error {
-	//TODO implement me
+func (pr *InMemoryRepository) UpdateWebUserRefreshToken(
+	ctx context.Context,
+	id, refreshToken string,
+) error {
+	// TODO implement me
 	panic("implement me")
 }
 
-func (pr *InMemoryRepository) UpdateMobileUserRefreshToken(ctx context.Context, id, refreshToken string) error {
-	//TODO implement me
+func (pr *InMemoryRepository) UpdateMobileUserRefreshToken(
+	ctx context.Context,
+	id, refreshToken string,
+) error {
+	// TODO implement me
 	panic("implement me")
 }
 
 func (pr *InMemoryRepository) DeleteWebUserRefreshToken(ctx context.Context, id string) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (pr *InMemoryRepository) DeleteMobileUserRefreshToken(ctx context.Context, id string) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
-func (pr *InMemoryRepository) GetUserByRefreshTokenAtWeb(ctx context.Context, refreshToken string) (*domain.User, error) {
-	//TODO implement me
+func (pr *InMemoryRepository) GetUserByRefreshTokenAtWeb(
+	ctx context.Context,
+	refreshToken string,
+) (*domain.User, error) {
+	// TODO implement me
 	panic("implement me")
 }
 
-func (pr *InMemoryRepository) GetUserByRefreshTokenAtMobile(ctx context.Context, refreshToken string) (*domain.User, error) {
-	//TODO implement me
+func (pr *InMemoryRepository) GetUserByRefreshTokenAtMobile(
+	ctx context.Context,
+	refreshToken string,
+) (*domain.User, error) {
+	// TODO implement me
 	panic("implement me")
 }
