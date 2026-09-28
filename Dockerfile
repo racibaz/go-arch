@@ -27,7 +27,8 @@ RUN go install github.com/swaggo/swag/cmd/swag@latest
 ENV PATH="/go/bin:${PATH}"
 
 # Install Air for live reloading
-RUN go install github.com/air-verse/air@latest
+# Pinned to v1.67.1: v1.67.2+ requires Go >= 1.26.0, but this image uses golang:1.25-alpine (see #8)
+RUN go install github.com/air-verse/air@v1.67.1
 
 # Copy go mod and sum files
 COPY go.mod go.sum ./
